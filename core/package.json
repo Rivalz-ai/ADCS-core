@@ -1,0 +1,52 @@
+{
+  "name": "rivalz",
+  "version": "0.1",
+  "type": "module",
+  "description": "Rivalz core",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.12"
+  },
+  "author": "Rivalz",
+  "license": "MIT",
+  "devDependencies": {
+    "@slack/webhook": "^7.0.3",
+    "@types/express": "^4.17.21",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "cbor": "^9.0.2",
+    "console-hook": "^0.0.2",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "express": "^4.19.2",
+    "prettier": "^3.0.2",
+    "specifier-resolution-node": "^1.1.4",
+    "typescript": "^5.1.6"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "yarn clean && tsc",
+    "start:listener": "node --no-warnings --import=specifier-resolution-node/register --experimental-specifier-resolution=node --experimental-json-modules dist/listener/main",
+    "start:listener:rr": "yarn start:listener --service REQUEST_RESPONSE",
+    "start:listener:vrf": "yarn start:listener --service VRF",
+    "start:worker": "node --no-warnings --import=specifier-resolution-node/register --experimental-json-modules --experimental-specifier-resolution=node dist/worker/main.js",
+    "start:worker:data-feed": "yarn start:worker --worker DATA_FEED",
+    "start:worker:rr": "yarn start:worker --worker REQUEST_RESPONSE",
+    "start:worker:vrf": "yarn start:worker --worker VRF",
+    "flush": "node --no-warnings --experimental-specifier-resolution=node --experimental-json-modules dist/tools/flush-queues.js",
+    "test": "node --no-warnings --import=specifier-resolution-node/register --experimental-json-modules --experimental-specifier-resolution=node dist/worker/test.js",
+    "lint": "DEBUG=eslint:cli-engine npx eslint 'src/**/*.ts' 'src/*.ts'"
+  },
+  "dependencies": {
+    "@typescript-eslint/parser": "^6.9.1",
+    "axios": "^1.4.0",
+    "bullmq": "^4.7.0",
+    "dotenv": "^16.3.1",
+    "eslint": "8.52.0",
+    "ethers": "^6.7.0",
+    "pino": "^8.15.0",
+    "pino-pretty": "^10.2.0",
+    "redis": "^4.6.7"
+  }
+}
