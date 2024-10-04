@@ -185,7 +185,8 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
         // Note that callWithExactGas will revert if we do not have sufficient gas
         // to give the callee their requested amount.
         sConfig.reentrancyLock = true;
-        (bool success, ) = rc.sender.call(resp);
+        bool success = callWithExactGas(rc.callbackGasLimit, rc.sender, resp);
+        //(bool success, ) = rc.sender.call(resp);
         sConfig.reentrancyLock = false;
         return success;
     }
