@@ -9,6 +9,9 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager'
 import { MODE, REDIS_HOST, REDIS_PORT } from './app.settings'
 import { BullModule } from '@nestjs/bullmq'
+import { AdaptorModule } from './adaptor/adaptor.module'
+import { ListenerModule } from './listener/listener.module'
+import { ReporterModule } from './reporter/reporter.module'
 
 @Module({
   imports: [
@@ -32,7 +35,10 @@ import { BullModule } from '@nestjs/bullmq'
         host: REDIS_HOST,
         port: Number(REDIS_PORT)
       }
-    })
+    }),
+    AdaptorModule,
+    ListenerModule,
+    ReporterModule
   ],
   controllers: [AppController],
   providers: [

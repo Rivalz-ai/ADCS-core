@@ -7,3 +7,95 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Adaptor {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String
+  variables    String
+  categoryId   Int      @map("category_id")
+  outputTypeId Int      @map("output_type_id")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  category   Category   @relation(fields: [categoryId], references: [id])
+  outputType OutputType @relation(fields: [outputTypeId], references: [id])
+
+  @@map("adaptor")
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  adaptors  Adaptor[]
+
+  @@map("category")
+}
+
+model OutputType {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  adaptors  Adaptor[]
+
+  @@map("output_type")
+}
+
+model Listener {
+  id          Int      @id @default(autoincrement())
+  name        String
+  address     String
+  eventName   String   @map("event_name")
+  chainId     Int      @map("chain_id")
+  serviceId   Int      @map("service_id")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  chain   Chain   @relation(fields: [chainId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@map("listener")
+}
+
+model Reporter {
+  id              Int      @id @default(autoincrement())
+  name            String
+  contractAddress String   @map("contract_address")
+  address         String
+  privateKey      String   @map("private_key")
+  chainId         Int      @map("chain_id")
+  serviceId       Int      @map("service_id")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  chain   Chain   @relation(fields: [chainId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@map("reporter")
+}
+
+model Chain {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  listeners   Listener[]
+  reporters   Reporter[]
+
+  @@map("chain")
+}
+
+model Service {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  listeners   Listener[]
+  reporters   Reporter[]
+
+  @@map("service")
+}
