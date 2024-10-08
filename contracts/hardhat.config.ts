@@ -6,18 +6,25 @@ import '@nomiclabs/hardhat-ethers'
 import 'hardhat-deploy'
 import '@nomiclabs/hardhat-solhint'
 import '@nomicfoundation/hardhat-verify'
+import '@nomicfoundation/hardhat-chai-matchers'
 
 module.exports = {
   typechain: {
     outDir: './typechain',
-    target: 'ethers-v5'
+    target: 'ethers-v6'
   },
   solidity: {
     compilers: [
       {
         version: '0.8.20'
       }
-    ]
+    ],
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200
+      }
+    }
   },
 
   networks: {
