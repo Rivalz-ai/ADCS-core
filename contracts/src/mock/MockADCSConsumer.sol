@@ -24,43 +24,48 @@ contract MockADCSConsumer is
 
     function requestUint256Data(
         uint32 _callbackGasLimit,
-        bytes32 _jobId
+        bytes32 _jobId,
+        string memory _from,
+        string memory _to
     ) external returns (uint256 requestId) {
-        bytes32 typeId = keccak256(abi.encodePacked("uint128"));
+        bytes32 typeId = keccak256(abi.encodePacked("uint256"));
         ADCS.Request memory req = buildRequest(_jobId, typeId);
-        req.add("from", "BTC");
-        req.add("to", "USDT");
+        req.add("from", _from);
+        req.add("to", _to);
         requestId = COORDINATOR.requestData(_callbackGasLimit, req);
         emit DataRequestedUint256(requestId);
     }
 
     function requestBoolData(
         uint32 _callbackGasLimit,
-        bytes32 _jobId
+        bytes32 _jobId,
+        string memory _from
     ) external returns (uint256 requestId) {
         bytes32 typeId = keccak256(abi.encodePacked("bool"));
         ADCS.Request memory req = buildRequest(_jobId, typeId);
-        req.add("from", "BTC");
+        req.add("from", _from);
         requestId = COORDINATOR.requestData(_callbackGasLimit, req);
         emit DataRequestedBool(requestId);
     }
 
     function requestBytes32Data(
         uint32 _callbackGasLimit,
-        bytes32 _jobId
+        bytes32 _jobId,
+        string memory _from
     ) external returns (uint256 requestId) {
         ADCS.Request memory req = buildRequest(_jobId, keccak256(abi.encodePacked("bytes32")));
-        req.add("from", "BTC");
+        req.add("from", _from);
         requestId = COORDINATOR.requestData(_callbackGasLimit, req);
         emit DataRequestedBytes32(requestId);
     }
 
     function requestBytesData(
         uint32 _callbackGasLimit,
-        bytes32 _jobId
+        bytes32 _jobId,
+        string memory _from
     ) external returns (uint256 requestId) {
         ADCS.Request memory req = buildRequest(_jobId, keccak256(abi.encodePacked("bytes")));
-        req.add("from", "BTC");
+        req.add("from", _from);
         requestId = COORDINATOR.requestData(_callbackGasLimit, req);
         emit DataRequestedBytes(requestId);
     }
