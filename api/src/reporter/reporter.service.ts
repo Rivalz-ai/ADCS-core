@@ -24,12 +24,12 @@ export class ReporterService {
   }
 
   async getReporterByChainAndContractAddress(
-    chainId: number,
+    chainName: string,
     contractAddress: string
-  ): Promise<Reporter | null> {
-    return await this.prisma.reporter.findFirst({
+  ): Promise<Reporter[] | null> {
+    return await this.prisma.reporter.findMany({
       where: {
-        AND: [{ chainId }, { contractAddress }]
+        AND: [{ chain: { name: chainName } }, { contractAddress }]
       }
     })
   }

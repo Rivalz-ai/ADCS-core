@@ -43,9 +43,12 @@ export class ReporterController {
     description: 'Returns the reporter for the given chain ID and contract address.'
   })
   async getReporterByChainAndContractAddress(
-    @Query('chainId', ParseIntPipe) chainId: number,
+    @Query('chain') chainName: string,
     @Query('contractAddress') contractAddress: string
-  ): Promise<Reporter | null> {
-    return await this.reporterService.getReporterByChainAndContractAddress(chainId, contractAddress)
+  ): Promise<Reporter[] | null> {
+    return await this.reporterService.getReporterByChainAndContractAddress(
+      chainName,
+      contractAddress
+    )
   }
 }

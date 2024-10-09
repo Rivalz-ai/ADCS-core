@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service'
 import { Adaptor } from '@prisma/client'
 import { CreateAdaptorDto } from './dto/create-adaptor.dto'
 import { UpdateAdaptorDto } from './dto/update-adaptor.dto'
+import { randomBytes } from 'crypto'
 
 @Injectable()
 export class AdaptorService {
@@ -21,11 +22,18 @@ export class AdaptorService {
 
   async createAdaptor(data: CreateAdaptorDto): Promise<Adaptor> {
     const formattedVariables = this.validateAndFormatVariables(data.variables)
+    // Generate a unique jobId compatible with Solidity bytes32
+    // Generate the jobId before creating the adaptor
+    const jobId = this.generateUniqueJobId()
+
+    // Add the jobId to the data object
+    const adaptorData = {
+      ...data,
+      jobId,
+      variables: formattedVariables
+    }
     return await this.prisma.adaptor.create({
-      data: {
-        ...data,
-        variables: formattedVariables
-      }
+      data: adaptorData
     })
   }
 
@@ -60,5 +68,21 @@ export class AdaptorService {
     return await this.prisma.adaptor.findMany({
       where: { outputTypeId }
     })
+  }
+
+  async getAdaptorByJobId(jobId: string): Promise<Adaptor> {
+    return await this.prisma.adaptor.findFirst({
+      where: { jobId },
+      include: {
+        outputType: true
+      }
+    })
+  }
+
+  generateUniqueJobId = (): string => {
+    // Create a random 32-byte (256-bit) value
+    const randomValue = randomBytes(32)
+    // Convert to a hexadecimal string, prefixed with '0x'
+    return '0x' + randomValue.toString('hex')
   }
 }

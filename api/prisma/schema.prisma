@@ -9,6 +9,7 @@ datasource db {
 
 model Adaptor {
   id           Int      @id @default(autoincrement())
+  jobId        String   @map("job_id")
   name         String
   description  String
   variables    String
@@ -36,6 +37,8 @@ model Category {
 model OutputType {
   id        Int       @id @default(autoincrement())
   name      String
+  coordinatorAddress String? @map("coordinator_address")
+  fulfillDataRequestFn String? @map("fulfill_data_request_fn")
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   adaptors  Adaptor[]

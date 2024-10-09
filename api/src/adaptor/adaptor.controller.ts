@@ -86,4 +86,14 @@ export class AdaptorController {
   ): Promise<Adaptor[]> {
     return await this.adaptorService.getAdaptorsByOutputTypeId(outputTypeId)
   }
+
+  @Get('by-job-id')
+  @ApiOperation({ summary: 'Get adaptor by job ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the adaptor for the given job ID.'
+  })
+  async getAdaptorByJobId(@Query('jobId') jobId: string): Promise<Adaptor> {
+    return await this.adaptorService.getAdaptorByJobId(jobId)
+  }
 }
