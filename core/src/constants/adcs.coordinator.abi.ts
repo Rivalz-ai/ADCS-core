@@ -308,6 +308,12 @@ export const ADCS_ABI = [
         internalType: 'uint256',
         name: 'blockNumber',
         type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes'
       }
     ],
     name: 'DataRequested',

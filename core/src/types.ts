@@ -33,8 +33,8 @@ export interface ILog {
 }
 
 export interface IRequestOperation {
-  function: string
-  args: string
+  name: string
+  value: string
 }
 
 export interface ILatestRoundData {
@@ -72,6 +72,7 @@ export interface IDataRequested {
   sender: string
   jobId: string
   blockNumber: bigint
+  data: string
 }
 
 export interface IRandomWordsRequested {
@@ -114,6 +115,7 @@ export interface IADCSListenerWorker {
   callbackGasLimit: number
   sender: string
   jobId: string
+  data: string
 }
 
 export interface IVrfListenerWorker {
@@ -126,19 +128,6 @@ export interface IVrfListenerWorker {
   numWords: number
   sender: string
   isDirectPayment: boolean
-}
-
-export interface IL2EndpointListenerWorker {
-  keyHash: string
-  callbackAddress: string
-  blockNum: string
-  blockHash: string
-  requestId: string
-  seed: string
-  accId: string
-  callbackGasLimit: number
-  numWords: number
-  sender: string
 }
 
 export interface IDataFeedListenerWorker {
@@ -275,11 +264,14 @@ export interface IFeed {
 }
 
 export interface IAdapter {
-  id: bigint
-  adapterHash: string
+  id: number
+  jobId: string
   name: string
-  decimals: number
-  feeds: IFeed[]
+  description: string
+  categoryId: string
+  outputTypeName: string
+  coordinatorAddress: string
+  fulfillDataRequestFn: string
 }
 
 export interface IAggregator {
@@ -333,8 +325,9 @@ export interface IADCSTransactionParameters {
   requestId: string
   callbackGasLimit: number
   sender: string
-  pairName: string
+  jobId: string
   response: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  fulfillDataRequestFn: string
 }
 
 export interface IDataFeedTransactionParameters {

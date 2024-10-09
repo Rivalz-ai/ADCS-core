@@ -77,5 +77,6 @@ export enum RivalzErrorCode {
   AxiosCanceledByUser,
   AxiosNotSupported,
   AxiosInvalidUrl,
-  FailedToConnectAPI
+  FailedToConnectAPI,
+  FailedToGetAdaptor
 }

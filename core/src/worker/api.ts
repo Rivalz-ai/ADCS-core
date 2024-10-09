@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { URL } from 'node:url'
 import { Logger } from 'pino'
-import { API_URL } from '../settings'
-import { IAggregate, IAggregateById, IAggregator, IErrorMsgData } from '../types'
+import { API_URL, ADCS_API_URL } from '../settings'
+import { IAdapter, IAggregate, IAggregateById, IAggregator, IErrorMsgData } from '../types'
 import { buildUrl } from '../utils'
 import { RivalzError, RivalzErrorCode } from '../errors'
 
@@ -10,7 +10,9 @@ export const AGGREGATE_ENDPOINT = buildUrl(API_URL, 'aggregate')
 export const AGGREGATOR_ENDPOINT = buildUrl(API_URL, 'aggregator')
 export const ERROR_ENDPOINT = buildUrl(API_URL, 'error')
 export const PRICE_ENDPOINT = buildUrl(API_URL, 'price')
+export const OUTPUT_TYPE_ENDPOINT = buildUrl(ADCS_API_URL, 'adaptors/by-job-id')
 
+/**
 /**
  * Fetch aggregate data from `Network API` data feed endpoint
  * given aggregator ID.
@@ -200,5 +202,26 @@ export async function fetchPriceByPairName({
   } catch (e) {
     logger.error(e)
     throw new RivalzError(RivalzErrorCode.FailedToGetAggregate)
+  }
+}
+
+export async function fetchAdapterByJobId(jobId: string, logger: Logger): Promise<IAdapter> {
+  try {
+    const url = buildUrl(OUTPUT_TYPE_ENDPOINT, `?jobId=${jobId}`)
+    const item = (await axios.get(url))?.data
+
+    return {
+      id: item.id,
+      jobId: item.jobId,
+      name: item.name,
+      description: item.description,
+      categoryId: item.categoryId,
+      outputTypeName: item.outputType.name,
+      coordinatorAddress: item.outputType.coordinatorAddress,
+      fulfillDataRequestFn: item.outputType.fulfillDataRequestFn
+    }
+  } catch (e) {
+    logger.error(e)
+    throw new RivalzError(RivalzErrorCode.FailedToGetAdaptor)
   }
 }

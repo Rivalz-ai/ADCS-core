@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Logger } from 'pino'
 import { IListenerRawConfig } from '../types'
-import { API_URL } from '../settings'
+import { ADCS_API_URL } from '../settings'
 import { buildUrl } from '../utils'
 import { RivalzError, RivalzErrorCode } from '../errors'
 
@@ -28,7 +28,7 @@ export async function getListeners({
 }): Promise<IListenerRawConfig[]> {
   try {
     const endpoint = buildUrl(
-      API_URL,
+      ADCS_API_URL,
       `listeners/by-chain-and-service?service=${service}&chain=${chain}`
     )
     console.log(endpoint)
@@ -61,7 +61,7 @@ export async function getListener({
   logger?: Logger
 }): Promise<IListenerRawConfig> {
   try {
-    const endpoint = buildUrl(API_URL, `listener/${id}`)
+    const endpoint = buildUrl(ADCS_API_URL, `listener/${id}`)
     return (await axios.get(endpoint))?.data
   } catch (e) {
     logger?.error({ name: 'getListener', file: FILE_NAME, ...e }, 'error')

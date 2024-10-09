@@ -62,7 +62,8 @@ async function processEvent({ iface, logger }: { iface: Interface; logger: Logge
       requestId,
       callbackGasLimit: Number(eventData.callbackGasLimit),
       sender: eventData.sender,
-      jobId: eventData.jobId
+      jobId: eventData.jobId,
+      data: eventData.data
     }
     _logger.debug(jobData, 'jobData')
     return { jobName: 'request-response', jobId: requestId, jobData }

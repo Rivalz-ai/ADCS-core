@@ -6,7 +6,7 @@ export const CHAIN = process.env.CHAIN || 'localhost'
 export const DEPLOYMENT_NAME = process.env.DEPLOYMENT_NAME || 'rivalz'
 
 export const DATA_FEED_FULFILL_GAS_MINIMUM = 400_000
-export const REQUEST_RESPONSE_FULFILL_GAS_MINIMUM = 400_000
+export const ADCS_FULFILL_GAS_MINIMUM = 400_000
 export const VRF_FULLFILL_GAS_PER_WORD = 1_000
 export const VRF_FULFILL_GAS_MINIMUM = 1_000_000
 
@@ -54,6 +54,7 @@ export const REDIS_PORT = process.env.REDIS_PORT ? Number(process.env.REDIS_PORT
 export const PROVIDER_URL = process.env.PROVIDER_URL || 'http://127.0.0.1:8545'
 export const API_URL = process.env.API_URL || 'http://localhost:3010'
 export const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || ''
+export const ADCS_API_URL = process.env.ADCS_API_URL || 'http://localhost:3012'
 
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,
