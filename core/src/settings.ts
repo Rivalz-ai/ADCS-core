@@ -33,22 +33,12 @@ export const WORKER_CHECK_HEARTBEAT_QUEUE_NAME = `${DEPLOYMENT_NAME}-worker-chec
 
 export const WORKER_DEVIATION_QUEUE_NAME = `rivalz-deviation-queue`
 
-export const LISTENER_REQUEST_RESPONSE_HISTORY_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-request-response-history-queue`
-export const LISTENER_REQUEST_RESPONSE_LATEST_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-request-response-latest-queue`
-export const LISTENER_REQUEST_RESPONSE_PROCESS_EVENT_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-request-response-event-queue`
-export const REQUEST_RESPONSE_LISTENER_STATE_NAME = `${DEPLOYMENT_NAME}-listener-request-response-state`
-export const REQUEST_RESPONSE_SERVICE_NAME = 'REQUEST_RESPONSE'
-export const WORKER_REQUEST_RESPONSE_QUEUE_NAME = `${DEPLOYMENT_NAME}-worker-request-response-queue`
-
-//vrf
-export const LISTENER_VRF_HISTORY_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-history-queue`
-export const LISTENER_VRF_LATEST_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-latest-queue`
-export const LISTENER_VRF_PROCESS_EVENT_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-event-queue`
-export const VRF_LISTENER_STATE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-state`
-export const VRF_SERVICE_NAME = `VRF`
-export const WORKER_VRF_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-worker-queue`
-
-export const NONCE_MANAGER_VRF_QUEUE_NAME = `${DEPLOYMENT_NAME}-nonce-manager-vrf-queue`
+export const LISTENER_ADCS_HISTORY_QUEUE_NAME = 'listener_adcs_history'
+export const LISTENER_ADCS_LATEST_QUEUE_NAME = 'listener_adcs_latest'
+export const LISTENER_ADCS_PROCESS_EVENT_QUEUE_NAME = 'listener_adcs_process_event'
+export const ADCS_LISTENER_STATE_NAME = 'adcs_listener_state'
+export const ADCS_SERVICE_NAME = 'ADCS'
+export const WORKER_ADCS_QUEUE_NAME = 'worker_adcs'
 
 export const REMOVE_ON_COMPLETE = 500
 export const REMOVE_ON_FAIL = 1_000

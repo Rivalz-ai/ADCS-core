@@ -70,7 +70,7 @@ export interface IDataRequested {
   requestId: bigint
   callbackGasLimit: bigint
   sender: string
-  pairName: string
+  jobId: string
   blockNumber: bigint
 }
 
@@ -105,39 +105,15 @@ export interface IAnswerUpdated {
   updatedAt: bigint
 }
 
-export interface IL2DataRequested {
-  requestId: bigint
-  jobId: string
-  accId: bigint
-  callbackGasLimit: number
-  sender: string
-  numSubmission: number
-  req: IOraklRequest
-}
-
-export interface IL2DataRequestFulfilled {
-  requestId: bigint
-  l2RequestId: bigint
-  sender: string
-  callbackGasLimit: number
-  jobId: string
-  responseUint128: bigint
-  responseInt256: bigint
-  responseBool: boolean
-  responseString: string
-  responseBytes32: string
-  responseBytes: string
-}
-
 // Listener -> Worker
 
-export interface IRequestResponseListenerWorker {
+export interface IADCSListenerWorker {
   callbackAddress: string
   blockNum: number
   requestId: string
   callbackGasLimit: number
   sender: string
-  pairName: string
+  jobId: string
 }
 
 export interface IVrfListenerWorker {
@@ -171,47 +147,6 @@ export interface IDataFeedListenerWorker {
   workerSource: string
 }
 
-export interface IDataFeedListenerWorkerL2 {
-  oracleAddress: string
-  roundId: number
-  answer: number
-  workerSource: string
-}
-
-export interface IL2VrfFulfillListenerWorker {
-  callbackAddress: string
-  callbackGasLimit: number
-  blockNum: string
-  blockHash: string
-  requestId: string
-  l2RequestId: string
-  sender: string
-  randomWords: string[]
-}
-
-export interface IL2RequestResponseListenerWorker {
-  callbackAddress: string
-  blockNum: string
-  requestId: string
-  jobId: string
-  accId: string
-  callbackGasLimit: number
-  sender: string
-  numSubmission: number
-  req: IOraklRequest
-}
-
-export interface IL2RequestResponseFulfillListenerWorker {
-  callbackAddress: string
-  blockNum: number
-  requestId: string
-  jobId: string
-  callbackGasLimit: number
-  sender: string
-  l2RequestId: string
-  response: string | boolean
-}
-
 // Worker -> Worker
 
 export interface IAggregatorHeartbeatWorker {
@@ -225,7 +160,7 @@ export interface IAggregatorSubmitHeartbeatWorker {
 
 // Worker -> Reporter
 
-export interface IRequestResponseWorkerReporter {
+export interface IADCSWorkerReporter {
   callbackAddress: string
   blockNum: number
   requestId: string
@@ -271,7 +206,7 @@ export type RequestCommitmentVRF = [
   string /* sender */
 ]
 
-export type RequestCommitmentRequestResponse = [
+export type RequestCommitmentADCS = [
   number /* blockNum */,
   number /* callbackGasLimit */,
   string /* sender */,
@@ -393,41 +328,7 @@ export interface IVrfTransactionParameters {
   vComponents: [string, string, string, string]
 }
 
-export interface IL2VrfRequestTransactionParameters {
-  keyHash: string
-  blockNum: string
-  seed: string
-  accId: string
-  callbackGasLimit: number
-  numWords: number
-  sender: string
-  l2RequestId: string
-}
-
-export interface IL2VrfFulfillTransactionParameters {
-  requestId: string
-  callbackGasLimit: number
-  randomWords: string[]
-}
-
-export interface IL2RequestResponseRequestTransactionParameters {
-  blockNum: string
-  accId: string
-  callbackGasLimit: number
-  numSubmission: number
-  sender: string
-  l2RequestId: string
-  req: IOraklRequest
-}
-
-export interface IL2RequestResponseFulfillTransactionParameters {
-  requestId: string
-  jobId: string
-  callbackGasLimit: number
-  response: string | boolean
-}
-
-export interface IRequestResponseTransactionParameters {
+export interface IADCSTransactionParameters {
   blockNum: number
   requestId: string
   callbackGasLimit: number
@@ -471,12 +372,4 @@ export interface IErrorMsgData {
   code: string
   name: string
   stack: string
-}
-
-export interface IL2AggregatorPair {
-  id: bigint
-  l1AggregatorAddress: string
-  l2AggregatorAddress: string
-  chainId: bigint
-  active: boolean
 }

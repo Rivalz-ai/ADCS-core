@@ -2,7 +2,7 @@ import axios from 'axios'
 import { URL } from 'node:url'
 import { Logger } from 'pino'
 import { API_URL } from '../settings'
-import { IAggregate, IAggregateById, IAggregator, IErrorMsgData, IL2AggregatorPair } from '../types'
+import { IAggregate, IAggregateById, IAggregator, IErrorMsgData } from '../types'
 import { buildUrl } from '../utils'
 import { RivalzError, RivalzErrorCode } from '../errors'
 

@@ -27,8 +27,18 @@ export async function getListeners({
   logger?: Logger
 }): Promise<IListenerRawConfig[]> {
   try {
-    const endpoint = buildUrl(API_URL, 'listener')
-    return (await axios.get(endpoint, { data: { service, chain } }))?.data
+    const endpoint = buildUrl(
+      API_URL,
+      `listeners/by-chain-and-service?service=${service}&chain=${chain}`
+    )
+    console.log(endpoint)
+    const data = (await axios.get(endpoint))?.data
+    return data.map((item) => ({
+      address: item.address,
+      eventName: item.eventName,
+      service: item.service.name,
+      chain: item.chain.name
+    }))
   } catch (e) {
     logger?.error({ name: 'getListeners', file: FILE_NAME, ...e }, 'error')
     throw new RivalzError(RivalzErrorCode.GetListenerRequestFailed)
