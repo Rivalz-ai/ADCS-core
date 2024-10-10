@@ -1,6 +1,6 @@
 import { Logger } from 'pino'
 import { buildUrl } from './utils'
-import { API_URL, CHAIN, DATA_FEED_SERVICE_NAME } from './settings'
+import { ADCS_API_URL, API_URL, CHAIN, DATA_FEED_SERVICE_NAME } from './settings'
 import axios from 'axios'
 import { RivalzError, RivalzErrorCode } from './errors'
 import { IReporterConfig, IVrfConfig } from './types'
@@ -50,8 +50,11 @@ export async function getReporterByAddress({
   logger: Logger
 }): Promise<IReporterConfig> {
   try {
-    const endpoint = buildUrl(API_URL, `reporter/oracle-address/${oracleAddress}`)
-    const reporter = (await axios.get(endpoint, { data: { service, chain } }))?.data
+    const endpoint = buildUrl(
+      ADCS_API_URL,
+      `reporters/by-chain-and-contract?chain=${chain}&contractAddress=${oracleAddress}`
+    )
+    const reporter = (await axios.get(endpoint))?.data
 
     if (reporter.length != 1) {
       logger.error(`Expected 1 reporter, received ${reporter.length}`)

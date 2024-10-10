@@ -26,10 +26,9 @@ describe('MockADCSConsumer', function () {
       const jobId = ethers.encodeBytes32String('testJobId')
       const callbackGasLimit = 2500000
 
-      await expect(mockADCSConsumer.requestUint256Data(callbackGasLimit, jobId)).to.emit(
-        mockADCSConsumer,
-        'DataRequestedUint256'
-      )
+      await expect(
+        mockADCSConsumer.requestUint256Data(callbackGasLimit, jobId, 'BTC', 'USDT')
+      ).to.emit(mockADCSConsumer, 'DataRequestedUint256')
     })
 
     it('should fulfill Uint256 request and update lastUint256', async function () {
@@ -43,7 +42,12 @@ describe('MockADCSConsumer', function () {
       // Simulate oracle response
       const testValue = '1234'
       // Request data first to get the requestId
-      const tx: any = await mockADCSConsumer.requestUint256Data(callbackGasLimit, jobId)
+      const tx: any = await mockADCSConsumer.requestUint256Data(
+        callbackGasLimit,
+        jobId,
+        'BTC',
+        'USDT'
+      )
       const receipt = await tx.wait()
       const requestId = receipt.logs[1].args[0]
       // Parse the event log from log index 0 for the coordinator contr
@@ -85,7 +89,7 @@ describe('MockADCSConsumer', function () {
       // Simulate oracle response
       const testValue = true
       // Request data first to get the requestId
-      const tx: any = await mockADCSConsumer.requestBoolData(callbackGasLimit, jobId)
+      const tx: any = await mockADCSConsumer.requestBoolData(callbackGasLimit, jobId, 'BTC')
       const receipt = await tx.wait()
       const requestId = receipt.logs[1].args[0]
       // Parse the event log from log index 0 for the coordinator contract
@@ -127,7 +131,7 @@ describe('MockADCSConsumer', function () {
       // Simulate oracle response
       const testValue = ethers.encodeBytes32String('testBytes32Value')
       // Request data first to get the requestId
-      const tx: any = await mockADCSConsumer.requestBytes32Data(callbackGasLimit, jobId)
+      const tx: any = await mockADCSConsumer.requestBytes32Data(callbackGasLimit, jobId, 'BTC')
       const receipt = await tx.wait()
       const requestId = receipt.logs[1].args[0]
       // Parse the event log from log index 0 for the coordinator contract
@@ -169,7 +173,7 @@ describe('MockADCSConsumer', function () {
       // Simulate oracle response
       const testValue = ethers.encodeBytes32String('testBytesValue')
       // Request data first to get the requestId
-      const tx: any = await mockADCSConsumer.requestBytesData(callbackGasLimit, jobId)
+      const tx: any = await mockADCSConsumer.requestBytesData(callbackGasLimit, jobId, 'BTC')
       const receipt = await tx.wait()
       const requestId = receipt.logs[1].args[0]
       // Parse the event log from log index 0 for the coordinator contract

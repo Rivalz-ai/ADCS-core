@@ -6,7 +6,7 @@ export const CHAIN = process.env.CHAIN || 'localhost'
 export const DEPLOYMENT_NAME = process.env.DEPLOYMENT_NAME || 'rivalz'
 
 export const DATA_FEED_FULFILL_GAS_MINIMUM = 400_000
-export const REQUEST_RESPONSE_FULFILL_GAS_MINIMUM = 400_000
+export const ADCS_FULFILL_GAS_MINIMUM = 400_000
 export const VRF_FULLFILL_GAS_PER_WORD = 1_000
 export const VRF_FULFILL_GAS_MINIMUM = 1_000_000
 
@@ -33,22 +33,12 @@ export const WORKER_CHECK_HEARTBEAT_QUEUE_NAME = `${DEPLOYMENT_NAME}-worker-chec
 
 export const WORKER_DEVIATION_QUEUE_NAME = `rivalz-deviation-queue`
 
-export const LISTENER_REQUEST_RESPONSE_HISTORY_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-request-response-history-queue`
-export const LISTENER_REQUEST_RESPONSE_LATEST_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-request-response-latest-queue`
-export const LISTENER_REQUEST_RESPONSE_PROCESS_EVENT_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-request-response-event-queue`
-export const REQUEST_RESPONSE_LISTENER_STATE_NAME = `${DEPLOYMENT_NAME}-listener-request-response-state`
-export const REQUEST_RESPONSE_SERVICE_NAME = 'REQUEST_RESPONSE'
-export const WORKER_REQUEST_RESPONSE_QUEUE_NAME = `${DEPLOYMENT_NAME}-worker-request-response-queue`
-
-//vrf
-export const LISTENER_VRF_HISTORY_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-history-queue`
-export const LISTENER_VRF_LATEST_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-latest-queue`
-export const LISTENER_VRF_PROCESS_EVENT_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-event-queue`
-export const VRF_LISTENER_STATE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-state`
-export const VRF_SERVICE_NAME = `VRF`
-export const WORKER_VRF_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-vrf-worker-queue`
-
-export const NONCE_MANAGER_VRF_QUEUE_NAME = `${DEPLOYMENT_NAME}-nonce-manager-vrf-queue`
+export const LISTENER_ADCS_HISTORY_QUEUE_NAME = 'listener_adcs_history'
+export const LISTENER_ADCS_LATEST_QUEUE_NAME = 'listener_adcs_latest'
+export const LISTENER_ADCS_PROCESS_EVENT_QUEUE_NAME = 'listener_adcs_process_event'
+export const ADCS_LISTENER_STATE_NAME = 'adcs_listener_state'
+export const ADCS_SERVICE_NAME = 'ADCS'
+export const WORKER_ADCS_QUEUE_NAME = 'worker_adcs'
 
 export const REMOVE_ON_COMPLETE = 500
 export const REMOVE_ON_FAIL = 1_000
@@ -64,6 +54,7 @@ export const REDIS_PORT = process.env.REDIS_PORT ? Number(process.env.REDIS_PORT
 export const PROVIDER_URL = process.env.PROVIDER_URL || 'http://127.0.0.1:8545'
 export const API_URL = process.env.API_URL || 'http://localhost:3010'
 export const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || ''
+export const ADCS_API_URL = process.env.ADCS_API_URL || 'http://localhost:3012'
 
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,

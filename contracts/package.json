@@ -7,7 +7,8 @@
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat deploy",
-    "verify": "npx hardhat verify"
+    "verify": "npx hardhat verify",
+    "deploy:adcs": "yarn deploy --deploy-scripts deploy/adcs"
   },
   "author": "",
   "license": "ISC",
@@ -35,6 +36,7 @@
     "hardhat": "^2.22.3",
     "hardhat-deploy": "^0.12.4",
     "hardhat-deploy-ethers": "^0.4.2",
+    "moment": "^2.30.1",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.4.5"

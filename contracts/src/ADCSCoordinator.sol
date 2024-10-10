@@ -42,7 +42,8 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
         uint32 callbackGasLimit,
         address indexed sender,
         bytes32 jobId,
-        uint256 blockNumber
+        uint256 blockNumber,
+        bytes data
     );
     event DataRequestFulfilledUint256(uint256 indexed requestId, uint256 response, bool success);
     event DataRequestFulfilledBool(uint256 indexed requestId, bool response, bool success);
@@ -150,7 +151,14 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
 
         sRequestOwner[requestId] = msg.sender;
 
-        emit DataRequested(requestId, callbackGasLimit, msg.sender, req.id, blockNumber);
+        emit DataRequested(
+            requestId,
+            callbackGasLimit,
+            msg.sender,
+            req.id,
+            blockNumber,
+            req.buf.buf
+        );
 
         return requestId;
     }
@@ -186,7 +194,7 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
         // to give the callee their requested amount.
         sConfig.reentrancyLock = true;
         bool success = callWithExactGas(rc.callbackGasLimit, rc.sender, resp);
-        //(bool success, ) = rc.sender.call(resp);
+        //
         sConfig.reentrancyLock = false;
         return success;
     }
