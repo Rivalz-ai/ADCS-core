@@ -1,12 +1,37 @@
+import sys
+
+print("Starting script...")
+
 #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
 from groq import Groq
 import requests
+from googleapiclient.discovery import build
+from bs4 import BeautifulSoup
+
+print("Imported required modules")
 
 client = Groq(
     api_key="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",
 )
 
+print("Initialized Groq client")
+
+def extract_content(url):
+    print(f"Extracting content from {url}")
+    try:
+        response = requests.get(url, timeout=10)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        # Extract text from p tags
+        paragraphs = soup.find_all('p')
+        content = ' '.join([p.get_text() for p in paragraphs])
+        # Limit content to first 500 characters
+        return content[:500] + "..." if len(content) > 500 else content
+    except Exception as e:
+        print(f"Error extracting content from {url}: {e}")
+        return ""
+
 def get_memecoins_info():
+    print("Fetching memecoin information")
     """Fetch information for multiple memecoins from CoinGecko API."""
     memecoins = ["dogecoin", "shiba-inu", "pepe", "floki", "bonk"]  # Add or modify this list as needed
     memecoins_info = {}
@@ -29,16 +54,55 @@ def get_memecoins_info():
     
     return memecoins_info
 
+# Add this function to search for latest meme trends
+def search_meme_trends():
+    print("Searching for meme trends")
+    # To get these keys:
+    # 1. For Google API Key:
+    #    - Go to https://console.cloud.google.com/
+    #    - Create a new project or select an existing one
+    #    - Enable the Custom Search API
+    #    - Go to Credentials and create an API key
+    # 2. For Custom Search Engine ID:
+    #    - Go to https://programmablesearchengine.google.com/cse/all
+    #    - Create a new search engine
+    #    - Get the Search engine ID from the setup page
+    # Then replace the placeholders below with your actual keys
+    api_key = "AIzaSyDQDNd4dO-Erlo8Yi4v67AS_6GwuC8gyGQ"
+    cse_id = "17cc80f2a12ea4b22"
 
+    service = build("customsearch", "v1", developerKey=api_key)
+    results = service.cse().list(q="latest meme trends cryptocurrency", cx=cse_id, num=5).execute()
+
+    trends = []
+    for item in results.get('items', []):
+        content = extract_content(item['link'])
+        trends.append({
+            'title': item['title'],
+            'snippet': item['snippet'],
+            'link': item['link'],
+            'content': content
+        })
+    
+    return trends
+
+# Update the market_research_agent function
 def market_research_agent():
+    print("Starting market research agent")
     """Agent that performs meme coin market research."""
-    research_prompt = """You are a cryptocurrency market research agent specializing in meme coins. Your task is to gather and summarize the latest trends, news, and market sentiment for popular meme coins. Please provide a concise report covering the following aspects:
+    meme_trends = search_meme_trends()
+    trends_text = "\n".join([f"- {trend['title']}:\n  Snippet: {trend['snippet']}\n  Content: {trend['content']}" for trend in meme_trends])
+
+    research_prompt = f"""You are a cryptocurrency market research agent specializing in meme coins. Your task is to gather and summarize the latest trends, news, and market sentiment for popular meme coins. Please provide a concise report covering the following aspects:
 
     1. Latest price movements and trading volumes for top meme coins (e.g., Dogecoin, Shiba Inu, Pepe, Floki, Bonk)
     2. Recent news or events that might impact meme coin markets
     3. Social media trends and sentiment around meme coins
     4. Any emerging meme coins gaining traction
     5. Overall market sentiment towards meme coins
+
+    Consider the following recent meme trends in your analysis:
+    {trends_text}
 
     Present your findings in a structured, easy-to-read format."""
 
@@ -54,15 +118,21 @@ def market_research_agent():
 
     return research_completion.choices[0].message.content
 
-# Perform market research
+print("Performing market research")
 market_research = market_research_agent()
 
-# Get meme coin data
+print("Market Research Result:")
+print("==============")
+print(market_research)
+print("==============")
+
+print("Getting memecoin data")
 memecoins_data = get_memecoins_info()
 
-# Combine market research and coin data for analysis
+print("Combining market research and coin data")
 combined_data = f"Market Research:\n{market_research}\n\nMeme Coin Data:\n{memecoins_data}"
 
+print("Creating chat completion")
 chat_completion = client.chat.completions.create(
     messages=[
         {
@@ -88,14 +158,7 @@ Focus on the coin that you believe will yield the highest profit based on the co
     model="llama3-8b-8192",
 )
 
+print("Chat completion response:")
 print(chat_completion.choices[0].message.content)
 
-
-
-"""
-coin_info = get_memecoin_info("dogecoin")
-if coin_info:
-    print(f"Memecoin info: {coin_info}")
-else:
-    print("Failed to fetch memecoin information")
-"""
+print("Script completed")
