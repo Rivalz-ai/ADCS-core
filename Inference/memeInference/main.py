@@ -1,6 +1,7 @@
 import sys
 import os
 from dotenv import load_dotenv
+import re
 
 print("Starting script...")
 
@@ -122,7 +123,7 @@ def market_research_agent():
                 "content": research_prompt,
             }
         ],
-        model="llama3-8b-8192",
+        model="llama3-70b-8192",
     )
 
     return research_completion.choices[0].message.content
@@ -164,10 +165,25 @@ After your analysis, provide your final decision in the exact format of an array
 Focus on the coin that you believe will yield the highest profit based on the comprehensive data provided, and explain your reasoning thoroughly.""",
         }
     ],
-    model="llama3-8b-8192",
+    model="llama3-70b-8192",
 )
 
 print("Chat completion response:")
 print(chat_completion.choices[0].message.content)
+
+# Extract the Final Decision array from the response
+response_content = chat_completion.choices[0].message.content
+final_decision_match = re.search(r'\[([^\]]+)\]', response_content)
+
+if final_decision_match:
+    final_decision_str = final_decision_match.group(1)
+    token_name, decision_str = final_decision_str.split(',')
+    token_name = token_name.strip().strip("'")
+    decision = decision_str.strip().lower() == 'true'
+    final_decision = [token_name, decision]
+    print(f"Final Decision: {final_decision}")
+else:
+    print("Final Decision array not found in the response.")
+    final_decision = None
 
 print("Script completed")
