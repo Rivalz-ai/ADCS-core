@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Adaptor {
+  id           Int      @id @default(autoincrement())
+  jobId        String   @map("job_id")
+  name         String
+  description  String
+  variables    String
+  categoryId   Int      @map("category_id")
+  outputTypeId Int      @map("output_type_id")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  createdBy    String?  @map("created_by") //wallet address of the user who created the adaptor
+  status       String   @default("draft") @map("status") // inreview, draft, active, inactive
+  iconUrl      String?  @map("icon_url")
+  requests     Int      @default(0) @map("requests")
+  chainId      Int      @default(1) @map("chain_id")
+  exampleCode  String?  @map("example_code")
+
+  category   Category   @relation(fields: [categoryId], references: [id])
+  outputType OutputType @relation(fields: [outputTypeId], references: [id])
+  chain      Chain      @relation(fields: [chainId], references: [id])
+
+  @@map("adaptor")
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  adaptors  Adaptor[]
+
+  @@map("category")
+}
+
+model OutputType {
+  id                   Int       @id @default(autoincrement())
+  name                 String
+  coordinatorAddress   String?   @map("coordinator_address")
+  fulfillDataRequestFn String?   @map("fulfill_data_request_fn")
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  adaptors             Adaptor[]
+
+  @@map("output_type")
+}
+
+model Listener {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  eventName String   @map("event_name")
+  chainId   Int      @map("chain_id")
+  serviceId Int      @map("service_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  chain   Chain   @relation(fields: [chainId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@map("listener")
+}
+
+model Reporter {
+  id              Int      @id @default(autoincrement())
+  name            String
+  contractAddress String   @map("contract_address")
+  address         String
+  privateKey      String   @map("private_key")
+  chainId         Int      @map("chain_id")
+  serviceId       Int      @map("service_id")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  chain   Chain   @relation(fields: [chainId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@map("reporter")
+}
+
+model Chain {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  listeners   Listener[]
+  reporters   Reporter[]
+  adaptors    Adaptor[]
+
+  @@map("chain")
+}
+
+model Service {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  listeners   Listener[]
+  reporters   Reporter[]
+
+  @@map("service")
+}
+
+// New User model
+model User {
+  id             Int      @id @default(autoincrement())
+  email          String?  @unique
+  password       String?
+  name           String?
+  walletAddress  String?  @unique @map("wallet_address")
+  nonce          String?  @map("nonce")
+  isAdmin        Boolean  @default(false) @map("is_admin")
+  nonceTimestamp DateTime @map("nonce_timestamp") @db.Timestamptz
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("user")
+}
