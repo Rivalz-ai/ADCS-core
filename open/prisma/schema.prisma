@@ -17,11 +17,16 @@ model Adaptor {
   outputTypeId Int      @map("output_type_id")
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  createdBy    String   @map("created_by") //wallet address of the user who created the adaptor
-  status       String   @map("status") @default("draft") // inreview, draft, active, inactive
+  createdBy    String?  @map("created_by") //wallet address of the user who created the adaptor
+  status       String   @default("draft") @map("status") // inreview, draft, active, inactive
+  iconUrl      String?  @map("icon_url")
+  requests     Int      @default(0) @map("requests")
+  chainId      Int      @default(1) @map("chain_id")
+  exampleCode  String?  @map("example_code")
 
   category   Category   @relation(fields: [categoryId], references: [id])
   outputType OutputType @relation(fields: [outputTypeId], references: [id])
+  chain      Chain      @relation(fields: [chainId], references: [id])
 
   @@map("adaptor")
 }
@@ -89,6 +94,7 @@ model Chain {
   updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   listeners   Listener[]
   reporters   Reporter[]
+  adaptors    Adaptor[]
 
   @@map("chain")
 }
@@ -107,16 +113,16 @@ model Service {
 
 // New User model
 model User {
-  id            Int      @id @default(autoincrement())
-  email         String?  @unique
-  password      String?
-  name          String?
-  walletAddress String?  @map("wallet_address") @unique
-  nonce         String?  @map("nonce")
-  isAdmin       Boolean  @default(false) @map("is_admin")
+  id             Int      @id @default(autoincrement())
+  email          String?  @unique
+  password       String?
+  name           String?
+  walletAddress  String?  @unique @map("wallet_address")
+  nonce          String?  @map("nonce")
+  isAdmin        Boolean  @default(false) @map("is_admin")
   nonceTimestamp DateTime @map("nonce_timestamp") @db.Timestamptz
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("user")
 }

@@ -11,39 +11,21 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async generateSignMessage(address: string): Promise<string> {
+  async generateSignMessage(address: string): Promise<{ message: string }> {
     const nonce = crypto.randomBytes(32).toString('hex')
     const timestamp = Date.now()
 
-    // Store the nonce and timestamp in the database
-    await this.prisma.user.upsert({
-      where: { walletAddress: address },
-      update: { nonce, nonceTimestamp: new Date(timestamp) },
-      create: { walletAddress: address, nonce, nonceTimestamp: new Date(timestamp) }
-    })
-
-    return this.getMessage(nonce, timestamp)
+    return { message: this.getMessage(nonce, timestamp) }
   }
 
-  async verifySignedMessage(address: string, signature: string): Promise<boolean> {
-    const user = await this.prisma.user.findUnique({ where: { walletAddress: address } })
-
-    if (!user || !user.nonce || !user.nonceTimestamp) {
-      return false
-    }
-
-    const message = this.getMessage(user.nonce, Number(user.nonceTimestamp))
-
+  async verifySignedMessage(message: string, signature: string): Promise<boolean> {
     try {
       const recoveredAddress = verifyMessage(message, signature)
-      if (recoveredAddress.toLowerCase() !== address.toLowerCase()) {
-        return false
-      }
-
-      // Clear the nonce after successful verification
-      await this.prisma.user.update({
-        where: { walletAddress: address },
-        data: { nonce: null, nonceTimestamp: null }
+      // insert user into db,update if already exists
+      await this.prisma.user.upsert({
+        where: { walletAddress: recoveredAddress },
+        update: { walletAddress: recoveredAddress },
+        create: { walletAddress: recoveredAddress, nonce: null, nonceTimestamp: null }
       })
 
       return true
@@ -59,6 +41,6 @@ export class AuthService {
   }
 
   private getMessage(nonce: string, timestamp: number): string {
-    return `Please sign this message to authenticate:\nNonce: ${nonce}\nTimestamp: ${timestamp}`
+    return `Please sign this message to authenticate: Nonce: ${nonce} Timestamp: ${timestamp}`
   }
 }

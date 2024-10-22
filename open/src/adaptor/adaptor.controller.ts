@@ -108,4 +108,14 @@ export class AdaptorController {
   async getAdaptorByJobId(@Query('jobId') jobId: string): Promise<Adaptor> {
     return await this.adaptorService.getAdaptorByJobId(jobId)
   }
+
+  @Get('category')
+  async category() {
+    return await this.adaptorService.category()
+  }
+
+  @Get('outputType')
+  async outputType() {
+    return await this.adaptorService.output()
+  }
 }

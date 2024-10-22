@@ -66,7 +66,18 @@ export class AdaptorService {
   }
 
   async getAdaptorList(): Promise<Adaptor[]> {
-    return await this.prisma.adaptor.findMany()
+    const data = await this.prisma.adaptor.findMany({
+      include: { category: true, outputType: true, chain: true }
+    })
+
+    return data.map((m) => {
+      return {
+        ...m,
+        categoryName: m.category.name,
+        outputTypeName: m.outputType.name,
+        chainName: m.chain.name
+      }
+    })
   }
 
   async getAdaptorsByCategoryId(categoryId: number): Promise<Adaptor[]> {
@@ -95,5 +106,13 @@ export class AdaptorService {
     const randomValue = randomBytes(32)
     // Convert to a hexadecimal string, prefixed with '0x'
     return '0x' + randomValue.toString('hex')
+  }
+
+  async category() {
+    return await this.prisma.category.findMany()
+  }
+
+  async output() {
+    return await this.prisma.outputType.findMany()
   }
 }
