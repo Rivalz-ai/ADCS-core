@@ -1,6 +1,11 @@
 import sys
+import os
+from dotenv import load_dotenv
 
 print("Starting script...")
+
+# Load environment variables
+load_dotenv()
 
 #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
 from groq import Groq
@@ -10,8 +15,12 @@ from bs4 import BeautifulSoup
 
 print("Imported required modules")
 
+# Use environment variables
+api_key = os.getenv("GOOGLE_API_KEY")
+cse_id = os.getenv("GOOGLE_CSE_ID")
+
 client = Groq(
-    api_key="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",
+    api_key=os.getenv("GROQ_API_KEY"),
 )
 
 print("Initialized Groq client")
