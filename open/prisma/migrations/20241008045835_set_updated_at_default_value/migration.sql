@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "adaptor" ALTER COLUMN "updated_at" SET DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "category" ALTER COLUMN "updated_at" SET DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "output_type" ALTER COLUMN "updated_at" SET DEFAULT CURRENT_TIMESTAMP;
