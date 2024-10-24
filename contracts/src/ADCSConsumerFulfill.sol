@@ -43,3 +43,14 @@ abstract contract ADCSConsumerFulfillBytes is ADCSConsumerBase {
         fulfillDataRequest(requestId, response);
     }
 }
+
+abstract contract ADCSConsumerFulfillStringAndBool is ADCSConsumerBase {
+    function fulfillDataRequest(uint256 requestId, StringAndBool memory response) internal virtual;
+
+    function rawFulfillDataRequest(
+        uint256 requestId,
+        StringAndBool memory response
+    ) external verifyRawFulfillment {
+        fulfillDataRequest(requestId, response);
+    }
+}

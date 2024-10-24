@@ -6,15 +6,19 @@ import "./interfaces/IADCSCoordinator.sol";
 abstract contract ADCSConsumerBase {
     using ADCS for ADCS.Request;
 
+    struct StringAndBool {
+        string name;
+        bool response;
+    }
     error OnlyCoordinatorCanFulfill(address have, address want);
     mapping(bytes32 => bytes4) private sTypeIdToFunctionSelector;
     IADCSCoordinator public immutable COORDINATOR;
 
     /**
-     * @param _requestResponseCoordinator address of ADCSCoordinator contract
+     * @param _adcsResponseCoordinator address of ADCSCoordinator contract
      */
-    constructor(address _requestResponseCoordinator) {
-        COORDINATOR = IADCSCoordinator(_requestResponseCoordinator);
+    constructor(address _adcsResponseCoordinator) {
+        COORDINATOR = IADCSCoordinator(_adcsResponseCoordinator);
 
         sTypeIdToFunctionSelector[keccak256(abi.encodePacked("uint256"))] = COORDINATOR
             .fulfillDataRequestUint256
@@ -27,6 +31,10 @@ abstract contract ADCSConsumerBase {
             .selector;
         sTypeIdToFunctionSelector[keccak256(abi.encodePacked("bytes"))] = COORDINATOR
             .fulfillDataRequestBytes
+            .selector;
+
+        sTypeIdToFunctionSelector[keccak256(abi.encodePacked("stringAndbool"))] = COORDINATOR
+            .fulfillDataRequestStringAndBool
             .selector;
     }
 

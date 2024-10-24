@@ -13,6 +13,11 @@ interface IADCSCoordinatorBase {
         bytes32 jobId;
     }
 
+    struct StringAndBool {
+        string name;
+        bool response;
+    }
+
     function requestData(
         uint32 callbackGasLimit,
         ADCS.Request memory req
@@ -39,6 +44,12 @@ interface IADCSCoordinatorBase {
     function fulfillDataRequestBytes(
         uint256 requestId,
         bytes memory response,
+        RequestCommitment memory rc
+    ) external;
+
+    function fulfillDataRequestStringAndBool(
+        uint256 requestId,
+        StringAndBool memory response,
         RequestCommitment memory rc
     ) external;
 }
