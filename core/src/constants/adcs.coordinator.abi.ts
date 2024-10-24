@@ -261,6 +261,43 @@ export const ADCS_ABI = [
         type: 'uint256'
       },
       {
+        components: [
+          {
+            internalType: 'string',
+            name: 'name',
+            type: 'string'
+          },
+          {
+            internalType: 'bool',
+            name: 'response',
+            type: 'bool'
+          }
+        ],
+        indexed: false,
+        internalType: 'struct IADCSCoordinatorBase.StringAndBool',
+        name: 'response',
+        type: 'tuple'
+      },
+      {
+        indexed: false,
+        internalType: 'bool',
+        name: 'success',
+        type: 'bool'
+      }
+    ],
+    name: 'DataRequestFulfilledStringAndBool',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'requestId',
+        type: 'uint256'
+      },
+      {
         indexed: false,
         internalType: 'uint256',
         name: 'response',
@@ -579,6 +616,63 @@ export const ADCS_ABI = [
       }
     ],
     name: 'fulfillDataRequestBytes32',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'requestId',
+        type: 'uint256'
+      },
+      {
+        components: [
+          {
+            internalType: 'string',
+            name: 'name',
+            type: 'string'
+          },
+          {
+            internalType: 'bool',
+            name: 'response',
+            type: 'bool'
+          }
+        ],
+        internalType: 'struct IADCSCoordinatorBase.StringAndBool',
+        name: 'response',
+        type: 'tuple'
+      },
+      {
+        components: [
+          {
+            internalType: 'uint64',
+            name: 'blockNum',
+            type: 'uint64'
+          },
+          {
+            internalType: 'uint32',
+            name: 'callbackGasLimit',
+            type: 'uint32'
+          },
+          {
+            internalType: 'address',
+            name: 'sender',
+            type: 'address'
+          },
+          {
+            internalType: 'bytes32',
+            name: 'jobId',
+            type: 'bytes32'
+          }
+        ],
+        internalType: 'struct IADCSCoordinatorBase.RequestCommitment',
+        name: 'rc',
+        type: 'tuple'
+      }
+    ],
+    name: 'fulfillDataRequestStringAndBool',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'

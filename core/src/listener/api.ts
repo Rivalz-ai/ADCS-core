@@ -31,8 +31,8 @@ export async function getListeners({
       ADCS_API_URL,
       `listeners/by-chain-and-service?service=${service}&chain=${chain}`
     )
-    console.log(endpoint)
     const data = (await axios.get(endpoint))?.data
+    console.log(data)
     return data.map((item) => ({
       address: item.address,
       eventName: item.eventName,

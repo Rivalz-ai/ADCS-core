@@ -10,9 +10,9 @@ import {
   ADCS_SERVICE_NAME,
   WORKER_ADCS_QUEUE_NAME
 } from '../settings'
-import { IErrorMsgData, IADCSListenerWorker, IADCSTransactionParameters } from '../types'
+import { IADCSListenerWorker, IADCSTransactionParameters } from '../types'
 
-import { fetchAdapterByJobId, fetchPriceByPairName } from './api'
+import { fetchAdapterByJobId, fetchMemeCoinData, fetchPriceByPairName } from './api'
 import { buildTransaction } from './adcs.utils'
 import { ADCS_ABI as ADCSAbis } from '../constants/adcs.coordinator.abi'
 import { getReporterByAddress } from '../apis'
@@ -46,15 +46,15 @@ export async function job(_logger: Logger) {
     logger.debug(inData, 'inData')
     // decode data
     const decodedData = await decodeRequest(inData.data)
-    console.log({ decodedData })
     let formattedResponse: any
     try {
       const adapter = await fetchAdapterByJobId(inData.jobId, _logger)
       if (!adapter) {
         throw new Error('No adapter')
       }
+
       switch (Number(adapter.categoryId)) {
-        case 5: // price
+        case 5:
           const pairName = `${decodedData[0].value}-${decodedData[1].value}`
           const rawData = await fetchPriceByPairName({
             pairName,
@@ -65,11 +65,16 @@ export async function job(_logger: Logger) {
           }
           console.log({ rawData })
           const response = Object.values(Object.values(rawData)[0])[0]
-          formattedResponse = parseUnits(Number(response).toFixed(DECIMALS), DECIMALS)
+          formattedResponse = parseUnits(Number(response).toFixed(DECIMALS), DECIMALS).toString()
 
           if (!response) {
             throw new Error('No response')
           }
+          break
+        case 6: // meme
+          const meme = await fetchMemeCoinData({ logger: _logger })
+          formattedResponse = [meme.final_decision.token_name, meme.final_decision.decision]
+          break
       }
 
       const payloadParameters: IADCSTransactionParameters = {
@@ -77,7 +82,7 @@ export async function job(_logger: Logger) {
         requestId: inData.requestId,
         callbackGasLimit: inData.callbackGasLimit,
         sender: inData.sender,
-        response: formattedResponse.toString(),
+        response: formattedResponse,
         jobId: inData.jobId,
         fulfillDataRequestFn: adapter.fulfillDataRequestFn
       }

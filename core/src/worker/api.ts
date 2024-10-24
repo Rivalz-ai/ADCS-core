@@ -2,7 +2,14 @@ import axios from 'axios'
 import { URL } from 'node:url'
 import { Logger } from 'pino'
 import { API_URL, ADCS_API_URL } from '../settings'
-import { IAdapter, IAggregate, IAggregateById, IAggregator, IErrorMsgData } from '../types'
+import {
+  IAdapter,
+  IAggregate,
+  IAggregateById,
+  IAggregator,
+  IErrorMsgData,
+  IMemeData
+} from '../types'
 import { buildUrl } from '../utils'
 import { RivalzError, RivalzErrorCode } from '../errors'
 
@@ -11,6 +18,7 @@ export const AGGREGATOR_ENDPOINT = buildUrl(API_URL, 'aggregator')
 export const ERROR_ENDPOINT = buildUrl(API_URL, 'error')
 export const PRICE_ENDPOINT = buildUrl(API_URL, 'price')
 export const OUTPUT_TYPE_ENDPOINT = buildUrl(ADCS_API_URL, 'adaptors/by-job-id')
+export const MEME_ENDPOINT = buildUrl(ADCS_API_URL, 'inference')
 
 /**
 /**
@@ -223,5 +231,15 @@ export async function fetchAdapterByJobId(jobId: string, logger: Logger): Promis
   } catch (e) {
     logger.error(e)
     throw new RivalzError(RivalzErrorCode.FailedToGetAdaptor)
+  }
+}
+
+export async function fetchMemeCoinData({ logger }: { logger: Logger }): Promise<IMemeData> {
+  try {
+    const url = buildUrl(MEME_ENDPOINT, 'meme')
+    return (await axios.get(url))?.data
+  } catch (e) {
+    logger.error(e)
+    throw new RivalzError(RivalzErrorCode.FailedToGetAggregate)
   }
 }

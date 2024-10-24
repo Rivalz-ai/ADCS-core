@@ -366,3 +366,12 @@ export interface IErrorMsgData {
   name: string
   stack: string
 }
+
+export interface IMemeData {
+  market_research: string
+  memecoins_data: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  final_decision: {
+    token_name: string
+    decision: boolean
+  }
+}
