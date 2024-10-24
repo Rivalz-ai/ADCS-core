@@ -4,31 +4,18 @@ import { ConfigService } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { join } from 'path'
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
-import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager'
 import { MODE, REDIS_HOST, REDIS_PORT } from './app.settings'
 import { BullModule } from '@nestjs/bullmq'
 import { AdaptorModule } from './adaptor/adaptor.module'
 import { ListenerModule } from './listener/listener.module'
 import { ReporterModule } from './reporter/reporter.module'
+import { InferenceModule } from './inference/inference.module'
 
 @Module({
   imports: [
-    CacheModule.register({
-      ttl: 10000,
-      max: 20,
-      isGlobal: true
-    }),
-    ThrottlerModule.forRoot([
-      {
-        ttl: 5000,
-        limit: 50
-      }
-    ]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', MODE == 'dev' ? '' : '..', 'data'),
-      serveRoot: '/fragmentz'
+      serveRoot: '/adcs'
     }),
     BullModule.forRoot({
       connection: {
@@ -38,20 +25,10 @@ import { ReporterModule } from './reporter/reporter.module'
     }),
     AdaptorModule,
     ListenerModule,
-    ReporterModule
+    ReporterModule,
+    InferenceModule
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    ConfigService,
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor
-    }
-  ]
+  providers: [AppService, ConfigService]
 })
 export class AppModule {}

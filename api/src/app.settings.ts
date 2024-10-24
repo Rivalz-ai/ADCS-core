@@ -10,6 +10,8 @@ export const JWT_EXP = process.env.JWT_EXP || '1h'
 export const REDIS_HOST = process.env.REDIS_HOST || 'localhost'
 export const REDIS_PORT = process.env.REDIS_PORT || '6379'
 
+export const INFERENCE_API_URL = process.env.INFERENCE_API_URL || 'http://localhost:5000'
+
 export function setAppSetting(app: INestApplication) {
   app.setGlobalPrefix('adcs', {
     exclude: [{ path: 'health', method: RequestMethod.GET }]
