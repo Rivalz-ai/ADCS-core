@@ -55,6 +55,8 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
         bool success
     );
 
+    event DataRequestFulfilled(uint256 indexed requestId, bytes response, bool success);
+
     event DataSubmitted(address oracle, uint256 requestId);
 
     constructor() {}
