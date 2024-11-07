@@ -13,15 +13,27 @@ model Adaptor {
   name         String
   description  String
   variables    String
+  typeId       Int      @map("type_id")
   categoryId   Int      @map("category_id")
   outputTypeId Int      @map("output_type_id")
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
-  category   Category   @relation(fields: [categoryId], references: [id])
-  outputType OutputType @relation(fields: [outputTypeId], references: [id])
+  category    Category    @relation(fields: [categoryId], references: [id])
+  outputType  OutputType  @relation(fields: [outputTypeId], references: [id])
+  adaptorType AdaptorType @relation(fields: [typeId], references: [id])
 
   @@map("adaptor")
+}
+
+model AdaptorType {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  adaptors  Adaptor[]
+
+  @@map("adaptor_type")
 }
 
 model Category {
@@ -35,26 +47,39 @@ model Category {
 }
 
 model OutputType {
-  id        Int       @id @default(autoincrement())
-  name      String
-  coordinatorAddress String? @map("coordinator_address")
-  fulfillDataRequestFn String? @map("fulfill_data_request_fn")
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  adaptors  Adaptor[]
+  id                   Int       @id @default(autoincrement())
+  name                 String
+  coordinatorAddress   String?   @map("coordinator_address")
+  fulfillDataRequestFn String?   @map("fulfill_data_request_fn")
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  adaptors             Adaptor[]
 
   @@map("output_type")
 }
 
+model DataProvider {
+  id              Int      @id @default(autoincrement())
+  name            String
+  inputVariables  String
+  outputVariables String
+  endpoint        String
+  description     String
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("data_provider")
+}
+
 model Listener {
-  id          Int      @id @default(autoincrement())
-  name        String
-  address     String
-  eventName   String   @map("event_name")
-  chainId     Int      @map("chain_id")
-  serviceId   Int      @map("service_id")
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  eventName String   @map("event_name")
+  chainId   Int      @map("chain_id")
+  serviceId Int      @map("service_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
   chain   Chain   @relation(fields: [chainId], references: [id])
   service Service @relation(fields: [serviceId], references: [id])
