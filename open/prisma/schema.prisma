@@ -23,7 +23,7 @@ model Adaptor {
   requests       Int      @default(0) @map("requests")
   chainId        Int      @default(1) @map("chain_id")
   exampleCode    String?  @map("example_code")
-  typeId         Int      @map("type_id")
+  typeId         Int?     @map("type_id")
   dataProviderId Int?     @map("data_provider_id")
 
   category      Category      @relation(fields: [categoryId], references: [id])
@@ -145,13 +145,14 @@ model AdaptorType {
 model DataProvider {
   id              Int       @id @default(autoincrement())
   name            String
-  inputVariables  String
-  outputVariables String
+  inputVariables  Json
+  outputVariables Json
   endpoint        String
   apiKey          String?   @map("api_key")
   type            String
   active          Boolean   @default(true)
   description     String
+  createdBy       String?   @map("created_by")
   createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   Adaptor         Adaptor[]

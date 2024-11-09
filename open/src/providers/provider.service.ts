@@ -27,8 +27,6 @@ export class ProviderService {
       })
       return providers.map((provider) => ({
         ...provider,
-        inputVariables: provider.inputVariables.split(','),
-        outputVariables: provider.outputVariables.split(','),
         endpoint: `${HOST}/${provider.endpoint}`
       }))
     } catch (error) {
@@ -44,8 +42,6 @@ export class ProviderService {
       })
       return {
         ...provider,
-        inputVariables: provider.inputVariables.split(','),
-        outputVariables: provider.outputVariables.split(','),
         endpoint: `${HOST}/${provider.endpoint}`
       }
     } catch (error) {
