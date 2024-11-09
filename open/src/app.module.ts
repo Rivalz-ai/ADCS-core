@@ -12,6 +12,7 @@ import { BullModule } from '@nestjs/bullmq'
 import { AdaptorModule } from './adaptor/adaptor.module'
 import { AuthModule } from './auth/auth.module'
 import { InferenceModule } from './inference/inference.module'
+import { ProviderModule } from './providers/provider.module'
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { InferenceModule } from './inference/inference.module'
     }),
     AdaptorModule,
     AuthModule,
-    InferenceModule
+    InferenceModule,
+    ProviderModule
   ],
   controllers: [AppController],
   providers: [

@@ -8,20 +8,22 @@ datasource db {
 }
 
 model Adaptor {
-  id           Int      @id @default(autoincrement())
-  jobId        String   @map("job_id")
-  name         String
-  description  String
-  variables    String
-  typeId       Int      @map("type_id")
-  categoryId   Int      @map("category_id")
-  outputTypeId Int      @map("output_type_id")
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  id             Int      @id @default(autoincrement())
+  jobId          String   @map("job_id")
+  name           String
+  description    String
+  variables      String
+  typeId         Int      @map("type_id")
+  categoryId     Int      @map("category_id")
+  outputTypeId   Int      @map("output_type_id")
+  dataProviderId Int?     @map("data_provider_id")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
-  category    Category    @relation(fields: [categoryId], references: [id])
-  outputType  OutputType  @relation(fields: [outputTypeId], references: [id])
-  adaptorType AdaptorType @relation(fields: [typeId], references: [id])
+  category     Category      @relation(fields: [categoryId], references: [id])
+  outputType   OutputType    @relation(fields: [outputTypeId], references: [id])
+  adaptorType  AdaptorType   @relation(fields: [typeId], references: [id])
+  dataProvider DataProvider? @relation(fields: [dataProviderId], references: [id])
 
   @@map("adaptor")
 }
@@ -59,14 +61,18 @@ model OutputType {
 }
 
 model DataProvider {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   name            String
   inputVariables  String
   outputVariables String
   endpoint        String
+  apiKey          String?   @map("api_key")
+  type            String
+  active          Boolean   @default(true)
   description     String
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  Adaptor         Adaptor[]
 
   @@map("data_provider")
 }

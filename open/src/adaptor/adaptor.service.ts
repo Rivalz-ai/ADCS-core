@@ -43,7 +43,7 @@ export class AdaptorService {
     data: UpdateAdaptorDto,
     creatorAddress: string
   ): Promise<Adaptor> {
-    let updateData = { ...data }
+    const updateData = { ...data }
     if (data.variables) {
       updateData.variables = this.validateAndFormatVariables(data.variables)
     }

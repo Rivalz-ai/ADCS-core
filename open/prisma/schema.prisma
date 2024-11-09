@@ -8,25 +8,30 @@ datasource db {
 }
 
 model Adaptor {
-  id           Int      @id @default(autoincrement())
-  jobId        String   @map("job_id")
-  name         String
-  description  String
-  variables    String
-  categoryId   Int      @map("category_id")
-  outputTypeId Int      @map("output_type_id")
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  createdBy    String?  @map("created_by") //wallet address of the user who created the adaptor
-  status       String   @default("draft") @map("status") // inreview, draft, active, inactive
-  iconUrl      String?  @map("icon_url")
-  requests     Int      @default(0) @map("requests")
-  chainId      Int      @default(1) @map("chain_id")
-  exampleCode  String?  @map("example_code")
+  id             Int      @id @default(autoincrement())
+  jobId          String   @map("job_id")
+  name           String
+  description    String
+  variables      String
+  categoryId     Int      @map("category_id")
+  outputTypeId   Int      @map("output_type_id")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  createdBy      String?  @map("created_by") //wallet address of the user who created the adaptor
+  status         String   @default("draft") @map("status") // inreview, draft, active, inactive
+  iconUrl        String?  @map("icon_url")
+  requests       Int      @default(0) @map("requests")
+  chainId        Int      @default(1) @map("chain_id")
+  exampleCode    String?  @map("example_code")
+  typeId         Int      @map("type_id")
+  dataProviderId Int?     @map("data_provider_id")
 
-  category   Category   @relation(fields: [categoryId], references: [id])
-  outputType OutputType @relation(fields: [outputTypeId], references: [id])
-  chain      Chain      @relation(fields: [chainId], references: [id])
+  category      Category      @relation(fields: [categoryId], references: [id])
+  outputType    OutputType    @relation(fields: [outputTypeId], references: [id])
+  chain         Chain         @relation(fields: [chainId], references: [id])
+  AdaptorType   AdaptorType?  @relation(fields: [adaptorTypeId], references: [id])
+  adaptorTypeId Int?
+  DataProvider  DataProvider? @relation(fields: [dataProviderId], references: [id])
 
   @@map("adaptor")
 }
@@ -125,4 +130,31 @@ model User {
   updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
   @@map("user")
+}
+
+model AdaptorType {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  adaptors  Adaptor[]
+
+  @@map("adaptor_type")
+}
+
+model DataProvider {
+  id              Int       @id @default(autoincrement())
+  name            String
+  inputVariables  String
+  outputVariables String
+  endpoint        String
+  apiKey          String?   @map("api_key")
+  type            String
+  active          Boolean   @default(true)
+  description     String
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  Adaptor         Adaptor[]
+
+  @@map("data_provider")
 }

@@ -10,6 +10,7 @@ import { AdaptorModule } from './adaptor/adaptor.module'
 import { ListenerModule } from './listener/listener.module'
 import { ReporterModule } from './reporter/reporter.module'
 import { InferenceModule } from './inference/inference.module'
+import { ProviderModule } from './providers/provider.module'
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { InferenceModule } from './inference/inference.module'
     AdaptorModule,
     ListenerModule,
     ReporterModule,
-    InferenceModule
+    InferenceModule,
+    ProviderModule
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService]
