@@ -11,7 +11,6 @@ export class InferenceService {
     const agent = new Agent({ keepAlive: true })
     this.axiosInstance = axios.create({
       baseURL: INFERENCE_API_URL,
-      timeout: 30000,
       httpAgent: agent
     })
   }

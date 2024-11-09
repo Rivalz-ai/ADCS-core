@@ -21,14 +21,13 @@ export class ProviderService {
           description: true,
           inputVariables: true,
           outputVariables: true,
+          iconUrl: true,
           createdAt: true,
-          updatedAt: true
+          updatedAt: true,
+
         }
       })
-      return providers.map((provider) => ({
-        ...provider,
-        endpoint: `${HOST}/${provider.endpoint}`
-      }))
+      return providers
     } catch (error) {
       console.error('Error fetching providers:', error)
       throw error
@@ -42,7 +41,7 @@ export class ProviderService {
       })
       return {
         ...provider,
-        endpoint: `${HOST}/${provider.endpoint}`
+        apiKey: undefined
       }
     } catch (error) {
       console.error(`Error fetching provider with id ${id}:`, error)

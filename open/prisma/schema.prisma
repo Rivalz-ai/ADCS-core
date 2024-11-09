@@ -151,7 +151,10 @@ model DataProvider {
   apiKey          String?   @map("api_key")
   type            String
   active          Boolean   @default(true)
+  iconUrl         String?   @map("icon_url")
   description     String
+  exampleCall     String?   @map("example_call")
+  documentation   String?   @map("documentation")
   createdBy       String?   @map("created_by")
   createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
