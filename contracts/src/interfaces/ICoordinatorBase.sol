@@ -8,7 +8,7 @@ interface ICoordinatorBase {
      * @param gasAfterPaymentCalculation gas used in doing accounting
      * after completing the gas measurement
      */
-    function setConfig(uint32 maxGasLimit, uint32 gasAfterPaymentCalculation) external;
+    function setConfig(uint256 maxGasLimit, uint256 gasAfterPaymentCalculation) external;
 
     function pendingRequestExists(address consumer, uint64 nonce) external view returns (bool);
 

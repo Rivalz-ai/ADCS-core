@@ -26,10 +26,7 @@ export class ProviderService {
         }
       })
       return providers.map((provider) => ({
-        ...provider,
-        inputVariables: provider.inputVariables.split(','),
-        outputVariables: provider.outputVariables.split(','),
-        endpoint: `${HOST}/${provider.endpoint}`
+        ...provider
       }))
     } catch (error) {
       console.error('Error fetching providers:', error)
@@ -43,10 +40,7 @@ export class ProviderService {
         where: { id }
       })
       return {
-        ...provider,
-        inputVariables: provider.inputVariables.split(','),
-        outputVariables: provider.outputVariables.split(','),
-        endpoint: `${HOST}/${provider.endpoint}`
+        ...provider
       }
     } catch (error) {
       console.error(`Error fetching provider with id ${id}:`, error)

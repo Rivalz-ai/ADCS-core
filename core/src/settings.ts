@@ -39,6 +39,7 @@ export const LISTENER_ADCS_PROCESS_EVENT_QUEUE_NAME = 'listener_adcs_process_eve
 export const ADCS_LISTENER_STATE_NAME = 'adcs_listener_state'
 export const ADCS_SERVICE_NAME = 'ADCS'
 export const WORKER_ADCS_QUEUE_NAME = 'worker_adcs'
+export const WORKER_AUTOMATE_ADCS_QUEUE_NAME = 'worker_automate_adcs'
 
 export const REMOVE_ON_COMPLETE = 500
 export const REMOVE_ON_FAIL = 1_000

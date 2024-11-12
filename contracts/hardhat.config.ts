@@ -103,8 +103,8 @@ module.exports = {
       gasMultiplier: 1.2,
       verify: {
         etherscan: {
-          apiUrl: 'https://arb1.arbitrum.io/rpc/api',
-          apiKey: process.env.EXPLORER_API_KEY
+          apiUrl: 'https://api.arbiscan.io/api',
+          apiKey: process.env.ARBITRUM_API_KEY
         }
       }
     },
@@ -131,7 +131,7 @@ module.exports = {
 
   verify: {
     etherscan: {
-      apiKey: process.env.EXPLORER_API_KEY
+      apiKey: process.env.ARBITRUM_API_KEY
     }
   },
 
@@ -140,7 +140,8 @@ module.exports = {
       blast_sepolia: process.env.EXPLORER_API_KEY,
       polygon: process.env.EXPLORER_API_KEY,
       rivalz2_test: process.env.EXPLORER_API_KEY,
-      mainnet: process.env.EXPLORER_API_KEY
+      mainnet: process.env.EXPLORER_API_KEY,
+      arbitrum: process.env.ARBITRUM_API_KEY
     },
     customChains: [
       {
@@ -157,6 +158,14 @@ module.exports = {
         urls: {
           apiURL: 'https://api.routescan.io/v2/network/testnet/evm/168587773/etherscan',
           browserURL: 'https://sepolia.blastscan.io'
+        }
+      },
+      {
+        network: 'arbitrum',
+        chainId: 42161,
+        urls: {
+          apiURL: 'https://api.arbiscan.io/api',
+          browserURL: 'https://arbiscan.io'
         }
       }
     ]

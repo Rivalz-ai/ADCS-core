@@ -34,7 +34,8 @@
     "start:worker:vrf": "yarn start:worker --worker VRF",
     "flush": "node --no-warnings --experimental-specifier-resolution=node --experimental-json-modules dist/tools/flush-queues.js",
     "test": "node --no-warnings --import=specifier-resolution-node/register --experimental-json-modules --experimental-specifier-resolution=node dist/worker/test.js",
-    "lint": "DEBUG=eslint:cli-engine npx eslint 'src/**/*.ts' 'src/*.ts'"
+    "lint": "DEBUG=eslint:cli-engine npx eslint 'src/**/*.ts' 'src/*.ts'",
+    "remove-job": "node --no-warnings --import=specifier-resolution-node/register --experimental-specifier-resolution=node --experimental-json-modules dist/cmd/removeRepeatingJob.js"
   },
   "dependencies": {
     "@typescript-eslint/parser": "^6.9.1",

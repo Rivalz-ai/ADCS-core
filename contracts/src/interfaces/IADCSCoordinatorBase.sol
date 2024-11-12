@@ -8,7 +8,7 @@ interface IADCSCoordinatorBase {
     // describing details of request.
     struct RequestCommitment {
         uint64 blockNum;
-        uint32 callbackGasLimit;
+        uint256 callbackGasLimit;
         address sender;
         bytes32 jobId;
     }
@@ -19,7 +19,7 @@ interface IADCSCoordinatorBase {
     }
 
     function requestData(
-        uint32 callbackGasLimit,
+        uint256 callbackGasLimit,
         ADCS.Request memory req
     ) external returns (uint256);
 

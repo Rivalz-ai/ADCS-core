@@ -11,7 +11,7 @@ import { ListenerModule } from './listener/listener.module'
 import { ReporterModule } from './reporter/reporter.module'
 import { InferenceModule } from './inference/inference.module'
 import { ProviderModule } from './providers/provider.module'
-
+import { CacheModule } from '@nestjs/cache-manager'
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -23,6 +23,10 @@ import { ProviderModule } from './providers/provider.module'
         host: REDIS_HOST,
         port: Number(REDIS_PORT)
       }
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 1000 * 60 * 5 // 5 minutes
     }),
     AdaptorModule,
     ListenerModule,

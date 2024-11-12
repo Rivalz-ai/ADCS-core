@@ -39,7 +39,7 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
     event PrepaymentSet(address prepayment);
     event DataRequested(
         uint256 indexed requestId,
-        uint32 callbackGasLimit,
+        uint256 callbackGasLimit,
         address indexed sender,
         bytes32 jobId,
         uint256 blockNumber,
@@ -139,7 +139,7 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
     }
 
     function requestData(
-        uint32 callbackGasLimit,
+        uint256 callbackGasLimit,
         ADCS.Request memory req
     ) external returns (uint256) {
         if (callbackGasLimit > sConfig.maxGasLimit) {
@@ -231,7 +231,7 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
     function computeCommitment(
         uint256 requestId,
         uint256 blockNumber,
-        uint32 callbackGasLimit,
+        uint256 callbackGasLimit,
         address sender,
         bytes32 jobId
     ) internal pure returns (bytes32) {

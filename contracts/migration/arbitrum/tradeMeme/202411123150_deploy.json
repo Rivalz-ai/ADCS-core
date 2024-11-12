@@ -1,0 +1,8 @@
+{
+  "deploy": {
+    "coordinatorAddress": "0xDD2631147BD866D588aA99E6B06Dc1633b6646D8",
+    "wethAddress": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+    "routerAddress": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+    "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+  }
+}

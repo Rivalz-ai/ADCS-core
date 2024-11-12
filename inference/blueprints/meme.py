@@ -46,7 +46,9 @@ def extract_content(url):
 def get_memecoins_info():
     print("Fetching memecoin information")
     """Fetch information for multiple memecoins from CoinGecko API."""
-    memecoins = ["dogecoin", "shiba-inu", "pepe", "floki", "bonk"]  # Add or modify this list as needed
+    # memecoins = ["dogecoin", "shiba-inu", "pepe", "floki", "bonk"]  # Add or modify this list as needed
+    memecoins = ["dogecoin"]  # Add or modify this list as needed
+
     memecoins_info = {}
     
     for coin_id in memecoins:
