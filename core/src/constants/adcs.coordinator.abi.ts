@@ -7,14 +7,14 @@ export const ADCS_ABI = [
   {
     inputs: [
       {
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'have',
-        type: 'uint32'
+        type: 'uint256'
       },
       {
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'want',
-        type: 'uint32'
+        type: 'uint256'
       }
     ],
     name: 'GasLimitTooBig',
@@ -162,18 +162,43 @@ export const ADCS_ABI = [
     inputs: [
       {
         indexed: false,
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'maxGasLimit',
-        type: 'uint32'
+        type: 'uint256'
       },
       {
         indexed: false,
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'gasAfterPaymentCalculation',
-        type: 'uint32'
+        type: 'uint256'
       }
     ],
     name: 'ConfigSet',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'requestId',
+        type: 'uint256'
+      },
+      {
+        indexed: false,
+        internalType: 'bytes',
+        name: 'response',
+        type: 'bytes'
+      },
+      {
+        indexed: false,
+        internalType: 'bool',
+        name: 'success',
+        type: 'bool'
+      }
+    ],
+    name: 'DataRequestFulfilled',
     type: 'event'
   },
   {
@@ -324,9 +349,9 @@ export const ADCS_ABI = [
       },
       {
         indexed: false,
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'callbackGasLimit',
-        type: 'uint32'
+        type: 'uint256'
       },
       {
         indexed: true,
@@ -505,9 +530,9 @@ export const ADCS_ABI = [
             type: 'uint64'
           },
           {
-            internalType: 'uint32',
+            internalType: 'uint256',
             name: 'callbackGasLimit',
-            type: 'uint32'
+            type: 'uint256'
           },
           {
             internalType: 'address',
@@ -550,9 +575,9 @@ export const ADCS_ABI = [
             type: 'uint64'
           },
           {
-            internalType: 'uint32',
+            internalType: 'uint256',
             name: 'callbackGasLimit',
-            type: 'uint32'
+            type: 'uint256'
           },
           {
             internalType: 'address',
@@ -595,9 +620,9 @@ export const ADCS_ABI = [
             type: 'uint64'
           },
           {
-            internalType: 'uint32',
+            internalType: 'uint256',
             name: 'callbackGasLimit',
-            type: 'uint32'
+            type: 'uint256'
           },
           {
             internalType: 'address',
@@ -652,9 +677,9 @@ export const ADCS_ABI = [
             type: 'uint64'
           },
           {
-            internalType: 'uint32',
+            internalType: 'uint256',
             name: 'callbackGasLimit',
-            type: 'uint32'
+            type: 'uint256'
           },
           {
             internalType: 'address',
@@ -697,9 +722,9 @@ export const ADCS_ABI = [
             type: 'uint64'
           },
           {
-            internalType: 'uint32',
+            internalType: 'uint256',
             name: 'callbackGasLimit',
-            type: 'uint32'
+            type: 'uint256'
           },
           {
             internalType: 'address',
@@ -746,14 +771,14 @@ export const ADCS_ABI = [
     name: 'getConfig',
     outputs: [
       {
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'maxGasLimit',
-        type: 'uint32'
+        type: 'uint256'
       },
       {
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'gasAfterPaymentCalculation',
-        type: 'uint32'
+        type: 'uint256'
       }
     ],
     stateMutability: 'view',
@@ -838,9 +863,9 @@ export const ADCS_ABI = [
   {
     inputs: [
       {
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'callbackGasLimit',
-        type: 'uint32'
+        type: 'uint256'
       },
       {
         components: [
@@ -920,14 +945,14 @@ export const ADCS_ABI = [
   {
     inputs: [
       {
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'maxGasLimit',
-        type: 'uint32'
+        type: 'uint256'
       },
       {
-        internalType: 'uint32',
+        internalType: 'uint256',
         name: 'gasAfterPaymentCalculation',
-        type: 'uint32'
+        type: 'uint256'
       }
     ],
     name: 'setConfig',

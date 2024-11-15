@@ -1,0 +1,1312 @@
+{
+  "address": "0x91c5d6e9F50ec656e7094df9fC035924AAA428bb",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "have",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "want",
+          "type": "uint256"
+        }
+      ],
+      "name": "GasLimitTooBig",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "IncompatibleJobId",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "IncorrectCommitment",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "have",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "want",
+          "type": "uint256"
+        }
+      ],
+      "name": "InsufficientPayment",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint64",
+          "name": "accId",
+          "type": "uint64"
+        },
+        {
+          "internalType": "address",
+          "name": "consumer",
+          "type": "address"
+        }
+      ],
+      "name": "InvalidConsumer",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidJobId",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidNumSubmission",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NoCorrespondingRequest",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "oracle",
+          "type": "address"
+        }
+      ],
+      "name": "NoSuchOracle",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotRequestOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "oracle",
+          "type": "address"
+        }
+      ],
+      "name": "OracleAlreadyRegistered",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "OracleAlreadySubmitted",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Reentrant",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RefundFailure",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TooManyOracles",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "oracle",
+          "type": "address"
+        }
+      ],
+      "name": "UnregisteredOracleFulfillment",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "maxGasLimit",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "gasAfterPaymentCalculation",
+          "type": "uint256"
+        }
+      ],
+      "name": "ConfigSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "response",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "name": "DataRequestFulfilled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "response",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "name": "DataRequestFulfilledBool",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "response",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "name": "DataRequestFulfilledBytes",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "response",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "name": "DataRequestFulfilledBytes32",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "bool",
+              "name": "response",
+              "type": "bool"
+            }
+          ],
+          "indexed": false,
+          "internalType": "struct IADCSCoordinatorBase.StringAndBool",
+          "name": "response",
+          "type": "tuple"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "name": "DataRequestFulfilledStringAndBool",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "response",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "name": "DataRequestFulfilledUint256",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "callbackGasLimit",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "jobId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "blockNumber",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "DataRequested",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "oracle",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "DataSubmitted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "oracle",
+          "type": "address"
+        }
+      ],
+      "name": "OracleDeregistered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "oracle",
+          "type": "address"
+        }
+      ],
+      "name": "OracleRegistered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "prepayment",
+          "type": "address"
+        }
+      ],
+      "name": "PrepaymentSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "RequestCanceled",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "MAX_ORACLES",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelRequest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "oracle",
+          "type": "address"
+        }
+      ],
+      "name": "deregisterOracle",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "response",
+          "type": "bool"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint64",
+              "name": "blockNum",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint256",
+              "name": "callbackGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "jobId",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct IADCSCoordinatorBase.RequestCommitment",
+          "name": "rc",
+          "type": "tuple"
+        }
+      ],
+      "name": "fulfillDataRequestBool",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "response",
+          "type": "bytes"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint64",
+              "name": "blockNum",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint256",
+              "name": "callbackGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "jobId",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct IADCSCoordinatorBase.RequestCommitment",
+          "name": "rc",
+          "type": "tuple"
+        }
+      ],
+      "name": "fulfillDataRequestBytes",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "response",
+          "type": "bytes32"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint64",
+              "name": "blockNum",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint256",
+              "name": "callbackGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "jobId",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct IADCSCoordinatorBase.RequestCommitment",
+          "name": "rc",
+          "type": "tuple"
+        }
+      ],
+      "name": "fulfillDataRequestBytes32",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "bool",
+              "name": "response",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IADCSCoordinatorBase.StringAndBool",
+          "name": "response",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint64",
+              "name": "blockNum",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint256",
+              "name": "callbackGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "jobId",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct IADCSCoordinatorBase.RequestCommitment",
+          "name": "rc",
+          "type": "tuple"
+        }
+      ],
+      "name": "fulfillDataRequestStringAndBool",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "response",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint64",
+              "name": "blockNum",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint256",
+              "name": "callbackGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "jobId",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct IADCSCoordinatorBase.RequestCommitment",
+          "name": "rc",
+          "type": "tuple"
+        }
+      ],
+      "name": "fulfillDataRequestUint256",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getCommitment",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getConfig",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "maxGasLimit",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "gasAfterPaymentCalculation",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "oracle",
+          "type": "address"
+        }
+      ],
+      "name": "isOracleRegistered",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "consumer",
+          "type": "address"
+        },
+        {
+          "internalType": "uint64",
+          "name": "nonce",
+          "type": "uint64"
+        }
+      ],
+      "name": "pendingRequestExists",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "oracle",
+          "type": "address"
+        }
+      ],
+      "name": "registerOracle",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "callbackGasLimit",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "callbackAddr",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes4",
+              "name": "callbackFunc",
+              "type": "bytes4"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "buf",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "capacity",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Buffer.buffer",
+              "name": "buf",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct ADCS.Request",
+          "name": "req",
+          "type": "tuple"
+        }
+      ],
+      "name": "requestData",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "sOracles",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "maxGasLimit",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "gasAfterPaymentCalculation",
+          "type": "uint256"
+        }
+      ],
+      "name": "setConfig",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "typeAndVersion",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xf5b3c65861eae4a3a0568dca3d5cb3eae55ae214f7a0115420cce7bd697da818",
+  "receipt": {
+    "to": null,
+    "from": "0x8b736035BbDA71825e0219f5FE4DfB22C35FbDDC",
+    "contractAddress": "0x91c5d6e9F50ec656e7094df9fC035924AAA428bb",
+    "transactionIndex": 82,
+    "gasUsed": "2600778",
+    "logsBloom": "0x00000000000000011000000000000000000000000000000000800000000000000000000000000000000000001000000000000000000000000000000000000000000000000000002000000000000000000001000000000000000000000000000000000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x180cb21e65f2f8992ff85a2b27553082d3d279a2f19f8638a7d407d6acce0c06",
+    "transactionHash": "0xf5b3c65861eae4a3a0568dca3d5cb3eae55ae214f7a0115420cce7bd697da818",
+    "logs": [
+      {
+        "transactionIndex": 82,
+        "blockNumber": 22427060,
+        "transactionHash": "0xf5b3c65861eae4a3a0568dca3d5cb3eae55ae214f7a0115420cce7bd697da818",
+        "address": "0x91c5d6e9F50ec656e7094df9fC035924AAA428bb",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000008b736035bbda71825e0219f5fe4dfb22c35fbddc"
+        ],
+        "data": "0x",
+        "logIndex": 223,
+        "blockHash": "0x180cb21e65f2f8992ff85a2b27553082d3d279a2f19f8638a7d407d6acce0c06"
+      }
+    ],
+    "blockNumber": 22427060,
+    "cumulativeGasUsed": "24253629",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "a453f9bd9120c1977c263ee80e201977",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"have\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"want\",\"type\":\"uint256\"}],\"name\":\"GasLimitTooBig\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"IncompatibleJobId\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"IncorrectCommitment\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"have\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"want\",\"type\":\"uint256\"}],\"name\":\"InsufficientPayment\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"accId\",\"type\":\"uint64\"},{\"internalType\":\"address\",\"name\":\"consumer\",\"type\":\"address\"}],\"name\":\"InvalidConsumer\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidJobId\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidNumSubmission\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NoCorrespondingRequest\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oracle\",\"type\":\"address\"}],\"name\":\"NoSuchOracle\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotRequestOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oracle\",\"type\":\"address\"}],\"name\":\"OracleAlreadyRegistered\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OracleAlreadySubmitted\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Reentrant\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"RefundFailure\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"TooManyOracles\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oracle\",\"type\":\"address\"}],\"name\":\"UnregisteredOracleFulfillment\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxGasLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"gasAfterPaymentCalculation\",\"type\":\"uint256\"}],\"name\":\"ConfigSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"response\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"name\":\"DataRequestFulfilled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"response\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"name\":\"DataRequestFulfilledBool\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"response\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"name\":\"DataRequestFulfilledBytes\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"response\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"name\":\"DataRequestFulfilledBytes32\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"response\",\"type\":\"bool\"}],\"indexed\":false,\"internalType\":\"struct IADCSCoordinatorBase.StringAndBool\",\"name\":\"response\",\"type\":\"tuple\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"name\":\"DataRequestFulfilledStringAndBool\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"response\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"name\":\"DataRequestFulfilledUint256\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"callbackGasLimit\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"jobId\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"DataRequested\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"oracle\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"}],\"name\":\"DataSubmitted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"oracle\",\"type\":\"address\"}],\"name\":\"OracleDeregistered\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"oracle\",\"type\":\"address\"}],\"name\":\"OracleRegistered\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"prepayment\",\"type\":\"address\"}],\"name\":\"PrepaymentSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"}],\"name\":\"RequestCanceled\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"MAX_ORACLES\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"}],\"name\":\"cancelRequest\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oracle\",\"type\":\"address\"}],\"name\":\"deregisterOracle\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"response\",\"type\":\"bool\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"blockNum\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"callbackGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"jobId\",\"type\":\"bytes32\"}],\"internalType\":\"struct IADCSCoordinatorBase.RequestCommitment\",\"name\":\"rc\",\"type\":\"tuple\"}],\"name\":\"fulfillDataRequestBool\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"response\",\"type\":\"bytes\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"blockNum\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"callbackGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"jobId\",\"type\":\"bytes32\"}],\"internalType\":\"struct IADCSCoordinatorBase.RequestCommitment\",\"name\":\"rc\",\"type\":\"tuple\"}],\"name\":\"fulfillDataRequestBytes\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"response\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"blockNum\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"callbackGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"jobId\",\"type\":\"bytes32\"}],\"internalType\":\"struct IADCSCoordinatorBase.RequestCommitment\",\"name\":\"rc\",\"type\":\"tuple\"}],\"name\":\"fulfillDataRequestBytes32\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"response\",\"type\":\"bool\"}],\"internalType\":\"struct IADCSCoordinatorBase.StringAndBool\",\"name\":\"response\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"blockNum\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"callbackGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"jobId\",\"type\":\"bytes32\"}],\"internalType\":\"struct IADCSCoordinatorBase.RequestCommitment\",\"name\":\"rc\",\"type\":\"tuple\"}],\"name\":\"fulfillDataRequestStringAndBool\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"response\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"uint64\",\"name\":\"blockNum\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"callbackGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"jobId\",\"type\":\"bytes32\"}],\"internalType\":\"struct IADCSCoordinatorBase.RequestCommitment\",\"name\":\"rc\",\"type\":\"tuple\"}],\"name\":\"fulfillDataRequestUint256\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"}],\"name\":\"getCommitment\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getConfig\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"maxGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"gasAfterPaymentCalculation\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oracle\",\"type\":\"address\"}],\"name\":\"isOracleRegistered\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"consumer\",\"type\":\"address\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"}],\"name\":\"pendingRequestExists\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oracle\",\"type\":\"address\"}],\"name\":\"registerOracle\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"callbackGasLimit\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"callbackAddr\",\"type\":\"address\"},{\"internalType\":\"bytes4\",\"name\":\"callbackFunc\",\"type\":\"bytes4\"},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"bytes\",\"name\":\"buf\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"capacity\",\"type\":\"uint256\"}],\"internalType\":\"struct Buffer.buffer\",\"name\":\"buf\",\"type\":\"tuple\"}],\"internalType\":\"struct ADCS.Request\",\"name\":\"req\",\"type\":\"tuple\"}],\"name\":\"requestData\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"sOracles\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"maxGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"gasAfterPaymentCalculation\",\"type\":\"uint256\"}],\"name\":\"setConfig\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"typeAndVersion\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}]},\"kind\":\"dev\",\"methods\":{\"cancelRequest(uint256)\":{\"params\":{\"requestId\":\"- ID of the Oracle Request\"}},\"deregisterOracle(address)\":{\"params\":{\"oracle\":\"address of the oracle\"}},\"getCommitment(uint256)\":{\"params\":{\"requestId\":\"id of request\"},\"returns\":{\"_0\":\"commmitment value that can be used to determine whether a request is fulfilled or not. If `requestId` is valid and commitment equals to bytes32(0), the request was fulfilled.\"}},\"isOracleRegistered(address)\":{\"returns\":{\"_0\":\"true when oracle address registered, otherwise false\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"registerOracle(address)\":{\"params\":{\"oracle\":\"address of the oracle\"}},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"setConfig(uint256,uint256)\":{\"params\":{\"gasAfterPaymentCalculation\":\"gas used in doing accounting after completing the gas measurement\",\"maxGasLimit\":\"global max for request gas limit\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"},\"typeAndVersion()\":{\"returns\":{\"_0\":\"Type and version string\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"cancelRequest(uint256)\":{\"notice\":\"Canceling oracle request\"},\"deregisterOracle(address)\":{\"notice\":\"Deregister an oracle\"},\"getCommitment(uint256)\":{\"notice\":\"Get request commitment.\"},\"isOracleRegistered(address)\":{\"notice\":\"Find out whether given oracle address was registered.\"},\"registerOracle(address)\":{\"notice\":\"Register an oracle\"},\"setConfig(uint256,uint256)\":{\"notice\":\"Sets the configuration of the VRF coordinator\"},\"typeAndVersion()\":{\"notice\":\"The type and version of this contract\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/ADCSCoordinator.sol\":\"ADCSCoordinator\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"src/ADCSConsumerBase.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\nimport \\\"./interfaces/IADCSCoordinator.sol\\\";\\n\\nabstract contract ADCSConsumerBase {\\n    using ADCS for ADCS.Request;\\n\\n    struct StringAndBool {\\n        string name;\\n        bool response;\\n    }\\n    error OnlyCoordinatorCanFulfill(address have, address want);\\n    mapping(bytes32 => bytes4) private sTypeIdToFunctionSelector;\\n    IADCSCoordinator public immutable COORDINATOR;\\n\\n    /**\\n     * @param _adcsResponseCoordinator address of ADCSCoordinator contract\\n     */\\n    constructor(address _adcsResponseCoordinator) {\\n        COORDINATOR = IADCSCoordinator(_adcsResponseCoordinator);\\n\\n        sTypeIdToFunctionSelector[keccak256(abi.encodePacked(\\\"uint256\\\"))] = COORDINATOR\\n            .fulfillDataRequestUint256\\n            .selector;\\n        sTypeIdToFunctionSelector[keccak256(abi.encodePacked(\\\"bool\\\"))] = COORDINATOR\\n            .fulfillDataRequestBool\\n            .selector;\\n        sTypeIdToFunctionSelector[keccak256(abi.encodePacked(\\\"bytes32\\\"))] = COORDINATOR\\n            .fulfillDataRequestBytes32\\n            .selector;\\n        sTypeIdToFunctionSelector[keccak256(abi.encodePacked(\\\"bytes\\\"))] = COORDINATOR\\n            .fulfillDataRequestBytes\\n            .selector;\\n\\n        sTypeIdToFunctionSelector[keccak256(abi.encodePacked(\\\"stringAndbool\\\"))] = COORDINATOR\\n            .fulfillDataRequestStringAndBool\\n            .selector;\\n    }\\n\\n    /**\\n     * @notice Build a request using the Orakl library\\n     * @param jobId the job specification ID that the request is created for\\n     * @param typeId the reponse type ID that the request is created for\\n     * @return req request in memory\\n     */\\n    function buildRequest(\\n        bytes32 jobId,\\n        bytes32 typeId\\n    ) internal view returns (ADCS.Request memory req) {\\n        return req.initialize(jobId, address(COORDINATOR), sTypeIdToFunctionSelector[typeId]);\\n    }\\n\\n    modifier verifyRawFulfillment() {\\n        address coordinatorAddress = address(COORDINATOR);\\n        if (msg.sender != coordinatorAddress) {\\n            revert OnlyCoordinatorCanFulfill(msg.sender, coordinatorAddress);\\n        }\\n        _;\\n    }\\n}\\n\",\"keccak256\":\"0xa1030108fcef4a9ed262e889c3110a0de6c67a6a6d5cc344914ec082935c9909\",\"license\":\"MIT\"},\"src/ADCSConsumerFulfill.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\nimport \\\"./ADCSConsumerBase.sol\\\";\\n\\nabstract contract ADCSConsumerFulfillUint256 is ADCSConsumerBase {\\n    function fulfillDataRequest(uint256 requestId, uint256 response) internal virtual;\\n\\n    function rawFulfillDataRequest(\\n        uint256 requestId,\\n        uint256 response\\n    ) external verifyRawFulfillment {\\n        fulfillDataRequest(requestId, response);\\n    }\\n}\\n\\nabstract contract ADCSConsumerFulfillBool is ADCSConsumerBase {\\n    function fulfillDataRequest(uint256 requestId, bool response) internal virtual;\\n\\n    function rawFulfillDataRequest(uint256 requestId, bool response) external verifyRawFulfillment {\\n        fulfillDataRequest(requestId, response);\\n    }\\n}\\n\\nabstract contract ADCSConsumerFulfillBytes32 is ADCSConsumerBase {\\n    function fulfillDataRequest(uint256 requestId, bytes32 response) internal virtual;\\n\\n    function rawFulfillDataRequest(\\n        uint256 requestId,\\n        bytes32 response\\n    ) external verifyRawFulfillment {\\n        fulfillDataRequest(requestId, response);\\n    }\\n}\\n\\nabstract contract ADCSConsumerFulfillBytes is ADCSConsumerBase {\\n    function fulfillDataRequest(uint256 requestId, bytes memory response) internal virtual;\\n\\n    function rawFulfillDataRequest(\\n        uint256 requestId,\\n        bytes memory response\\n    ) external verifyRawFulfillment {\\n        fulfillDataRequest(requestId, response);\\n    }\\n}\\n\\nabstract contract ADCSConsumerFulfillStringAndBool is ADCSConsumerBase {\\n    function fulfillDataRequest(uint256 requestId, StringAndBool memory response) internal virtual;\\n\\n    function rawFulfillDataRequest(\\n        uint256 requestId,\\n        StringAndBool memory response\\n    ) external verifyRawFulfillment {\\n        fulfillDataRequest(requestId, response);\\n    }\\n}\\n\",\"keccak256\":\"0x83a0b1eb7cd2681fc73b9f30c6235e90601c390dec59623768ffd25310a85b6b\",\"license\":\"MIT\"},\"src/ADCSCoordinator.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.16;\\n\\nimport \\\"./interfaces/ITypeAndVersion.sol\\\";\\nimport \\\"./interfaces/IADCSCoordinatorBase.sol\\\";\\nimport \\\"./ADCSConsumerFulfill.sol\\\";\\nimport \\\"./CoordinatorBase.sol\\\";\\nimport \\\"./libraries/ADCS.sol\\\";\\n\\ncontract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersion {\\n    uint8 public constant MAX_ORACLES = 255;\\n\\n    using ADCS for ADCS.Request;\\n\\n    struct Submission {\\n        address[] oracles; // oracles that submitted response\\n        mapping(address => bool) submitted;\\n    }\\n\\n    /* requestId */\\n    /* submission details */\\n    mapping(uint256 => Submission) sSubmission;\\n\\n    /* oracle */\\n    /* registration status */\\n    mapping(address => bool) private sIsOracleRegistered;\\n\\n    mapping(address => uint64) private sConsumerToNonce;\\n\\n    error TooManyOracles();\\n    error UnregisteredOracleFulfillment(address oracle);\\n    error InvalidJobId();\\n    error InvalidNumSubmission();\\n    error OracleAlreadySubmitted();\\n    error IncompatibleJobId();\\n\\n    event OracleRegistered(address oracle);\\n    event OracleDeregistered(address oracle);\\n    event PrepaymentSet(address prepayment);\\n    event DataRequested(\\n        uint256 indexed requestId,\\n        uint256 callbackGasLimit,\\n        address indexed sender,\\n        bytes32 jobId,\\n        uint256 blockNumber,\\n        bytes data\\n    );\\n    event DataRequestFulfilledUint256(uint256 indexed requestId, uint256 response, bool success);\\n    event DataRequestFulfilledBool(uint256 indexed requestId, bool response, bool success);\\n    event DataRequestFulfilledBytes32(uint256 indexed requestId, bytes32 response, bool success);\\n    event DataRequestFulfilledBytes(uint256 indexed requestId, bytes response, bool success);\\n    event DataRequestFulfilledStringAndBool(\\n        uint256 indexed requestId,\\n        StringAndBool response,\\n        bool success\\n    );\\n\\n    event DataRequestFulfilled(uint256 indexed requestId, bytes response, bool success);\\n\\n    event DataSubmitted(address oracle, uint256 requestId);\\n\\n    constructor() {}\\n\\n    /**\\n     * @notice Register an oracle\\n     * @param oracle address of the oracle\\n     */\\n    function registerOracle(address oracle) external onlyOwner {\\n        if (sOracles.length >= MAX_ORACLES) {\\n            revert TooManyOracles();\\n        }\\n\\n        if (sIsOracleRegistered[oracle]) {\\n            revert OracleAlreadyRegistered(oracle);\\n        }\\n        sOracles.push(oracle);\\n        sIsOracleRegistered[oracle] = true;\\n        emit OracleRegistered(oracle);\\n    }\\n\\n    /**\\n     * @notice Deregister an oracle\\n     * @param oracle address of the oracle\\n     */\\n    function deregisterOracle(address oracle) external onlyOwner {\\n        if (!sIsOracleRegistered[oracle]) {\\n            revert NoSuchOracle(oracle);\\n        }\\n        delete sIsOracleRegistered[oracle];\\n\\n        uint256 oraclesLength = sOracles.length;\\n        for (uint256 i = 0; i < oraclesLength; ++i) {\\n            if (sOracles[i] == oracle) {\\n                address last = sOracles[oraclesLength - 1];\\n                sOracles[i] = last;\\n                sOracles.pop();\\n                break;\\n            }\\n        }\\n\\n        emit OracleDeregistered(oracle);\\n    }\\n\\n    /**\\n     * @notice The type and version of this contract\\n     * @return Type and version string\\n     */\\n    function typeAndVersion() external pure virtual override returns (string memory) {\\n        return \\\"ADCSCoordinator v0.1\\\";\\n    }\\n\\n    /**\\n     * @notice Find out whether given oracle address was registered.\\n     * @return true when oracle address registered, otherwise false\\n     */\\n    function isOracleRegistered(address oracle) external view returns (bool) {\\n        return sIsOracleRegistered[oracle];\\n    }\\n\\n    function computeRequestId(address sender, uint64 nonce) private pure returns (uint256) {\\n        return uint256(keccak256(abi.encode(sender, nonce)));\\n    }\\n\\n    function pendingRequestExists(address consumer, uint64 nonce) public view returns (bool) {\\n        uint256 oraclesLength = sOracles.length;\\n        for (uint256 i = 0; i < oraclesLength; ++i) {\\n            uint256 requestId = computeRequestId(consumer, nonce);\\n            if (isValidRequestId(requestId)) {\\n                return true;\\n            }\\n        }\\n        return false;\\n    }\\n\\n    function increaseNonce(address consumer) private returns (uint64) {\\n        uint64 nonce = sConsumerToNonce[consumer] + 1;\\n        sConsumerToNonce[consumer] = nonce;\\n        return nonce;\\n    }\\n\\n    function requestData(\\n        uint256 callbackGasLimit,\\n        ADCS.Request memory req\\n    ) external returns (uint256) {\\n        if (callbackGasLimit > sConfig.maxGasLimit) {\\n            revert GasLimitTooBig(callbackGasLimit, sConfig.maxGasLimit);\\n        }\\n        uint64 nonce = increaseNonce(msg.sender);\\n        uint256 requestId = computeRequestId(msg.sender, nonce);\\n        uint256 blockNumber = block.number;\\n        sRequestIdToCommitment[requestId] = computeCommitment(\\n            requestId,\\n            blockNumber,\\n            callbackGasLimit,\\n            msg.sender,\\n            req.id\\n        );\\n\\n        sRequestOwner[requestId] = msg.sender;\\n\\n        emit DataRequested(\\n            requestId,\\n            callbackGasLimit,\\n            msg.sender,\\n            req.id,\\n            blockNumber,\\n            req.buf.buf\\n        );\\n\\n        return requestId;\\n    }\\n\\n    function validateDataResponse(RequestCommitment memory rc, uint256 requestId) private view {\\n        if (!sIsOracleRegistered[msg.sender]) {\\n            revert UnregisteredOracleFulfillment(msg.sender);\\n        }\\n\\n        if (sSubmission[requestId].submitted[msg.sender]) {\\n            revert OracleAlreadySubmitted();\\n        }\\n\\n        bytes32 commitment = sRequestIdToCommitment[requestId];\\n        if (commitment == 0) {\\n            revert NoCorrespondingRequest();\\n        }\\n\\n        if (\\n            commitment !=\\n            computeCommitment(requestId, rc.blockNum, rc.callbackGasLimit, rc.sender, rc.jobId)\\n        ) {\\n            revert IncorrectCommitment();\\n        }\\n    }\\n\\n    function fulfill(bytes memory resp, RequestCommitment memory rc) private returns (bool) {\\n        // Call with explicitly the amount of callback gas requested\\n        // Important to not let them exhaust the gas budget and avoid oracle payment.\\n        // Do not allow any non-view/non-pure coordinator functions to be called\\n        // during the consumers callback code via reentrancyLock.\\n        // Note that callWithExactGas will revert if we do not have sufficient gas\\n        // to give the callee their requested amount.\\n        sConfig.reentrancyLock = true;\\n        (bool sent, ) = rc.sender.call(resp);\\n        // bool success = callWithExactGas(rc.callbackGasLimit, rc.sender, resp);\\n        //\\n        sConfig.reentrancyLock = false;\\n        return sent;\\n    }\\n\\n    function cleanupAfterFulfillment(uint256 requestId) private returns (address[] memory) {\\n        address[] memory oracles = sSubmission[requestId].oracles;\\n\\n        for (uint8 i = 0; i < oracles.length; ++i) {\\n            delete sSubmission[requestId].submitted[oracles[i]];\\n        }\\n\\n        delete sSubmission[requestId];\\n        delete sRequestIdToCommitment[requestId];\\n        delete sRequestOwner[requestId];\\n\\n        return oracles;\\n    }\\n\\n    function uint256ToInt256(uint256[] memory arr) private pure returns (int256[] memory) {\\n        int256[] memory responses = new int256[](arr.length);\\n        for (uint256 i = 0; i < arr.length; i++) {\\n            responses[i] = int256(uint256(arr[i]));\\n        }\\n        return responses;\\n    }\\n\\n    function computeCommitment(\\n        uint256 requestId,\\n        uint256 blockNumber,\\n        uint256 callbackGasLimit,\\n        address sender,\\n        bytes32 jobId\\n    ) internal pure returns (bytes32) {\\n        return keccak256(abi.encode(requestId, blockNumber, callbackGasLimit, sender, jobId));\\n    }\\n\\n    function fulfillDataRequestUint256(\\n        uint256 requestId,\\n        uint256 response,\\n        RequestCommitment memory rc\\n    ) external nonReentrant {\\n        validateDataResponse(rc, requestId);\\n        sSubmission[requestId].submitted[msg.sender] = true;\\n\\n        address[] storage oracles = sSubmission[requestId].oracles;\\n        oracles.push(msg.sender);\\n        bytes memory resp = abi.encodeWithSelector(\\n            ADCSConsumerFulfillUint256.rawFulfillDataRequest.selector,\\n            requestId,\\n            response\\n        );\\n        bool success = fulfill(resp, rc);\\n        cleanupAfterFulfillment(requestId);\\n\\n        emit DataRequestFulfilledUint256(requestId, response, success);\\n    }\\n\\n    function fulfillDataRequestBool(\\n        uint256 requestId,\\n        bool response,\\n        RequestCommitment memory rc\\n    ) external override {\\n        validateDataResponse(rc, requestId);\\n        sSubmission[requestId].submitted[msg.sender] = true;\\n\\n        address[] storage oracles = sSubmission[requestId].oracles;\\n        oracles.push(msg.sender);\\n        bytes memory resp = abi.encodeWithSelector(\\n            ADCSConsumerFulfillBool.rawFulfillDataRequest.selector,\\n            requestId,\\n            response\\n        );\\n        bool success = fulfill(resp, rc);\\n        cleanupAfterFulfillment(requestId);\\n\\n        emit DataRequestFulfilledBool(requestId, response, success);\\n    }\\n\\n    function fulfillDataRequestBytes32(\\n        uint256 requestId,\\n        bytes32 response,\\n        RequestCommitment memory rc\\n    ) external override {\\n        validateDataResponse(rc, requestId);\\n        sSubmission[requestId].submitted[msg.sender] = true;\\n\\n        address[] storage oracles = sSubmission[requestId].oracles;\\n        oracles.push(msg.sender);\\n        bytes memory resp = abi.encodeWithSelector(\\n            ADCSConsumerFulfillBytes32.rawFulfillDataRequest.selector,\\n            requestId,\\n            response\\n        );\\n        bool success = fulfill(resp, rc);\\n        cleanupAfterFulfillment(requestId);\\n\\n        emit DataRequestFulfilledBytes32(requestId, response, success);\\n    }\\n\\n    function fulfillDataRequestBytes(\\n        uint256 requestId,\\n        bytes memory response,\\n        RequestCommitment memory rc\\n    ) external override {\\n        validateDataResponse(rc, requestId);\\n        sSubmission[requestId].submitted[msg.sender] = true;\\n\\n        address[] storage oracles = sSubmission[requestId].oracles;\\n        oracles.push(msg.sender);\\n        bytes memory resp = abi.encodeWithSelector(\\n            ADCSConsumerFulfillBytes.rawFulfillDataRequest.selector,\\n            requestId,\\n            response\\n        );\\n        bool success = fulfill(resp, rc);\\n        cleanupAfterFulfillment(requestId);\\n\\n        emit DataRequestFulfilledBytes(requestId, response, success);\\n    }\\n\\n    function fulfillDataRequestStringAndBool(\\n        uint256 requestId,\\n        StringAndBool memory response,\\n        RequestCommitment memory rc\\n    ) external override {\\n        validateDataResponse(rc, requestId);\\n        sSubmission[requestId].submitted[msg.sender] = true;\\n\\n        address[] storage oracles = sSubmission[requestId].oracles;\\n        oracles.push(msg.sender);\\n        bytes memory resp = abi.encodeWithSelector(\\n            ADCSConsumerFulfillStringAndBool.rawFulfillDataRequest.selector,\\n            requestId,\\n            response\\n        );\\n        bool success = fulfill(resp, rc);\\n        cleanupAfterFulfillment(requestId);\\n\\n        emit DataRequestFulfilledStringAndBool(requestId, response, success);\\n    }\\n}\\n\",\"keccak256\":\"0xc344bfd0cc8b0905a793a87ee548dae88e9926f154099a58d2fe587c1fbe6c95\",\"license\":\"MIT\"},\"src/CoordinatorBase.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\nimport \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\nimport \\\"./interfaces/ICoordinatorBase.sol\\\";\\n\\nabstract contract CoordinatorBase is Ownable, ICoordinatorBase {\\n    // 5k is plenty for an EXTCODESIZE call (2600) + warm CALL (100)\\n    // and some arithmetic operations.\\n    uint256 private constant GAS_FOR_CALL_EXACT_CHECK = 5_000;\\n\\n    address[] public sOracles;\\n\\n    /* requestID */\\n    /* commitment */\\n    mapping(uint256 => bytes32) internal sRequestIdToCommitment;\\n\\n    /* requestID */\\n    /* owner */\\n    mapping(uint256 => address) internal sRequestOwner;\\n\\n    struct Config {\\n        uint256 maxGasLimit;\\n        bool reentrancyLock;\\n        // Gas to cover oracle payment after we calculate the payment.\\n        // We make it configurable in case those operations are repriced.\\n        uint256 gasAfterPaymentCalculation;\\n    }\\n    Config internal sConfig;\\n\\n    error Reentrant();\\n    error NoCorrespondingRequest();\\n    error NotRequestOwner();\\n    error OracleAlreadyRegistered(address oracle);\\n    error NoSuchOracle(address oracle);\\n    error RefundFailure();\\n    error InvalidConsumer(uint64 accId, address consumer);\\n    error IncorrectCommitment();\\n    error GasLimitTooBig(uint256 have, uint256 want);\\n    error InsufficientPayment(uint256 have, uint256 want);\\n\\n    event ConfigSet(uint256 maxGasLimit, uint256 gasAfterPaymentCalculation);\\n    event RequestCanceled(uint256 indexed requestId);\\n\\n    constructor() Ownable(_msgSender()) {}\\n\\n    modifier nonReentrant() {\\n        if (sConfig.reentrancyLock) {\\n            revert Reentrant();\\n        }\\n        _;\\n    }\\n\\n    /**\\n     * @inheritdoc ICoordinatorBase\\n     */\\n    function setConfig(uint256 maxGasLimit, uint256 gasAfterPaymentCalculation) external onlyOwner {\\n        sConfig = Config({\\n            maxGasLimit: maxGasLimit,\\n            gasAfterPaymentCalculation: gasAfterPaymentCalculation,\\n            reentrancyLock: false\\n        });\\n        emit ConfigSet(maxGasLimit, gasAfterPaymentCalculation);\\n    }\\n\\n    function getConfig()\\n        external\\n        view\\n        returns (uint256 maxGasLimit, uint256 gasAfterPaymentCalculation)\\n    {\\n        return (sConfig.maxGasLimit, sConfig.gasAfterPaymentCalculation);\\n    }\\n\\n    /**\\n     * @inheritdoc ICoordinatorBase\\n     */\\n    function getCommitment(uint256 requestId) external view returns (bytes32) {\\n        return sRequestIdToCommitment[requestId];\\n    }\\n\\n    /**\\n     * @inheritdoc ICoordinatorBase\\n     */\\n    function cancelRequest(uint256 requestId) external {\\n        if (!isValidRequestId(requestId)) {\\n            revert NoCorrespondingRequest();\\n        }\\n\\n        if (sRequestOwner[requestId] != msg.sender) {\\n            revert NotRequestOwner();\\n        }\\n\\n        delete sRequestIdToCommitment[requestId];\\n        delete sRequestOwner[requestId];\\n\\n        emit RequestCanceled(requestId);\\n    }\\n\\n    function calculateGasCost(uint256 startGas) internal view returns (uint256) {\\n        return tx.gasprice * (sConfig.gasAfterPaymentCalculation + startGas - gasleft());\\n    }\\n\\n    /**\\n     * @dev calls target address with exactly gasAmount gas and data as calldata\\n     * or reverts if at least gasAmount gas is not available.\\n     */\\n    function callWithExactGas(\\n        uint256 gasAmount,\\n        address target,\\n        bytes memory data\\n    ) internal returns (bool success) {\\n        (success, ) = target.call{gas: gasAmount}(data);\\n        return success;\\n    }\\n\\n    function isValidRequestId(uint256 requestId) internal view returns (bool) {\\n        if (sRequestIdToCommitment[requestId] != 0) {\\n            return true;\\n        } else {\\n            return false;\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0x5c5fa11cbad7d719990ca06ecc49c228416b92f1c806c05ce2e83eb2c0562e1f\",\"license\":\"MIT\"},\"src/interfaces/IADCSCoordinator.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.16;\\n\\nimport \\\"./IADCSCoordinatorBase.sol\\\";\\nimport \\\"./ICoordinatorBase.sol\\\";\\n\\ninterface IADCSCoordinator is IADCSCoordinatorBase, ICoordinatorBase {}\\n\",\"keccak256\":\"0x675f3774f7561f7d2f74f9dac020bad81154f1bba3af7d4c22e57e595a9e7769\",\"license\":\"MIT\"},\"src/interfaces/IADCSCoordinatorBase.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.16;\\n\\nimport \\\"../libraries/ADCS.sol\\\";\\n\\ninterface IADCSCoordinatorBase {\\n    // RequestCommitment holds information sent from off-chain oracle\\n    // describing details of request.\\n    struct RequestCommitment {\\n        uint64 blockNum;\\n        uint256 callbackGasLimit;\\n        address sender;\\n        bytes32 jobId;\\n    }\\n\\n    struct StringAndBool {\\n        string name;\\n        bool response;\\n    }\\n\\n    function requestData(\\n        uint256 callbackGasLimit,\\n        ADCS.Request memory req\\n    ) external returns (uint256);\\n\\n    function fulfillDataRequestUint256(\\n        uint256 requestId,\\n        uint256 response,\\n        RequestCommitment memory rc\\n    ) external;\\n\\n    function fulfillDataRequestBool(\\n        uint256 requestId,\\n        bool response,\\n        RequestCommitment memory rc\\n    ) external;\\n\\n    function fulfillDataRequestBytes32(\\n        uint256 requestId,\\n        bytes32 response,\\n        RequestCommitment memory rc\\n    ) external;\\n\\n    function fulfillDataRequestBytes(\\n        uint256 requestId,\\n        bytes memory response,\\n        RequestCommitment memory rc\\n    ) external;\\n\\n    function fulfillDataRequestStringAndBool(\\n        uint256 requestId,\\n        StringAndBool memory response,\\n        RequestCommitment memory rc\\n    ) external;\\n}\\n\",\"keccak256\":\"0x1226105197d6e8fb1c2d6ebf0f30474a57ba3aeced4b80dc566df2518d98cb26\",\"license\":\"MIT\"},\"src/interfaces/ICoordinatorBase.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.16;\\n\\ninterface ICoordinatorBase {\\n    /**\\n     * @notice Sets the configuration of the VRF coordinator\\n     * @param maxGasLimit global max for request gas limit\\n     * @param gasAfterPaymentCalculation gas used in doing accounting\\n     * after completing the gas measurement\\n     */\\n    function setConfig(uint256 maxGasLimit, uint256 gasAfterPaymentCalculation) external;\\n\\n    function pendingRequestExists(address consumer, uint64 nonce) external view returns (bool);\\n\\n    /**\\n     * @notice Get request commitment.\\n     * @param requestId id of request\\n     * @return commmitment value that can be used to determine whether\\n     * a request is fulfilled or not. If `requestId` is valid and\\n     * commitment equals to bytes32(0), the request was fulfilled.\\n     */\\n    function getCommitment(uint256 requestId) external view returns (bytes32);\\n\\n    /**\\n     * @notice Canceling oracle request\\n     * @param requestId - ID of the Oracle Request\\n     */\\n    function cancelRequest(uint256 requestId) external;\\n}\\n\",\"keccak256\":\"0x13d5eef37f3fb4fab261624a4649469780fee256464e972f6c179135731d8fea\",\"license\":\"MIT\"},\"src/interfaces/ITypeAndVersion.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\n// https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/interfaces/TypeAndVersionInterface.sol\\n\\nabstract contract ITypeAndVersion {\\n    function typeAndVersion() external pure virtual returns (string memory);\\n}\\n\",\"keccak256\":\"0xba46a9e0db249e4c328c1c3b133e852766b115dc6e8b7d1305592542297e6ce7\",\"license\":\"MIT\"},\"src/libraries/ADCS.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.16;\\n\\n// https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/Chainlink.sol\\n\\nimport {Buffer} from \\\"./Buffer.sol\\\";\\nimport {CBOR} from \\\"./CBOR.sol\\\";\\n\\nlibrary ADCS {\\n    uint256 internal constant defaultBufferSize = 256;\\n\\n    using CBOR for Buffer.buffer;\\n\\n    // structure for storing requests done off-chain\\n    struct Request {\\n        bytes32 id;\\n        address callbackAddr;\\n        bytes4 callbackFunc;\\n        uint256 nonce;\\n        Buffer.buffer buf;\\n    }\\n\\n    /**\\n     * @notice Initializes a request\\n     * @dev Sets ID, callback address, and callback function\\n     * @param self The uninitialized request\\n     * @param jobId The Job Specification ID\\n     * @param callbackAddr The callback address\\n     * @param callbackFunc The callback function signature\\n     * @return The initialized request\\n     */\\n    function initialize(\\n        Request memory self,\\n        bytes32 jobId,\\n        address callbackAddr,\\n        bytes4 callbackFunc\\n    ) internal pure returns (ADCS.Request memory) {\\n        Buffer.init(self.buf, defaultBufferSize);\\n        self.id = jobId;\\n        self.callbackAddr = callbackAddr;\\n        self.callbackFunc = callbackFunc;\\n        return self;\\n    }\\n\\n    /**\\n     * @notice sets the data for buffer\\n     * @param _request the initialized request\\n     * @param _data the CBOR data\\n     */\\n    function setBuffer(Request memory _request, bytes memory _data) internal pure {\\n        Buffer.init(_request.buf, _data.length);\\n        Buffer.append(_request.buf, _data);\\n    }\\n\\n    /**\\n     * @notice Adds a string value to the request in a key - value pair format\\n     * @param self - the initalized request\\n     * @param key - the name of the key\\n     * @param value - the string value to add\\n     */\\n    function add(Request memory self, string memory key, string memory value) internal pure {\\n        self.buf.encodeString(key);\\n        self.buf.encodeString(value);\\n    }\\n\\n    /**\\n     * @notice Adds a byte value to the request in a key - value pair format\\n     * @param _request - the initalized request\\n     * @param _key - the name of the key\\n     * @param _value - the bytes value to add\\n     */\\n    function addBytes(\\n        Request memory _request,\\n        string memory _key,\\n        bytes memory _value\\n    ) internal pure {\\n        _request.buf.encodeString(_key);\\n        _request.buf.encodeBytes(_value);\\n    }\\n\\n    /**\\n     * @notice Adds a Int256 value to the request in a key - value pair format\\n     * @param _request - the initalized request\\n     * @param _key - the name of the key\\n     * @param _value - the int256 value to add\\n     */\\n    function addInt(Request memory _request, string memory _key, int256 _value) internal pure {\\n        _request.buf.encodeString(_key);\\n        _request.buf.encodeInt(_value);\\n    }\\n\\n    /**\\n     * @notice Adds a UInt256 value to the request in a key - value pair format\\n     * @param _request - the initalized request\\n     * @param _key - the name of the key\\n     * @param _value - the uint256 value to add\\n     */\\n    function addUInt(Request memory _request, string memory _key, uint256 _value) internal pure {\\n        _request.buf.encodeString(_key);\\n        _request.buf.encodeUInt(_value);\\n    }\\n\\n    /**\\n     * @notice Adds an array of string value to the request in a key - value pair format\\n     * @param _request - the initalized request\\n     * @param _key - the name of the key\\n     * @param _values - the array of string value to add\\n     */\\n    function addStringArray(\\n        Request memory _request,\\n        string memory _key,\\n        string[] memory _values\\n    ) internal pure {\\n        _request.buf.encodeString(_key);\\n        _request.buf.startArray();\\n        for (uint256 i; i < _values.length; i++) {\\n            _request.buf.encodeString(_values[i]);\\n        }\\n        _request.buf.endSequence();\\n    }\\n}\\n\",\"keccak256\":\"0x5c143d8c51913e10b156ad7f83a6b58b905b68c7b6aaa68982cd4ba60eb8d6c2\",\"license\":\"MIT\"},\"src/libraries/Buffer.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\n/**\\n * @dev A library for working with mutable byte buffers in Solidity.\\n *\\n * Byte buffers are mutable and expandable, and provide a variety of primitives\\n * for writing to them. At any time you can fetch a bytes object containing the\\n * current contents of the buffer. The bytes object should not be stored between\\n * operations, as it may change due to resizing of the buffer.\\n */\\nlibrary Buffer {\\n    /**\\n     * @dev Represents a mutable buffer. Buffers have a current value (buf) and\\n     *      a capacity. The capacity may be longer than the current value, in\\n     *      which case it can be extended without the need to allocate more memory.\\n     */\\n    struct buffer {\\n        bytes buf;\\n        uint256 capacity;\\n    }\\n\\n    /**\\n     * @dev Initializes a buffer with an initial capacity.\\n     * @param buf The buffer to initialize.\\n     * @param capacity The number of bytes of space to allocate the buffer.\\n     * @return The buffer, for chaining.\\n     */\\n    function init(buffer memory buf, uint256 capacity) internal pure returns (buffer memory) {\\n        if (capacity % 32 != 0) {\\n            capacity += 32 - (capacity % 32);\\n        }\\n        // Allocate space for the buffer data\\n        buf.capacity = capacity;\\n        assembly {\\n            let ptr := mload(0x40)\\n            mstore(buf, ptr)\\n            mstore(ptr, 0)\\n            mstore(0x40, add(32, add(ptr, capacity)))\\n        }\\n        return buf;\\n    }\\n\\n    /**\\n     * @dev Initializes a new buffer from an existing bytes object.\\n     *      Changes to the buffer may mutate the original value.\\n     * @param b The bytes object to initialize the buffer with.\\n     * @return A new buffer.\\n     */\\n    function fromBytes(bytes memory b) internal pure returns (buffer memory) {\\n        buffer memory buf;\\n        buf.buf = b;\\n        buf.capacity = b.length;\\n        return buf;\\n    }\\n\\n    function resize(buffer memory buf, uint256 capacity) private pure {\\n        bytes memory oldbuf = buf.buf;\\n        init(buf, capacity);\\n        append(buf, oldbuf);\\n    }\\n\\n    function max(uint256 a, uint256 b) private pure returns (uint256) {\\n        if (a > b) {\\n            return a;\\n        }\\n        return b;\\n    }\\n\\n    /**\\n     * @dev Sets buffer length to 0.\\n     * @param buf The buffer to truncate.\\n     * @return The original buffer, for chaining..\\n     */\\n    function truncate(buffer memory buf) internal pure returns (buffer memory) {\\n        assembly {\\n            let bufptr := mload(buf)\\n            mstore(bufptr, 0)\\n        }\\n        return buf;\\n    }\\n\\n    /**\\n     * @dev Writes a byte string to a buffer. Resizes if doing so would exceed\\n     *      the capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param off The start offset to write to.\\n     * @param data The data to append.\\n     * @param len The number of bytes to copy.\\n     * @return The original buffer, for chaining.\\n     */\\n    function write(\\n        buffer memory buf,\\n        uint256 off,\\n        bytes memory data,\\n        uint256 len\\n    ) internal pure returns (buffer memory) {\\n        require(len <= data.length);\\n\\n        if (off + len > buf.capacity) {\\n            resize(buf, max(buf.capacity, len + off) * 2);\\n        }\\n\\n        uint256 dest;\\n        uint256 src;\\n        assembly {\\n            // Memory address of the buffer data\\n            let bufptr := mload(buf)\\n            // Length of existing buffer data\\n            let buflen := mload(bufptr)\\n            // Start address = buffer address + offset + sizeof(buffer length)\\n            dest := add(add(bufptr, 32), off)\\n            // Update buffer length if we're extending it\\n            if gt(add(len, off), buflen) {\\n                mstore(bufptr, add(len, off))\\n            }\\n            src := add(data, 32)\\n        }\\n\\n        // Copy word-length chunks while possible\\n        for (; len >= 32; len -= 32) {\\n            assembly {\\n                mstore(dest, mload(src))\\n            }\\n            dest += 32;\\n            src += 32;\\n        }\\n\\n        // Copy remaining bytes\\n        unchecked {\\n            uint256 mask = (256 ** (32 - len)) - 1;\\n            assembly {\\n                let srcpart := and(mload(src), not(mask))\\n                let destpart := and(mload(dest), mask)\\n                mstore(dest, or(destpart, srcpart))\\n            }\\n        }\\n\\n        return buf;\\n    }\\n\\n    /**\\n     * @dev Appends a byte string to a buffer. Resizes if doing so would exceed\\n     *      the capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param data The data to append.\\n     * @param len The number of bytes to copy.\\n     * @return The original buffer, for chaining.\\n     */\\n    function append(\\n        buffer memory buf,\\n        bytes memory data,\\n        uint256 len\\n    ) internal pure returns (buffer memory) {\\n        return write(buf, buf.buf.length, data, len);\\n    }\\n\\n    /**\\n     * @dev Appends a byte string to a buffer. Resizes if doing so would exceed\\n     *      the capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param data The data to append.\\n     * @return The original buffer, for chaining.\\n     */\\n    function append(buffer memory buf, bytes memory data) internal pure returns (buffer memory) {\\n        return write(buf, buf.buf.length, data, data.length);\\n    }\\n\\n    /**\\n     * @dev Writes a byte to the buffer. Resizes if doing so would exceed the\\n     *      capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param off The offset to write the byte at.\\n     * @param data The data to append.\\n     * @return The original buffer, for chaining.\\n     */\\n    function writeUint8(\\n        buffer memory buf,\\n        uint256 off,\\n        uint8 data\\n    ) internal pure returns (buffer memory) {\\n        if (off >= buf.capacity) {\\n            resize(buf, buf.capacity * 2);\\n        }\\n\\n        assembly {\\n            // Memory address of the buffer data\\n            let bufptr := mload(buf)\\n            // Length of existing buffer data\\n            let buflen := mload(bufptr)\\n            // Address = buffer address + sizeof(buffer length) + off\\n            let dest := add(add(bufptr, off), 32)\\n            mstore8(dest, data)\\n            // Update buffer length if we extended it\\n            if eq(off, buflen) {\\n                mstore(bufptr, add(buflen, 1))\\n            }\\n        }\\n        return buf;\\n    }\\n\\n    /**\\n     * @dev Appends a byte to the buffer. Resizes if doing so would exceed the\\n     *      capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param data The data to append.\\n     * @return The original buffer, for chaining.\\n     */\\n    function appendUint8(buffer memory buf, uint8 data) internal pure returns (buffer memory) {\\n        return writeUint8(buf, buf.buf.length, data);\\n    }\\n\\n    /**\\n     * @dev Writes up to 32 bytes to the buffer. Resizes if doing so would\\n     *      exceed the capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param off The offset to write at.\\n     * @param data The data to append.\\n     * @param len The number of bytes to write (left-aligned).\\n     * @return The original buffer, for chaining.\\n     */\\n    function write(\\n        buffer memory buf,\\n        uint256 off,\\n        bytes32 data,\\n        uint256 len\\n    ) private pure returns (buffer memory) {\\n        if (len + off > buf.capacity) {\\n            resize(buf, (len + off) * 2);\\n        }\\n\\n        unchecked {\\n            uint256 mask = (256 ** len) - 1;\\n            // Right-align data\\n            data = data >> (8 * (32 - len));\\n            assembly {\\n                // Memory address of the buffer data\\n                let bufptr := mload(buf)\\n                // Address = buffer address + sizeof(buffer length) + off + len\\n                let dest := add(add(bufptr, off), len)\\n                mstore(dest, or(and(mload(dest), not(mask)), data))\\n                // Update buffer length if we extended it\\n                if gt(add(off, len), mload(bufptr)) {\\n                    mstore(bufptr, add(off, len))\\n                }\\n            }\\n        }\\n        return buf;\\n    }\\n\\n    /**\\n     * @dev Writes a bytes20 to the buffer. Resizes if doing so would exceed the\\n     *      capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param off The offset to write at.\\n     * @param data The data to append.\\n     * @return The original buffer, for chaining.\\n     */\\n    function writeBytes20(\\n        buffer memory buf,\\n        uint256 off,\\n        bytes20 data\\n    ) internal pure returns (buffer memory) {\\n        return write(buf, off, bytes32(data), 20);\\n    }\\n\\n    /**\\n     * @dev Appends a bytes20 to the buffer. Resizes if doing so would exceed\\n     *      the capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param data The data to append.\\n     * @return The original buffer, for chhaining.\\n     */\\n    function appendBytes20(buffer memory buf, bytes20 data) internal pure returns (buffer memory) {\\n        return write(buf, buf.buf.length, bytes32(data), 20);\\n    }\\n\\n    /**\\n     * @dev Appends a bytes32 to the buffer. Resizes if doing so would exceed\\n     *      the capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param data The data to append.\\n     * @return The original buffer, for chaining.\\n     */\\n    function appendBytes32(buffer memory buf, bytes32 data) internal pure returns (buffer memory) {\\n        return write(buf, buf.buf.length, data, 32);\\n    }\\n\\n    /**\\n     * @dev Writes an integer to the buffer. Resizes if doing so would exceed\\n     *      the capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param off The offset to write at.\\n     * @param data The data to append.\\n     * @param len The number of bytes to write (right-aligned).\\n     * @return The original buffer, for chaining.\\n     */\\n    function writeInt(\\n        buffer memory buf,\\n        uint256 off,\\n        uint256 data,\\n        uint256 len\\n    ) private pure returns (buffer memory) {\\n        if (len + off > buf.capacity) {\\n            resize(buf, (len + off) * 2);\\n        }\\n\\n        uint256 mask = (256 ** len) - 1;\\n        assembly {\\n            // Memory address of the buffer data\\n            let bufptr := mload(buf)\\n            // Address = buffer address + off + sizeof(buffer length) + len\\n            let dest := add(add(bufptr, off), len)\\n            mstore(dest, or(and(mload(dest), not(mask)), data))\\n            // Update buffer length if we extended it\\n            if gt(add(off, len), mload(bufptr)) {\\n                mstore(bufptr, add(off, len))\\n            }\\n        }\\n        return buf;\\n    }\\n\\n    /**\\n     * @dev Appends a byte to the end of the buffer. Resizes if doing so would\\n     * exceed the capacity of the buffer.\\n     * @param buf The buffer to append to.\\n     * @param data The data to append.\\n     * @return The original buffer.\\n     */\\n    function appendInt(\\n        buffer memory buf,\\n        uint256 data,\\n        uint256 len\\n    ) internal pure returns (buffer memory) {\\n        return writeInt(buf, buf.buf.length, data, len);\\n    }\\n}\\n\",\"keccak256\":\"0x974280a1114bec25110c9c608e1c6c4dd7666c00e30f831f68b6d8a5b3bde420\",\"license\":\"MIT\"},\"src/libraries/CBOR.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.16;\\n\\n// https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/vendor/CBORChainlink.sol\\n\\nimport {Buffer} from \\\"./Buffer.sol\\\";\\n\\n// Encoding library for Binary Object Representation\\nlibrary CBOR {\\n    using Buffer for Buffer.buffer;\\n\\n    // DECLARE TYPES FOR EASIER REFERENCE OF VARIABLE TYPE\\n    uint8 private constant MAJOR_TYPE_INT = 0;\\n    uint8 private constant MAJOR_TYPE_NEGATIVE_INT = 1;\\n    uint8 private constant MAJOR_TYPE_BYTES = 2;\\n    uint8 private constant MAJOR_TYPE_STRING = 3;\\n    uint8 private constant MAJOR_TYPE_ARRAY = 4;\\n    uint8 private constant MAJOR_TYPE_MAP = 5;\\n    uint8 private constant MAJOR_TYPE_TAG = 6;\\n    uint8 private constant MAJOR_TYPE_CONTENT_FREE = 7;\\n\\n    uint8 private constant TAG_TYPE_BIGNUM = 2;\\n    uint8 private constant TAG_TYPE_NEGATIVE_BIGNUM = 3;\\n\\n    function encodeFixedNumeric(Buffer.buffer memory buf, uint8 major, uint64 value) private pure {\\n        if (value <= 23) {\\n            buf.appendUint8(uint8((major << 5) | value));\\n        } else if (value <= 0xFF) {\\n            buf.appendUint8(uint8((major << 5) | 24));\\n            buf.appendInt(value, 1);\\n        } else if (value <= 0xFFFF) {\\n            buf.appendUint8(uint8((major << 5) | 25));\\n            buf.appendInt(value, 2);\\n        } else if (value <= 0xFFFFFFFF) {\\n            buf.appendUint8(uint8((major << 5) | 26));\\n            buf.appendInt(value, 4);\\n        } else {\\n            buf.appendUint8(uint8((major << 5) | 27));\\n            buf.appendInt(value, 8);\\n        }\\n    }\\n\\n    function encodeIndefiniteLengthType(Buffer.buffer memory buf, uint8 major) private pure {\\n        buf.appendUint8(uint8((major << 5) | 31));\\n    }\\n\\n    function encodeUInt(Buffer.buffer memory buf, uint value) internal pure {\\n        if (value > 0xFFFFFFFFFFFFFFFF) {\\n            encodeBigNum(buf, value);\\n        } else {\\n            encodeFixedNumeric(buf, MAJOR_TYPE_INT, uint64(value));\\n        }\\n    }\\n\\n    function encodeInt(Buffer.buffer memory buf, int value) internal pure {\\n        if (value < -0x10000000000000000) {\\n            encodeSignedBigNum(buf, value);\\n        } else if (value > 0xFFFFFFFFFFFFFFFF) {\\n            encodeBigNum(buf, uint(value));\\n        } else if (value >= 0) {\\n            encodeFixedNumeric(buf, MAJOR_TYPE_INT, uint64(uint256(value)));\\n        } else {\\n            encodeFixedNumeric(buf, MAJOR_TYPE_NEGATIVE_INT, uint64(uint256(-1 - value)));\\n        }\\n    }\\n\\n    function encodeBytes(Buffer.buffer memory buf, bytes memory value) internal pure {\\n        encodeFixedNumeric(buf, MAJOR_TYPE_BYTES, uint64(value.length));\\n        buf.append(value);\\n    }\\n\\n    function encodeBigNum(Buffer.buffer memory buf, uint value) internal pure {\\n        buf.appendUint8(uint8((MAJOR_TYPE_TAG << 5) | TAG_TYPE_BIGNUM));\\n        encodeBytes(buf, abi.encode(value));\\n    }\\n\\n    function encodeSignedBigNum(Buffer.buffer memory buf, int input) internal pure {\\n        buf.appendUint8(uint8((MAJOR_TYPE_TAG << 5) | TAG_TYPE_NEGATIVE_BIGNUM));\\n        encodeBytes(buf, abi.encode(uint256(-1 - input)));\\n    }\\n\\n    function encodeString(Buffer.buffer memory buf, string memory value) internal pure {\\n        encodeFixedNumeric(buf, MAJOR_TYPE_STRING, uint64(bytes(value).length));\\n        buf.append(bytes(value));\\n    }\\n\\n    function startArray(Buffer.buffer memory buf) internal pure {\\n        encodeIndefiniteLengthType(buf, MAJOR_TYPE_ARRAY);\\n    }\\n\\n    function startMap(Buffer.buffer memory buf) internal pure {\\n        encodeIndefiniteLengthType(buf, MAJOR_TYPE_MAP);\\n    }\\n\\n    function endSequence(Buffer.buffer memory buf) internal pure {\\n        encodeIndefiniteLengthType(buf, MAJOR_TYPE_CONTENT_FREE);\\n    }\\n}\\n\",\"keccak256\":\"0x0712ea9c6408a41611eaa5ca843880d7d39c21cfe1dc3efea034bcedf244eae5\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60806040523480156200001157600080fd5b5062000022620000af60201b60201c565b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1603620000975760006040517f1e4fbdf70000000000000000000000000000000000000000000000000000000081526004016200008e9190620001c0565b60405180910390fd5b620000a881620000b760201b60201c565b50620001dd565b600033905090565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508173ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a35050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000620001a8826200017b565b9050919050565b620001ba816200019b565b82525050565b6000602082019050620001d76000830184620001af565b92915050565b612da880620001ed6000396000f3fe608060405234801561001057600080fd5b506004361061012c5760003560e01c80638df4e3e2116100ad578063d98196b311610071578063d98196b314610308578063db750a2d14610338578063e9babaec14610368578063e9d3462814610384578063f2fde38b146103a05761012c565b80638df4e3e21461024f578063a4e92aa71461026b578063b9b55c9a1461029b578063bfedbfa0146102cb578063c3f909d4146102e95761012c565b80633015394c116100f45780633015394c146101bf5780634b9c3083146101db57806369bcdb7d146101f7578063715018a6146102275780638da5cb5b146102315761012c565b80631228cabf14610131578063181f5a771461014d5780631e34c5851461016b57806329ba70c4146101875780632f44d449146101a3575b600080fd5b61014b6004803603810190610146919061206a565b6103bc565b005b610155610584565b604051610162919061213c565b60405180910390f35b6101856004803603810190610180919061215e565b6105c1565b005b6101a1600480360381019061019c9190612258565b61065d565b005b6101bd60048036038101906101b8919061240c565b610825565b005b6101d960048036038101906101d4919061247b565b6109ed565b005b6101f560048036038101906101f091906124a8565b610b41565b005b610211600480360381019061020c919061247b565b610d09565b60405161021e919061250a565b60405180910390f35b61022f610d26565b005b610239610d3a565b6040516102469190612534565b60405180910390f35b6102696004803603810190610264919061254f565b610d63565b005b6102856004803603810190610280919061257c565b611013565b60405161029291906125cb565b60405180910390f35b6102b560048036038101906102b0919061254f565b611070565b6040516102c291906125cb565b60405180910390f35b6102d36110c6565b6040516102e09190612602565b60405180910390f35b6102f16110cb565b6040516102ff92919061262c565b60405180910390f35b610322600480360381019061031d919061247b565b6110e2565b60405161032f9190612534565b60405180910390f35b610352600480360381019061034d91906127c1565b611121565b60405161035f919061281d565b60405180910390f35b610382600480360381019061037d919061254f565b61127b565b005b61039e60048036038101906103999190612838565b611448565b005b6103ba60048036038101906103b5919061254f565b61165a565b005b6103c681846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600063f40b4def60e01b85856040516024016104cb92919061288b565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050509050600061053682856118be565b905061054186611977565b50857f68ab2090cae4446c41a4252a58251ac07f2ac3277747f0f2431ce7d80fdb643786836040516105749291906128b4565b60405180910390a2505050505050565b60606040518060400160405280601481526020017f41444353436f6f7264696e61746f722076302e31000000000000000000000000815250905090565b6105c9611b35565b60405180606001604052808381526020016000151581526020018281525060046000820151816000015560208201518160010160006101000a81548160ff021916908315150217905550604082015181600201559050507f150110afd46e9924086bf85c855aae25722518b293155bf0ae689dd99a2e88cc828260405161065192919061262c565b60405180910390a15050565b61066781846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060006319e2cd2f60e01b858560405160240161076c929190612932565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050905060006107d782856118be565b90506107e286611977565b50857fb6727cffbd4cbe4365522df08e3a8fbcf75662b5e1c5ffb1db39c936250abf778683604051610815929190612962565b60405180910390a2505050505050565b61082f81846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000630e2c871f60e01b8585604051602401610934929190612a28565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050509050600061099f82856118be565b90506109aa86611977565b50857fe20c9d2af5010a05cb2c250f3fd7d56b813d69e8e8a129edca6267cdd7f2eb0386836040516109dd929190612a58565b60405180910390a2505050505050565b6109f681611bbc565b610a2c576040517f3688124a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff166003600083815260200190815260200160002060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614610ac4576040517f517907dd00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60026000828152602001908152602001600020600090556003600082815260200190815260200160002060006101000a81549073ffffffffffffffffffffffffffffffffffffffff0219169055807f6187bf55f2675dbecee951f81c92ecac87f54ed5bf888d31b09e634749b848ef60405160405180910390a250565b610b4b81846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060006390d95efc60e01b8585604051602401610c50929190612a88565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff838183161783525050505090506000610cbb82856118be565b9050610cc686611977565b50857f1642c1857f43a2e6a38067a7503bdbff46b114bdedb9684838fef1a2e830fbc18683604051610cf9929190612ab1565b60405180910390a2505050505050565b600060026000838152602001908152602001600020549050919050565b610d2e611b35565b610d386000611bee565b565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905090565b610d6b611b35565b600860008273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff16610df957806040517ff9a0ffdf000000000000000000000000000000000000000000000000000000008152600401610df09190612534565b60405180910390fd5b600860008273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81549060ff02191690556000600180549050905060005b81811015610fd7578273ffffffffffffffffffffffffffffffffffffffff1660018281548110610e8857610e87612ada565b5b9060005260206000200160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1603610fc657600060018084610ede9190612b38565b81548110610eef57610eee612ada565b5b9060005260206000200160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690508060018381548110610f3157610f30612ada565b5b9060005260206000200160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506001805480610f8b57610f8a612b6c565b5b6001900381819060005260206000200160006101000a81549073ffffffffffffffffffffffffffffffffffffffff0219169055905550610fd7565b80610fd090612b9b565b9050610e55565b507f5406c1f2d9ece2027a923f317fb5f2370221e330db898c037c10acc0c20495b3826040516110079190612534565b60405180910390a15050565b600080600180549050905060005b818110156110635760006110358686611cb2565b905061104081611bbc565b15611051576001935050505061106a565b508061105c90612b9b565b9050611021565b5060009150505b92915050565b6000600860008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff169050919050565b60ff81565b600080600460000154600460020154915091509091565b600181815481106110f257600080fd5b906000526020600020016000915054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060046000015483111561117457826004600001546040517f227449c900000000000000000000000000000000000000000000000000000000815260040161116b92919061262c565b60405180910390fd5b600061117f33611ce8565b9050600061118d3383611cb2565b905060004390506111a5828288338960000151611dbc565b6002600084815260200190815260200160002081905550336003600084815260200190815260200160002060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055503373ffffffffffffffffffffffffffffffffffffffff16827f41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d888860000151858a60800151600001516040516112679493929190612be3565b60405180910390a381935050505092915050565b611283611b35565b60ff8016600180549050106112c4576040517f25d0209c00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600860008273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff161561135357806040517f6ff7406a00000000000000000000000000000000000000000000000000000000815260040161134a9190612534565b60405180910390fd5b6001819080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506001600860008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff0219169083151502179055507fd9d9fdcc9f936c76b5aafe54fc3db5dcec0c6583c9ccc4abe91d17575c5145a58160405161143d9190612534565b60405180910390a150565b600460010160009054906101000a900460ff1615611492576040517fed3ba6a600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61149c81846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060006377f262ea60e01b85856040516024016115a192919061262c565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050509050600061160c82856118be565b905061161786611977565b50857fc321dd2edb70648970d947727983978c1fb4f15aef68acb1663c00d7f105a755868360405161164a929190612a88565b60405180910390a2505050505050565b611662611b35565b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16036116d45760006040517f1e4fbdf70000000000000000000000000000000000000000000000000000000081526004016116cb9190612534565b60405180910390fd5b6116dd81611bee565b50565b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff1661176e57336040517fd6c337480000000000000000000000000000000000000000000000000000000081526004016117659190612534565b60405180910390fd5b6007600082815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff1615611806576040517f9f17b6ef00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000600260008381526020019081526020016000205490506000801b810361185a576040517f3688124a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61188182846000015167ffffffffffffffff16856020015186604001518760600151611dbc565b81146118b9576040517fd529142c00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b505050565b60006001600460010160006101000a81548160ff0219169083151502179055506000826040015173ffffffffffffffffffffffffffffffffffffffff16846040516119099190612c6b565b6000604051808303816000865af19150503d8060008114611946576040519150601f19603f3d011682016040523d82523d6000602084013e61194b565b606091505b505090506000600460010160006101000a81548160ff0219169083151502179055508091505092915050565b6060600060076000848152602001908152602001600020600001805480602002602001604051908101604052809291908181526020018280548015611a1157602002820191906000526020600020905b8160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190600101908083116119c7575b5050505050905060005b81518160ff161015611ab857600760008581526020019081526020016000206001016000838360ff1681518110611a5557611a54612ada565b5b602002602001015173ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81549060ff021916905580611ab190612c82565b9050611a1b565b506007600084815260200190815260200160002060008082016000611add9190611e00565b505060026000848152602001908152602001600020600090556003600084815260200190815260200160002060006101000a81549073ffffffffffffffffffffffffffffffffffffffff021916905580915050919050565b611b3d611df8565b73ffffffffffffffffffffffffffffffffffffffff16611b5b610d3a565b73ffffffffffffffffffffffffffffffffffffffff1614611bba57611b7e611df8565b6040517f118cdaa7000000000000000000000000000000000000000000000000000000008152600401611bb19190612534565b60405180910390fd5b565b60008060001b600260008481526020019081526020016000205414611be45760019050611be9565b600090505b919050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508173ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a35050565b60008282604051602001611cc7929190612cba565b6040516020818303038152906040528051906020012060001c905092915050565b6000806001600960008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900467ffffffffffffffff16611d4b9190612ce3565b905080600960008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548167ffffffffffffffff021916908367ffffffffffffffff16021790555080915050919050565b60008585858585604051602001611dd7959493929190612d1f565b60405160208183030381529060405280519060200120905095945050505050565b600033905090565b5080546000825590600052602060002090810190611e1e9190611e21565b50565b5b80821115611e3a576000816000905550600101611e22565b5090565b6000604051905090565b600080fd5b600080fd5b6000819050919050565b611e6581611e52565b8114611e7057600080fd5b50565b600081359050611e8281611e5c565b92915050565b6000819050919050565b611e9b81611e88565b8114611ea657600080fd5b50565b600081359050611eb881611e92565b92915050565b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b611f0c82611ec3565b810181811067ffffffffffffffff82111715611f2b57611f2a611ed4565b5b80604052505050565b6000611f3e611e3e565b9050611f4a8282611f03565b919050565b600080fd5b600067ffffffffffffffff82169050919050565b611f7181611f54565b8114611f7c57600080fd5b50565b600081359050611f8e81611f68565b92915050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000611fbf82611f94565b9050919050565b611fcf81611fb4565b8114611fda57600080fd5b50565b600081359050611fec81611fc6565b92915050565b60006080828403121561200857612007611ebe565b5b6120126080611f34565b9050600061202284828501611f7f565b600083015250602061203684828501611e73565b602083015250604061204a84828501611fdd565b604083015250606061205e84828501611ea9565b60608301525092915050565b600080600060c0848603121561208357612082611e48565b5b600061209186828701611e73565b93505060206120a286828701611ea9565b92505060406120b386828701611ff2565b9150509250925092565b600081519050919050565b600082825260208201905092915050565b60005b838110156120f75780820151818401526020810190506120dc565b60008484015250505050565b600061210e826120bd565b61211881856120c8565b93506121288185602086016120d9565b61213181611ec3565b840191505092915050565b600060208201905081810360008301526121568184612103565b905092915050565b6000806040838503121561217557612174611e48565b5b600061218385828601611e73565b925050602061219485828601611e73565b9150509250929050565b600080fd5b600080fd5b600067ffffffffffffffff8211156121c3576121c2611ed4565b5b6121cc82611ec3565b9050602081019050919050565b82818337600083830152505050565b60006121fb6121f6846121a8565b611f34565b905082815260208101848484011115612217576122166121a3565b5b6122228482856121d9565b509392505050565b600082601f83011261223f5761223e61219e565b5b813561224f8482602086016121e8565b91505092915050565b600080600060c0848603121561227157612270611e48565b5b600061227f86828701611e73565b935050602084013567ffffffffffffffff8111156122a05761229f611e4d565b5b6122ac8682870161222a565b92505060406122bd86828701611ff2565b9150509250925092565b600067ffffffffffffffff8211156122e2576122e1611ed4565b5b6122eb82611ec3565b9050602081019050919050565b600061230b612306846122c7565b611f34565b905082815260208101848484011115612327576123266121a3565b5b6123328482856121d9565b509392505050565b600082601f83011261234f5761234e61219e565b5b813561235f8482602086016122f8565b91505092915050565b60008115159050919050565b61237d81612368565b811461238857600080fd5b50565b60008135905061239a81612374565b92915050565b6000604082840312156123b6576123b5611ebe565b5b6123c06040611f34565b9050600082013567ffffffffffffffff8111156123e0576123df611f4f565b5b6123ec8482850161233a565b60008301525060206124008482850161238b565b60208301525092915050565b600080600060c0848603121561242557612424611e48565b5b600061243386828701611e73565b935050602084013567ffffffffffffffff81111561245457612453611e4d565b5b612460868287016123a0565b925050604061247186828701611ff2565b9150509250925092565b60006020828403121561249157612490611e48565b5b600061249f84828501611e73565b91505092915050565b600080600060c084860312156124c1576124c0611e48565b5b60006124cf86828701611e73565b93505060206124e08682870161238b565b92505060406124f186828701611ff2565b9150509250925092565b61250481611e88565b82525050565b600060208201905061251f60008301846124fb565b92915050565b61252e81611fb4565b82525050565b60006020820190506125496000830184612525565b92915050565b60006020828403121561256557612564611e48565b5b600061257384828501611fdd565b91505092915050565b6000806040838503121561259357612592611e48565b5b60006125a185828601611fdd565b92505060206125b285828601611f7f565b9150509250929050565b6125c581612368565b82525050565b60006020820190506125e060008301846125bc565b92915050565b600060ff82169050919050565b6125fc816125e6565b82525050565b600060208201905061261760008301846125f3565b92915050565b61262681611e52565b82525050565b6000604082019050612641600083018561261d565b61264e602083018461261d565b9392505050565b60007fffffffff0000000000000000000000000000000000000000000000000000000082169050919050565b61268a81612655565b811461269557600080fd5b50565b6000813590506126a781612681565b92915050565b6000604082840312156126c3576126c2611ebe565b5b6126cd6040611f34565b9050600082013567ffffffffffffffff8111156126ed576126ec611f4f565b5b6126f98482850161222a565b600083015250602061270d84828501611e73565b60208301525092915050565b600060a0828403121561272f5761272e611ebe565b5b61273960a0611f34565b9050600061274984828501611ea9565b600083015250602061275d84828501611fdd565b602083015250604061277184828501612698565b604083015250606061278584828501611e73565b606083015250608082013567ffffffffffffffff8111156127a9576127a8611f4f565b5b6127b5848285016126ad565b60808301525092915050565b600080604083850312156127d8576127d7611e48565b5b60006127e685828601611e73565b925050602083013567ffffffffffffffff81111561280757612806611e4d565b5b61281385828601612719565b9150509250929050565b6000602082019050612832600083018461261d565b92915050565b600080600060c0848603121561285157612850611e48565b5b600061285f86828701611e73565b935050602061287086828701611e73565b925050604061288186828701611ff2565b9150509250925092565b60006040820190506128a0600083018561261d565b6128ad60208301846124fb565b9392505050565b60006040820190506128c960008301856124fb565b6128d660208301846125bc565b9392505050565b600081519050919050565b600082825260208201905092915050565b6000612904826128dd565b61290e81856128e8565b935061291e8185602086016120d9565b61292781611ec3565b840191505092915050565b6000604082019050612947600083018561261d565b818103602083015261295981846128f9565b90509392505050565b6000604082019050818103600083015261297c81856128f9565b905061298b60208301846125bc565b9392505050565b600082825260208201905092915050565b60006129ae826120bd565b6129b88185612992565b93506129c88185602086016120d9565b6129d181611ec3565b840191505092915050565b6129e581612368565b82525050565b60006040830160008301518482036000860152612a0882826129a3565b9150506020830151612a1d60208601826129dc565b508091505092915050565b6000604082019050612a3d600083018561261d565b8181036020830152612a4f81846129eb565b90509392505050565b60006040820190508181036000830152612a7281856129eb565b9050612a8160208301846125bc565b9392505050565b6000604082019050612a9d600083018561261d565b612aaa60208301846125bc565b9392505050565b6000604082019050612ac660008301856125bc565b612ad360208301846125bc565b9392505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b6000612b4382611e52565b9150612b4e83611e52565b9250828203905081811115612b6657612b65612b09565b5b92915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603160045260246000fd5b6000612ba682611e52565b91507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8203612bd857612bd7612b09565b5b600182019050919050565b6000608082019050612bf8600083018761261d565b612c0560208301866124fb565b612c12604083018561261d565b8181036060830152612c2481846128f9565b905095945050505050565b600081905092915050565b6000612c45826128dd565b612c4f8185612c2f565b9350612c5f8185602086016120d9565b80840191505092915050565b6000612c778284612c3a565b915081905092915050565b6000612c8d826125e6565b915060ff8203612ca057612c9f612b09565b5b600182019050919050565b612cb481611f54565b82525050565b6000604082019050612ccf6000830185612525565b612cdc6020830184612cab565b9392505050565b6000612cee82611f54565b9150612cf983611f54565b9250828201905067ffffffffffffffff811115612d1957612d18612b09565b5b92915050565b600060a082019050612d34600083018861261d565b612d41602083018761261d565b612d4e604083018661261d565b612d5b6060830185612525565b612d6860808301846124fb565b969550505050505056fea26469706673582212204516b3f7f8a6871aa6f33add20dc91f5ca8a04c7ad49dbb5c5f315f6c475dea264736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061012c5760003560e01c80638df4e3e2116100ad578063d98196b311610071578063d98196b314610308578063db750a2d14610338578063e9babaec14610368578063e9d3462814610384578063f2fde38b146103a05761012c565b80638df4e3e21461024f578063a4e92aa71461026b578063b9b55c9a1461029b578063bfedbfa0146102cb578063c3f909d4146102e95761012c565b80633015394c116100f45780633015394c146101bf5780634b9c3083146101db57806369bcdb7d146101f7578063715018a6146102275780638da5cb5b146102315761012c565b80631228cabf14610131578063181f5a771461014d5780631e34c5851461016b57806329ba70c4146101875780632f44d449146101a3575b600080fd5b61014b6004803603810190610146919061206a565b6103bc565b005b610155610584565b604051610162919061213c565b60405180910390f35b6101856004803603810190610180919061215e565b6105c1565b005b6101a1600480360381019061019c9190612258565b61065d565b005b6101bd60048036038101906101b8919061240c565b610825565b005b6101d960048036038101906101d4919061247b565b6109ed565b005b6101f560048036038101906101f091906124a8565b610b41565b005b610211600480360381019061020c919061247b565b610d09565b60405161021e919061250a565b60405180910390f35b61022f610d26565b005b610239610d3a565b6040516102469190612534565b60405180910390f35b6102696004803603810190610264919061254f565b610d63565b005b6102856004803603810190610280919061257c565b611013565b60405161029291906125cb565b60405180910390f35b6102b560048036038101906102b0919061254f565b611070565b6040516102c291906125cb565b60405180910390f35b6102d36110c6565b6040516102e09190612602565b60405180910390f35b6102f16110cb565b6040516102ff92919061262c565b60405180910390f35b610322600480360381019061031d919061247b565b6110e2565b60405161032f9190612534565b60405180910390f35b610352600480360381019061034d91906127c1565b611121565b60405161035f919061281d565b60405180910390f35b610382600480360381019061037d919061254f565b61127b565b005b61039e60048036038101906103999190612838565b611448565b005b6103ba60048036038101906103b5919061254f565b61165a565b005b6103c681846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600063f40b4def60e01b85856040516024016104cb92919061288b565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050509050600061053682856118be565b905061054186611977565b50857f68ab2090cae4446c41a4252a58251ac07f2ac3277747f0f2431ce7d80fdb643786836040516105749291906128b4565b60405180910390a2505050505050565b60606040518060400160405280601481526020017f41444353436f6f7264696e61746f722076302e31000000000000000000000000815250905090565b6105c9611b35565b60405180606001604052808381526020016000151581526020018281525060046000820151816000015560208201518160010160006101000a81548160ff021916908315150217905550604082015181600201559050507f150110afd46e9924086bf85c855aae25722518b293155bf0ae689dd99a2e88cc828260405161065192919061262c565b60405180910390a15050565b61066781846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060006319e2cd2f60e01b858560405160240161076c929190612932565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050905060006107d782856118be565b90506107e286611977565b50857fb6727cffbd4cbe4365522df08e3a8fbcf75662b5e1c5ffb1db39c936250abf778683604051610815929190612962565b60405180910390a2505050505050565b61082f81846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000630e2c871f60e01b8585604051602401610934929190612a28565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050509050600061099f82856118be565b90506109aa86611977565b50857fe20c9d2af5010a05cb2c250f3fd7d56b813d69e8e8a129edca6267cdd7f2eb0386836040516109dd929190612a58565b60405180910390a2505050505050565b6109f681611bbc565b610a2c576040517f3688124a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff166003600083815260200190815260200160002060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614610ac4576040517f517907dd00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60026000828152602001908152602001600020600090556003600082815260200190815260200160002060006101000a81549073ffffffffffffffffffffffffffffffffffffffff0219169055807f6187bf55f2675dbecee951f81c92ecac87f54ed5bf888d31b09e634749b848ef60405160405180910390a250565b610b4b81846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060006390d95efc60e01b8585604051602401610c50929190612a88565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff838183161783525050505090506000610cbb82856118be565b9050610cc686611977565b50857f1642c1857f43a2e6a38067a7503bdbff46b114bdedb9684838fef1a2e830fbc18683604051610cf9929190612ab1565b60405180910390a2505050505050565b600060026000838152602001908152602001600020549050919050565b610d2e611b35565b610d386000611bee565b565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905090565b610d6b611b35565b600860008273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff16610df957806040517ff9a0ffdf000000000000000000000000000000000000000000000000000000008152600401610df09190612534565b60405180910390fd5b600860008273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81549060ff02191690556000600180549050905060005b81811015610fd7578273ffffffffffffffffffffffffffffffffffffffff1660018281548110610e8857610e87612ada565b5b9060005260206000200160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1603610fc657600060018084610ede9190612b38565b81548110610eef57610eee612ada565b5b9060005260206000200160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690508060018381548110610f3157610f30612ada565b5b9060005260206000200160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506001805480610f8b57610f8a612b6c565b5b6001900381819060005260206000200160006101000a81549073ffffffffffffffffffffffffffffffffffffffff0219169055905550610fd7565b80610fd090612b9b565b9050610e55565b507f5406c1f2d9ece2027a923f317fb5f2370221e330db898c037c10acc0c20495b3826040516110079190612534565b60405180910390a15050565b600080600180549050905060005b818110156110635760006110358686611cb2565b905061104081611bbc565b15611051576001935050505061106a565b508061105c90612b9b565b9050611021565b5060009150505b92915050565b6000600860008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff169050919050565b60ff81565b600080600460000154600460020154915091509091565b600181815481106110f257600080fd5b906000526020600020016000915054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600060046000015483111561117457826004600001546040517f227449c900000000000000000000000000000000000000000000000000000000815260040161116b92919061262c565b60405180910390fd5b600061117f33611ce8565b9050600061118d3383611cb2565b905060004390506111a5828288338960000151611dbc565b6002600084815260200190815260200160002081905550336003600084815260200190815260200160002060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055503373ffffffffffffffffffffffffffffffffffffffff16827f41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d888860000151858a60800151600001516040516112679493929190612be3565b60405180910390a381935050505092915050565b611283611b35565b60ff8016600180549050106112c4576040517f25d0209c00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600860008273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff161561135357806040517f6ff7406a00000000000000000000000000000000000000000000000000000000815260040161134a9190612534565b60405180910390fd5b6001819080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506001600860008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff0219169083151502179055507fd9d9fdcc9f936c76b5aafe54fc3db5dcec0c6583c9ccc4abe91d17575c5145a58160405161143d9190612534565b60405180910390a150565b600460010160009054906101000a900460ff1615611492576040517fed3ba6a600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61149c81846116e0565b60016007600085815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550600060076000858152602001908152602001600020600001905080339080600181540180825580915050600190039060005260206000200160009091909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060006377f262ea60e01b85856040516024016115a192919061262c565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050509050600061160c82856118be565b905061161786611977565b50857fc321dd2edb70648970d947727983978c1fb4f15aef68acb1663c00d7f105a755868360405161164a929190612a88565b60405180910390a2505050505050565b611662611b35565b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16036116d45760006040517f1e4fbdf70000000000000000000000000000000000000000000000000000000081526004016116cb9190612534565b60405180910390fd5b6116dd81611bee565b50565b600860003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff1661176e57336040517fd6c337480000000000000000000000000000000000000000000000000000000081526004016117659190612534565b60405180910390fd5b6007600082815260200190815260200160002060010160003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900460ff1615611806576040517f9f17b6ef00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000600260008381526020019081526020016000205490506000801b810361185a576040517f3688124a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61188182846000015167ffffffffffffffff16856020015186604001518760600151611dbc565b81146118b9576040517fd529142c00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b505050565b60006001600460010160006101000a81548160ff0219169083151502179055506000826040015173ffffffffffffffffffffffffffffffffffffffff16846040516119099190612c6b565b6000604051808303816000865af19150503d8060008114611946576040519150601f19603f3d011682016040523d82523d6000602084013e61194b565b606091505b505090506000600460010160006101000a81548160ff0219169083151502179055508091505092915050565b6060600060076000848152602001908152602001600020600001805480602002602001604051908101604052809291908181526020018280548015611a1157602002820191906000526020600020905b8160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190600101908083116119c7575b5050505050905060005b81518160ff161015611ab857600760008581526020019081526020016000206001016000838360ff1681518110611a5557611a54612ada565b5b602002602001015173ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81549060ff021916905580611ab190612c82565b9050611a1b565b506007600084815260200190815260200160002060008082016000611add9190611e00565b505060026000848152602001908152602001600020600090556003600084815260200190815260200160002060006101000a81549073ffffffffffffffffffffffffffffffffffffffff021916905580915050919050565b611b3d611df8565b73ffffffffffffffffffffffffffffffffffffffff16611b5b610d3a565b73ffffffffffffffffffffffffffffffffffffffff1614611bba57611b7e611df8565b6040517f118cdaa7000000000000000000000000000000000000000000000000000000008152600401611bb19190612534565b60405180910390fd5b565b60008060001b600260008481526020019081526020016000205414611be45760019050611be9565b600090505b919050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508173ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a35050565b60008282604051602001611cc7929190612cba565b6040516020818303038152906040528051906020012060001c905092915050565b6000806001600960008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060009054906101000a900467ffffffffffffffff16611d4b9190612ce3565b905080600960008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548167ffffffffffffffff021916908367ffffffffffffffff16021790555080915050919050565b60008585858585604051602001611dd7959493929190612d1f565b60405160208183030381529060405280519060200120905095945050505050565b600033905090565b5080546000825590600052602060002090810190611e1e9190611e21565b50565b5b80821115611e3a576000816000905550600101611e22565b5090565b6000604051905090565b600080fd5b600080fd5b6000819050919050565b611e6581611e52565b8114611e7057600080fd5b50565b600081359050611e8281611e5c565b92915050565b6000819050919050565b611e9b81611e88565b8114611ea657600080fd5b50565b600081359050611eb881611e92565b92915050565b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b611f0c82611ec3565b810181811067ffffffffffffffff82111715611f2b57611f2a611ed4565b5b80604052505050565b6000611f3e611e3e565b9050611f4a8282611f03565b919050565b600080fd5b600067ffffffffffffffff82169050919050565b611f7181611f54565b8114611f7c57600080fd5b50565b600081359050611f8e81611f68565b92915050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000611fbf82611f94565b9050919050565b611fcf81611fb4565b8114611fda57600080fd5b50565b600081359050611fec81611fc6565b92915050565b60006080828403121561200857612007611ebe565b5b6120126080611f34565b9050600061202284828501611f7f565b600083015250602061203684828501611e73565b602083015250604061204a84828501611fdd565b604083015250606061205e84828501611ea9565b60608301525092915050565b600080600060c0848603121561208357612082611e48565b5b600061209186828701611e73565b93505060206120a286828701611ea9565b92505060406120b386828701611ff2565b9150509250925092565b600081519050919050565b600082825260208201905092915050565b60005b838110156120f75780820151818401526020810190506120dc565b60008484015250505050565b600061210e826120bd565b61211881856120c8565b93506121288185602086016120d9565b61213181611ec3565b840191505092915050565b600060208201905081810360008301526121568184612103565b905092915050565b6000806040838503121561217557612174611e48565b5b600061218385828601611e73565b925050602061219485828601611e73565b9150509250929050565b600080fd5b600080fd5b600067ffffffffffffffff8211156121c3576121c2611ed4565b5b6121cc82611ec3565b9050602081019050919050565b82818337600083830152505050565b60006121fb6121f6846121a8565b611f34565b905082815260208101848484011115612217576122166121a3565b5b6122228482856121d9565b509392505050565b600082601f83011261223f5761223e61219e565b5b813561224f8482602086016121e8565b91505092915050565b600080600060c0848603121561227157612270611e48565b5b600061227f86828701611e73565b935050602084013567ffffffffffffffff8111156122a05761229f611e4d565b5b6122ac8682870161222a565b92505060406122bd86828701611ff2565b9150509250925092565b600067ffffffffffffffff8211156122e2576122e1611ed4565b5b6122eb82611ec3565b9050602081019050919050565b600061230b612306846122c7565b611f34565b905082815260208101848484011115612327576123266121a3565b5b6123328482856121d9565b509392505050565b600082601f83011261234f5761234e61219e565b5b813561235f8482602086016122f8565b91505092915050565b60008115159050919050565b61237d81612368565b811461238857600080fd5b50565b60008135905061239a81612374565b92915050565b6000604082840312156123b6576123b5611ebe565b5b6123c06040611f34565b9050600082013567ffffffffffffffff8111156123e0576123df611f4f565b5b6123ec8482850161233a565b60008301525060206124008482850161238b565b60208301525092915050565b600080600060c0848603121561242557612424611e48565b5b600061243386828701611e73565b935050602084013567ffffffffffffffff81111561245457612453611e4d565b5b612460868287016123a0565b925050604061247186828701611ff2565b9150509250925092565b60006020828403121561249157612490611e48565b5b600061249f84828501611e73565b91505092915050565b600080600060c084860312156124c1576124c0611e48565b5b60006124cf86828701611e73565b93505060206124e08682870161238b565b92505060406124f186828701611ff2565b9150509250925092565b61250481611e88565b82525050565b600060208201905061251f60008301846124fb565b92915050565b61252e81611fb4565b82525050565b60006020820190506125496000830184612525565b92915050565b60006020828403121561256557612564611e48565b5b600061257384828501611fdd565b91505092915050565b6000806040838503121561259357612592611e48565b5b60006125a185828601611fdd565b92505060206125b285828601611f7f565b9150509250929050565b6125c581612368565b82525050565b60006020820190506125e060008301846125bc565b92915050565b600060ff82169050919050565b6125fc816125e6565b82525050565b600060208201905061261760008301846125f3565b92915050565b61262681611e52565b82525050565b6000604082019050612641600083018561261d565b61264e602083018461261d565b9392505050565b60007fffffffff0000000000000000000000000000000000000000000000000000000082169050919050565b61268a81612655565b811461269557600080fd5b50565b6000813590506126a781612681565b92915050565b6000604082840312156126c3576126c2611ebe565b5b6126cd6040611f34565b9050600082013567ffffffffffffffff8111156126ed576126ec611f4f565b5b6126f98482850161222a565b600083015250602061270d84828501611e73565b60208301525092915050565b600060a0828403121561272f5761272e611ebe565b5b61273960a0611f34565b9050600061274984828501611ea9565b600083015250602061275d84828501611fdd565b602083015250604061277184828501612698565b604083015250606061278584828501611e73565b606083015250608082013567ffffffffffffffff8111156127a9576127a8611f4f565b5b6127b5848285016126ad565b60808301525092915050565b600080604083850312156127d8576127d7611e48565b5b60006127e685828601611e73565b925050602083013567ffffffffffffffff81111561280757612806611e4d565b5b61281385828601612719565b9150509250929050565b6000602082019050612832600083018461261d565b92915050565b600080600060c0848603121561285157612850611e48565b5b600061285f86828701611e73565b935050602061287086828701611e73565b925050604061288186828701611ff2565b9150509250925092565b60006040820190506128a0600083018561261d565b6128ad60208301846124fb565b9392505050565b60006040820190506128c960008301856124fb565b6128d660208301846125bc565b9392505050565b600081519050919050565b600082825260208201905092915050565b6000612904826128dd565b61290e81856128e8565b935061291e8185602086016120d9565b61292781611ec3565b840191505092915050565b6000604082019050612947600083018561261d565b818103602083015261295981846128f9565b90509392505050565b6000604082019050818103600083015261297c81856128f9565b905061298b60208301846125bc565b9392505050565b600082825260208201905092915050565b60006129ae826120bd565b6129b88185612992565b93506129c88185602086016120d9565b6129d181611ec3565b840191505092915050565b6129e581612368565b82525050565b60006040830160008301518482036000860152612a0882826129a3565b9150506020830151612a1d60208601826129dc565b508091505092915050565b6000604082019050612a3d600083018561261d565b8181036020830152612a4f81846129eb565b90509392505050565b60006040820190508181036000830152612a7281856129eb565b9050612a8160208301846125bc565b9392505050565b6000604082019050612a9d600083018561261d565b612aaa60208301846125bc565b9392505050565b6000604082019050612ac660008301856125bc565b612ad360208301846125bc565b9392505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b6000612b4382611e52565b9150612b4e83611e52565b9250828203905081811115612b6657612b65612b09565b5b92915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603160045260246000fd5b6000612ba682611e52565b91507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8203612bd857612bd7612b09565b5b600182019050919050565b6000608082019050612bf8600083018761261d565b612c0560208301866124fb565b612c12604083018561261d565b8181036060830152612c2481846128f9565b905095945050505050565b600081905092915050565b6000612c45826128dd565b612c4f8185612c2f565b9350612c5f8185602086016120d9565b80840191505092915050565b6000612c778284612c3a565b915081905092915050565b6000612c8d826125e6565b915060ff8203612ca057612c9f612b09565b5b600182019050919050565b612cb481611f54565b82525050565b6000604082019050612ccf6000830185612525565b612cdc6020830184612cab565b9392505050565b6000612cee82611f54565b9150612cf983611f54565b9250828201905067ffffffffffffffff811115612d1957612d18612b09565b5b92915050565b600060a082019050612d34600083018861261d565b612d41602083018761261d565b612d4e604083018661261d565b612d5b6060830185612525565b612d6860808301846124fb565b969550505050505056fea26469706673582212204516b3f7f8a6871aa6f33add20dc91f5ca8a04c7ad49dbb5c5f315f6c475dea264736f6c63430008140033",
+  "devdoc": {
+    "errors": {
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {
+      "cancelRequest(uint256)": {
+        "params": {
+          "requestId": "- ID of the Oracle Request"
+        }
+      },
+      "deregisterOracle(address)": {
+        "params": {
+          "oracle": "address of the oracle"
+        }
+      },
+      "getCommitment(uint256)": {
+        "params": {
+          "requestId": "id of request"
+        },
+        "returns": {
+          "_0": "commmitment value that can be used to determine whether a request is fulfilled or not. If `requestId` is valid and commitment equals to bytes32(0), the request was fulfilled."
+        }
+      },
+      "isOracleRegistered(address)": {
+        "returns": {
+          "_0": "true when oracle address registered, otherwise false"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "registerOracle(address)": {
+        "params": {
+          "oracle": "address of the oracle"
+        }
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "setConfig(uint256,uint256)": {
+        "params": {
+          "gasAfterPaymentCalculation": "gas used in doing accounting after completing the gas measurement",
+          "maxGasLimit": "global max for request gas limit"
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      },
+      "typeAndVersion()": {
+        "returns": {
+          "_0": "Type and version string"
+        }
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "cancelRequest(uint256)": {
+        "notice": "Canceling oracle request"
+      },
+      "deregisterOracle(address)": {
+        "notice": "Deregister an oracle"
+      },
+      "getCommitment(uint256)": {
+        "notice": "Get request commitment."
+      },
+      "isOracleRegistered(address)": {
+        "notice": "Find out whether given oracle address was registered."
+      },
+      "registerOracle(address)": {
+        "notice": "Register an oracle"
+      },
+      "setConfig(uint256,uint256)": {
+        "notice": "Sets the configuration of the VRF coordinator"
+      },
+      "typeAndVersion()": {
+        "notice": "The type and version of this contract"
+      }
+    },
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 8,
+        "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 1733,
+        "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+        "label": "sOracles",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_array(t_address)dyn_storage"
+      },
+      {
+        "astId": 1737,
+        "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+        "label": "sRequestIdToCommitment",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_uint256,t_bytes32)"
+      },
+      {
+        "astId": 1741,
+        "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+        "label": "sRequestOwner",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_uint256,t_address)"
+      },
+      {
+        "astId": 1751,
+        "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+        "label": "sConfig",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_struct(Config)1748_storage"
+      },
+      {
+        "astId": 709,
+        "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+        "label": "sSubmission",
+        "offset": 0,
+        "slot": "7",
+        "type": "t_mapping(t_uint256,t_struct(Submission)704_storage)"
+      },
+      {
+        "astId": 713,
+        "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+        "label": "sIsOracleRegistered",
+        "offset": 0,
+        "slot": "8",
+        "type": "t_mapping(t_address,t_bool)"
+      },
+      {
+        "astId": 717,
+        "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+        "label": "sConsumerToNonce",
+        "offset": 0,
+        "slot": "9",
+        "type": "t_mapping(t_address,t_uint64)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_address)dyn_storage": {
+        "base": "t_address",
+        "encoding": "dynamic_array",
+        "label": "address[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_mapping(t_address,t_uint64)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint64)",
+        "numberOfBytes": "32",
+        "value": "t_uint64"
+      },
+      "t_mapping(t_uint256,t_address)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => address)",
+        "numberOfBytes": "32",
+        "value": "t_address"
+      },
+      "t_mapping(t_uint256,t_bytes32)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => bytes32)",
+        "numberOfBytes": "32",
+        "value": "t_bytes32"
+      },
+      "t_mapping(t_uint256,t_struct(Submission)704_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct ADCSCoordinator.Submission)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Submission)704_storage"
+      },
+      "t_struct(Config)1748_storage": {
+        "encoding": "inplace",
+        "label": "struct CoordinatorBase.Config",
+        "members": [
+          {
+            "astId": 1743,
+            "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+            "label": "maxGasLimit",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 1745,
+            "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+            "label": "reentrancyLock",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_bool"
+          },
+          {
+            "astId": 1747,
+            "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+            "label": "gasAfterPaymentCalculation",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_struct(Submission)704_storage": {
+        "encoding": "inplace",
+        "label": "struct ADCSCoordinator.Submission",
+        "members": [
+          {
+            "astId": 699,
+            "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+            "label": "oracles",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_array(t_address)dyn_storage"
+          },
+          {
+            "astId": 703,
+            "contract": "src/ADCSCoordinator.sol:ADCSCoordinator",
+            "label": "submitted",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_address,t_bool)"
+          }
+        ],
+        "numberOfBytes": "64"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      },
+      "t_uint64": {
+        "encoding": "inplace",
+        "label": "uint64",
+        "numberOfBytes": "8"
+      }
+    }
+  }
+}

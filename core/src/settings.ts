@@ -6,7 +6,7 @@ export const CHAIN = process.env.CHAIN || 'localhost'
 export const DEPLOYMENT_NAME = process.env.DEPLOYMENT_NAME || 'rivalz'
 
 export const DATA_FEED_FULFILL_GAS_MINIMUM = 400_000
-export const ADCS_FULFILL_GAS_MINIMUM = 400_000
+export const ADCS_FULFILL_GAS_MINIMUM = 5_000_000
 export const VRF_FULLFILL_GAS_PER_WORD = 1_000
 export const VRF_FULFILL_GAS_MINIMUM = 1_000_000
 
@@ -31,15 +31,15 @@ export const SUBMIT_HEARTBEAT_QUEUE_NAME = `${DEPLOYMENT_NAME}-submitheartbeat-q
 export const WORKER_AGGREGATOR_QUEUE_NAME = `${DEPLOYMENT_NAME}-worker-aggregator-queue`
 export const WORKER_CHECK_HEARTBEAT_QUEUE_NAME = `${DEPLOYMENT_NAME}-worker-checkheartbeat-queue`
 
-export const WORKER_DEVIATION_QUEUE_NAME = `rivalz-deviation-queue`
+export const WORKER_DEVIATION_QUEUE_NAME = `${DEPLOYMENT_NAME}-deviation-queue`
 
-export const LISTENER_ADCS_HISTORY_QUEUE_NAME = 'listener_adcs_history'
-export const LISTENER_ADCS_LATEST_QUEUE_NAME = 'listener_adcs_latest'
-export const LISTENER_ADCS_PROCESS_EVENT_QUEUE_NAME = 'listener_adcs_process_event'
-export const ADCS_LISTENER_STATE_NAME = 'adcs_listener_state'
+export const LISTENER_ADCS_HISTORY_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-adcs-history-queue`
+export const LISTENER_ADCS_LATEST_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-adcs-latest-queue`
+export const LISTENER_ADCS_PROCESS_EVENT_QUEUE_NAME = `${DEPLOYMENT_NAME}-listener-adcs-process-event-queue`
+export const ADCS_LISTENER_STATE_NAME = `${DEPLOYMENT_NAME}-adcs-listener-state`
 export const ADCS_SERVICE_NAME = 'ADCS'
-export const WORKER_ADCS_QUEUE_NAME = 'worker_adcs'
-export const WORKER_AUTOMATE_ADCS_QUEUE_NAME = 'worker_automate_adcs'
+export const WORKER_ADCS_QUEUE_NAME = `${DEPLOYMENT_NAME}-worker-adcs-queue`
+export const WORKER_AUTOMATE_ADCS_QUEUE_NAME = `${DEPLOYMENT_NAME}-worker-automate-adcs-queue`
 
 export const REMOVE_ON_COMPLETE = 500
 export const REMOVE_ON_FAIL = 1_000
@@ -110,7 +110,21 @@ export const HEARTBEAT_QUEUE_SETTINGS = {
   backoff: 1_000
 }
 
-export const ALL_QUEUES = []
+export const ALL_QUEUES = [
+  `${DEPLOYMENT_NAME}-worker-data-feed-queue`,
+  `${DEPLOYMENT_NAME}-worker-adcs-queue`,
+  `${DEPLOYMENT_NAME}-worker-automate-adcs-queue`,
+  `${DEPLOYMENT_NAME}-worker-deviation-queue`,
+  `${DEPLOYMENT_NAME}-worker-aggregator-queue`,
+  `${DEPLOYMENT_NAME}-worker-checkheartbeat-queue`,
+  `${DEPLOYMENT_NAME}-heartbeat-queue`,
+  `${DEPLOYMENT_NAME}-submitheartbeat-queue`,
+  `${DEPLOYMENT_NAME}-listener-data-feed-latest-queue`,
+  `${DEPLOYMENT_NAME}-listener-data-feed-process-event-queue`,
+  `${DEPLOYMENT_NAME}-listener-adcs-history-queue`,
+  `${DEPLOYMENT_NAME}-listener-adcs-latest-queue`,
+  `${DEPLOYMENT_NAME}-listener-adcs-process-event-queue`
+]
 
 function createJsonRpcProvider(providerUrl: string = PROVIDER_URL) {
   return new JsonRpcProvider(providerUrl)

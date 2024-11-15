@@ -7,6 +7,14 @@ export class InferenceController {
 
   @Get('meme')
   async meme() {
+    return {
+      market_research: 'market_research',
+      memecoins_data: 'memecoins_data',
+      final_decision: {
+        token_name: 'Dogecoin',
+        decision: true
+      }
+    }
     const data = await this.inferenceService.meme()
     return data
   }

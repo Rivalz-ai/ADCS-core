@@ -81,8 +81,8 @@ contract MockTradeMemeCoin is ADCSConsumerFulfillStringAndBool, Ownable {
     // Function to request bytes data
     function requestTradeMemeCoin(
         bytes32 jobId,
-        uint32 callbackGasLimit
-    ) external onlyOwner returns (uint256 requestId) {
+        uint256 callbackGasLimit
+    ) external returns (uint256 requestId) {
         bytes32 typeId = keccak256(abi.encodePacked("stringAndbool"));
         ADCS.Request memory req = buildRequest(jobId, typeId);
         requestId = COORDINATOR.requestData(callbackGasLimit, req);
@@ -100,11 +100,7 @@ contract MockTradeMemeCoin is ADCSConsumerFulfillStringAndBool, Ownable {
         tradeMemeCoin(requestId, tokenName, result);
     }
 
-    function tradeMemeCoin(
-        uint256 requestId,
-        string memory tokenName,
-        bool result
-    ) public onlyOwner {
+    function tradeMemeCoin(uint256 requestId, string memory tokenName, bool result) internal {
         // Find memecoin address and decimals by name
         address memeTokenAddress;
         uint8 tokenDecimals;

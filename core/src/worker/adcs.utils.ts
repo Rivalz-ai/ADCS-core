@@ -11,6 +11,7 @@ export function buildTransaction(
   logger: Logger
 ): ITransactionParameters {
   const gasLimit = payloadParameters.callbackGasLimit + gasMinimum
+  console.log({ gasLimit })
   const fulfillDataRequestFn = payloadParameters.fulfillDataRequestFn
   if (fulfillDataRequestFn == undefined) {
     const msg = `Unknown requestId ${payloadParameters.requestId}`
@@ -39,7 +40,6 @@ export function buildTransaction(
     gasLimit,
     to
   }
-  logger.debug(tx, 'tx')
 
   return tx
 }
