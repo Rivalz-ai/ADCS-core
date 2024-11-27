@@ -40,8 +40,7 @@ def analyze_with_gpt4mini(content):
         response = client.chat.completions.create(
             model="o1-mini",  # Using o1-mini model for lightweight analysis
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that analyzes content and provides concise insights."},
-                {"role": "user", "content": f"Please analyze this content and provide key insights in a brief, bullet-point format: {content}"}
+                {"role": "user", "content": "You are a helpful assistant that analyzes content and provides concise insights. Please analyze the following content and provide key insights in a brief, bullet-point format:\n\n" + content}
             ],
             max_tokens=300,  # Reduced token count for faster, more concise responses
             temperature=0.7
