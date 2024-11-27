@@ -11,7 +11,7 @@ load_dotenv()
 # Configure Gemini API
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 
-geminiflash_bp = Blueprint('geminiflash', __name__)
+geminiflash8b_bp = Blueprint('geminiflash8b', __name__)
 
 def extract_content(url):
     try:
@@ -36,10 +36,10 @@ def extract_content(url):
     except Exception as e:
         return str(e)
 
-def analyze_with_geminiflash(content):
+def analyze_with_geminiflash8b(content):
     try:
-        # Initialize Gemini-1.5-pro-latest model
-        model = genai.GenerativeModel('gemini-pro')  # Using pro model as flash is not available yet
+        # Initialize Gemini-1.5-flash-8b model
+        model = genai.GenerativeModel('gemini-1.5-flash-8b')
         
         # Create prompt
         prompt = """You are a helpful assistant that analyzes content and provides insights.
@@ -61,7 +61,7 @@ def analyze_with_geminiflash(content):
     except Exception as e:
         return str(e)
 
-@geminiflash_bp.route('/analyze', methods=['POST'])
+@geminiflash8b_bp.route('/analyze', methods=['POST'])
 def analyze():
     data = request.get_json()
     
@@ -76,8 +76,8 @@ def analyze():
     if not content:
         return jsonify({'error': 'Failed to extract content'}), 400
     
-    # Analyze content with Gemini Flash
-    analysis = analyze_with_geminiflash(content)
+    # Analyze content with Gemini Flash 8B
+    analysis = analyze_with_geminiflash8b(content)
     
     return jsonify({
         'content': content[:500] + '...' if len(content) > 500 else content,
