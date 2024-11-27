@@ -4,6 +4,7 @@ from flask import Blueprint, request, jsonify
 import requests
 from bs4 import BeautifulSoup
 from openai import OpenAI
+import json
 
 # Load environment variables
 load_dotenv()
@@ -33,7 +34,7 @@ def extract_content(url):
     except Exception as e:
         return str(e)
 
-def analyze_with_gpt4(content):
+def analyze_with_gpt4(content,format):
     client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
     
     try:
@@ -45,7 +46,9 @@ def analyze_with_gpt4(content):
         2. get the desired return format in the content provided
         3. return with exact format
         
-        Content : """ + content
+        Content: {content}
+        Return your response in this exact format: {format}
+        Example: if format is [decision,name], you should return something like ["yes","John"]"""
         
         response = client.chat.completions.create(
             model="gpt-4-turbo-preview",
@@ -64,21 +67,31 @@ def analyze_with_gpt4(content):
 def analyze():
     data = request.get_json()
     
-    if not data or 'url' not in data:
+    if not data or 'content' not in data:
         return jsonify({'error': 'URL is required'}), 400
         
-    url = data['url']
-    
-    # Extract content from URL
-    content = extract_content(url)
-    
+    content = data['content']
+    format = data['format']
+
     if not content:
         return jsonify({'error': 'Failed to extract content'}), 400
     
     # Analyze content with GPT-4
-    analysis = analyze_with_gpt4(content)
+    analysis = analyze_with_gpt4(content,format)
     
-    return jsonify({
-        'content': content[:500] + '...' if len(content) > 500 else content,
-        'analysis': analysis
-    })
+    try:
+        # First remove quotes if they exist
+        cleaned_analysis = analysis.strip('"')
+        # Parse the string into a JSON object
+        parsed_analysis = json.loads(cleaned_analysis)
+        return jsonify({
+            'result': parsed_analysis,
+            'status': 'success'
+        }), 200
+    except json.JSONDecodeError:
+        # Fallback to raw string if parsing fails
+        return jsonify({
+            'result': None,
+            'status': 'error',
+            'message': 'Failed to parse response as JSON array'
+        }), 200
