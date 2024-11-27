@@ -38,7 +38,7 @@ def analyze_with_gpt4mini(content):
     
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",  # Using GPT-3.5-turbo as a lighter alternative
+            model="o1-mini",  # Using o1-mini model for lightweight analysis
             messages=[
                 {"role": "system", "content": "You are a helpful assistant that analyzes content and provides concise insights."},
                 {"role": "user", "content": f"Please analyze this content and provide key insights in a brief, bullet-point format: {content}"}
@@ -66,7 +66,7 @@ def analyze():
     if not content:
         return jsonify({'error': 'Failed to extract content'}), 400
     
-    # Analyze content with GPT-4 Mini
+    # Analyze content with o1-mini
     analysis = analyze_with_gpt4mini(content)
     
     return jsonify({
