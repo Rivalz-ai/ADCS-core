@@ -1,5 +1,6 @@
 from flask import Flask
-# from blueprints.meme import meme_bp
+# Import blueprints
+from blueprints.meme import meme_bp
 from blueprints.GPT4o import gpt4_bp
 from blueprints.GPT4mini import gpt4mini_bp
 from blueprints.GeminiFlash8b import geminiflash8b_bp
@@ -8,10 +9,10 @@ from blueprints.GeminiAdvanced import geminiadvanced_bp
 from flask_cors import CORS
 
 app = Flask(__name__)
-
 CORS(app)
 
-# app.register_blueprint(meme_bp, url_prefix='/meme')
+# Register blueprints
+app.register_blueprint(meme_bp, url_prefix='/meme')
 app.register_blueprint(gpt4_bp, url_prefix='/gpt4')
 app.register_blueprint(gpt4mini_bp, url_prefix='/gpt4mini')
 app.register_blueprint(geminiflash8b_bp, url_prefix='/geminiflash8b')

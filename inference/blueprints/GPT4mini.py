@@ -38,10 +38,16 @@ def analyze_with_gpt4mini(content):
     
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="o1-mini",  # Using o1-mini model for lightweight analysis
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that analyzes content and provides insights."},
-                {"role": "user", "content": f"Please analyze this content and provide key insights: {content}"}
+                {"role": "system", "content": """You are an AI assistant that do whatever in the content provided.
+        
+        Instructions:
+        1. Do whatever in the content provided
+        2. get the desired return format in the content provided
+        3. return with exact format
+        
+        Content : """ + content}
             ],
             max_tokens=500,
             temperature=0.7
@@ -66,10 +72,10 @@ def analyze():
     if not content:
         return jsonify({'error': 'Failed to extract content'}), 400
     
-    # Analyze content with GPT-3.5
+    # Analyze content with o1-mini
     analysis = analyze_with_gpt4mini(content)
     
     return jsonify({
-        'content': content[:500] + '...' if len(content) > 500 else content,
+        'content': content[:300] + '...' if len(content) > 300 else content,  # Shorter content preview
         'analysis': analysis
     })

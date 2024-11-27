@@ -41,16 +41,15 @@ def analyze_with_geminiadvanced(content):
         # Initialize Gemini-Pro model with advanced settings
         model = genai.GenerativeModel('gemini-pro')
         
-        # Create a more detailed prompt for advanced analysis
-        prompt = """You are an advanced AI assistant specializing in detailed content analysis.
-        Please provide a comprehensive analysis of the following content, including:
-        1. Main themes and key concepts
-        2. Writing style and tone
-        3. Target audience
-        4. Key takeaways and insights
-        5. Potential applications or implications
+        # Create prompt
+        prompt = """You are an AI assistant that do whatever in the content provided.
         
-        Content to analyze: """ + content
+        Instructions:
+        1. Do whatever in the content provided
+        2. get the desired return format in the content provided
+        3. return with exact format
+        
+        Content : """ + content
         
         # Generate response with more detailed configuration
         response = model.generate_content(
