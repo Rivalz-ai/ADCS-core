@@ -42,7 +42,7 @@ def analyze_with_gpt4mini(content):
             messages=[
                 {"role": "user", "content": "You are a helpful assistant that analyzes content and provides concise insights. Please analyze the following content and provide key insights in a brief, bullet-point format:\n\n" + content}
             ],
-            max_tokens=300,  # Reduced token count for faster, more concise responses
+            max_completion_tokens=300,  # Reduced token count for faster, more concise responses
             temperature=0.7
         )
         
