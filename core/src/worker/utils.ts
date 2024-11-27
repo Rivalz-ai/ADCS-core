@@ -10,6 +10,20 @@ const maxPriority = parseUnits('0.001', 'gwei') // gwei
 // const maxgas = maxPriority + baseFee //gwei
 const FILE_NAME = import.meta.url
 
+async function getBaseFeeWithBuffer(provider: JsonRpcProvider, bufferMultiplier = 1.5) {
+  // Get latest block
+  const block = await provider.getBlock('latest')
+  if (!block?.baseFeePerGas) {
+    throw new Error('Could not get base fee from latest block')
+  }
+
+  // Add buffer to account for base fee fluctuation
+  const baseFee = block.baseFeePerGas
+  const baseFeeWithBuffer = BigInt(Math.ceil(Number(baseFee) * bufferMultiplier))
+
+  return baseFeeWithBuffer
+}
+
 export function buildReducer(reducerMapping, reducers) {
   return reducers.map((r) => {
     const reducer = reducerMapping[r.function]
@@ -62,6 +76,11 @@ export async function sendTransaction({
 }) {
   const _logger = logger.child({ name: 'sendTransaction', file: FILE_NAME })
 
+  // Get current base fee and calculate max fee
+  const baseFee = await getBaseFeeWithBuffer(wallet.provider)
+  const maxPriorityFeePerGas = ethers.parseUnits('0.01', 'gwei')
+  const maxFeePerGas = baseFee + maxPriorityFeePerGas
+
   if (payload) {
     payload = add0x(payload)
   }
@@ -70,12 +89,28 @@ export async function sendTransaction({
     from: await wallet.getAddress(),
     to: to,
     data: payload || '0x00',
-    value: value || '0x00'
+    value: value || '0x00',
+    maxFeePerGas,
+    maxPriorityFeePerGas
   }
-  if (gasLimit) {
+
+  // Estimate gas limit
+  try {
+    const estimatedGas = await wallet.provider.estimateGas(tx)
+    // Add 20% buffer to estimated gas
+    const gasLimit = BigInt(Math.ceil(Number(estimatedGas) * 1.2))
     tx['gasLimit'] = gasLimit
+
+    _logger.debug(
+      { estimatedGas: estimatedGas.toString(), gasLimit: gasLimit.toString() },
+      'Gas estimation'
+    )
+  } catch (e) {
+    _logger.error(e, 'Failed to estimate gas')
+    throw e
   }
-  _logger.debug(tx, 'tx')
+
+  _logger.debug(tx, 'tx before send')
 
   try {
     await wallet.call(tx)

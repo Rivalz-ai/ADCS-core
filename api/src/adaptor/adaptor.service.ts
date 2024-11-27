@@ -25,6 +25,7 @@ export class AdaptorService {
     // Generate a unique jobId compatible with Solidity bytes32
     // Generate the jobId before creating the adaptor
     const jobId = this.generateUniqueJobId()
+    console.log('jobId', jobId)
 
     // Add the jobId to the data object
     const adaptorData = {

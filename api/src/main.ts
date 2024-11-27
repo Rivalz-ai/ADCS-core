@@ -29,7 +29,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
   const port = configService.get('APP_PORT')
   const server = await app.listen(port)
-  server.setTimeout(5000)
+  server.setTimeout(60000)
   console.log(`app started with ${port}`)
 }
 bootstrap().catch((error) => {

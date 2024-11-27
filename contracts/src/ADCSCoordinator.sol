@@ -39,7 +39,7 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
     event PrepaymentSet(address prepayment);
     event DataRequested(
         uint256 indexed requestId,
-        uint32 callbackGasLimit,
+        uint256 callbackGasLimit,
         address indexed sender,
         bytes32 jobId,
         uint256 blockNumber,
@@ -49,6 +49,13 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
     event DataRequestFulfilledBool(uint256 indexed requestId, bool response, bool success);
     event DataRequestFulfilledBytes32(uint256 indexed requestId, bytes32 response, bool success);
     event DataRequestFulfilledBytes(uint256 indexed requestId, bytes response, bool success);
+    event DataRequestFulfilledStringAndBool(
+        uint256 indexed requestId,
+        StringAndBool response,
+        bool success
+    );
+
+    event DataRequestFulfilled(uint256 indexed requestId, bytes response, bool success);
 
     event DataSubmitted(address oracle, uint256 requestId);
 
@@ -132,7 +139,7 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
     }
 
     function requestData(
-        uint32 callbackGasLimit,
+        uint256 callbackGasLimit,
         ADCS.Request memory req
     ) external returns (uint256) {
         if (callbackGasLimit > sConfig.maxGasLimit) {
@@ -193,10 +200,11 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
         // Note that callWithExactGas will revert if we do not have sufficient gas
         // to give the callee their requested amount.
         sConfig.reentrancyLock = true;
-        bool success = callWithExactGas(rc.callbackGasLimit, rc.sender, resp);
+        (bool sent, ) = rc.sender.call(resp);
+        // bool success = callWithExactGas(rc.callbackGasLimit, rc.sender, resp);
         //
         sConfig.reentrancyLock = false;
-        return success;
+        return sent;
     }
 
     function cleanupAfterFulfillment(uint256 requestId) private returns (address[] memory) {
@@ -224,7 +232,7 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
     function computeCommitment(
         uint256 requestId,
         uint256 blockNumber,
-        uint32 callbackGasLimit,
+        uint256 callbackGasLimit,
         address sender,
         bytes32 jobId
     ) internal pure returns (bytes32) {
@@ -313,5 +321,26 @@ contract ADCSCoordinator is CoordinatorBase, IADCSCoordinatorBase, ITypeAndVersi
         cleanupAfterFulfillment(requestId);
 
         emit DataRequestFulfilledBytes(requestId, response, success);
+    }
+
+    function fulfillDataRequestStringAndBool(
+        uint256 requestId,
+        StringAndBool memory response,
+        RequestCommitment memory rc
+    ) external override {
+        validateDataResponse(rc, requestId);
+        sSubmission[requestId].submitted[msg.sender] = true;
+
+        address[] storage oracles = sSubmission[requestId].oracles;
+        oracles.push(msg.sender);
+        bytes memory resp = abi.encodeWithSelector(
+            ADCSConsumerFulfillStringAndBool.rawFulfillDataRequest.selector,
+            requestId,
+            response
+        );
+        bool success = fulfill(resp, rc);
+        cleanupAfterFulfillment(requestId);
+
+        emit DataRequestFulfilledStringAndBool(requestId, response, success);
     }
 }

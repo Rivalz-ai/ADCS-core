@@ -1,20 +1,6 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
-import path from 'node:path'
-import {
-  loadJson,
-  loadMigration,
-  updateMigration,
-  validateCoordinatorDeployConfig,
-  validateSetConfig
-} from '../../scripts/utils'
-
-module.exports = async ({
-  getNamedAccounts,
-  deployments,
-  network,
-  ethers
-}: HardhatRuntimeEnvironment) => {
+module.exports = async ({ getNamedAccounts, deployments }: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
 

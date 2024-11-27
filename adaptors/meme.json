@@ -1,0 +1,44 @@
+{
+    "dataAdapter": {
+      "description": "This data adapter processes will return a decision to make a trade on a specific meme token",
+      "context": "",
+      "variables": [
+        {
+          "name": "Aggressiveness",
+          "type": "number"
+        }
+      ],
+      "network": {
+        "name": "Base",
+        "chainId": 8453,
+        "rpcEndpoint": "https://mainnet.base.org"
+      },
+      "consumerContract": {
+        "address": "0x1234567890123456789012345678901234567890",
+        "abi": [
+          {
+            "inputs": [
+              {
+                "internalType": "uint256",
+                "name": "newValue",
+                "type": "uint256"
+              }
+            ],
+            "name": "updateData",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          }
+        ]
+      },
+      "returnDatatype": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
+    }
+  }
+  

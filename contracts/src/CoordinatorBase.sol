@@ -20,11 +20,11 @@ abstract contract CoordinatorBase is Ownable, ICoordinatorBase {
     mapping(uint256 => address) internal sRequestOwner;
 
     struct Config {
-        uint32 maxGasLimit;
+        uint256 maxGasLimit;
         bool reentrancyLock;
         // Gas to cover oracle payment after we calculate the payment.
         // We make it configurable in case those operations are repriced.
-        uint32 gasAfterPaymentCalculation;
+        uint256 gasAfterPaymentCalculation;
     }
     Config internal sConfig;
 
@@ -36,10 +36,10 @@ abstract contract CoordinatorBase is Ownable, ICoordinatorBase {
     error RefundFailure();
     error InvalidConsumer(uint64 accId, address consumer);
     error IncorrectCommitment();
-    error GasLimitTooBig(uint32 have, uint32 want);
+    error GasLimitTooBig(uint256 have, uint256 want);
     error InsufficientPayment(uint256 have, uint256 want);
 
-    event ConfigSet(uint32 maxGasLimit, uint32 gasAfterPaymentCalculation);
+    event ConfigSet(uint256 maxGasLimit, uint256 gasAfterPaymentCalculation);
     event RequestCanceled(uint256 indexed requestId);
 
     constructor() Ownable(_msgSender()) {}
@@ -54,7 +54,7 @@ abstract contract CoordinatorBase is Ownable, ICoordinatorBase {
     /**
      * @inheritdoc ICoordinatorBase
      */
-    function setConfig(uint32 maxGasLimit, uint32 gasAfterPaymentCalculation) external onlyOwner {
+    function setConfig(uint256 maxGasLimit, uint256 gasAfterPaymentCalculation) external onlyOwner {
         sConfig = Config({
             maxGasLimit: maxGasLimit,
             gasAfterPaymentCalculation: gasAfterPaymentCalculation,
@@ -66,7 +66,7 @@ abstract contract CoordinatorBase is Ownable, ICoordinatorBase {
     function getConfig()
         external
         view
-        returns (uint32 maxGasLimit, uint32 gasAfterPaymentCalculation)
+        returns (uint256 maxGasLimit, uint256 gasAfterPaymentCalculation)
     {
         return (sConfig.maxGasLimit, sConfig.gasAfterPaymentCalculation);
     }

@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@alchemy/aa-accounts": "^3.19.0",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
@@ -29,6 +30,7 @@
     "@types/chai-as-promised": "^7.1.8",
     "@types/mocha": "^10.0.6",
     "@types/node": "^22.7.4",
+    "@uniswap/v3-periphery": "^1.4.4",
     "chai": "^4.4.0",
     "chai-as-promised": "^7.1.1",
     "dotenv": "^16.4.5",

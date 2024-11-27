@@ -11,11 +11,13 @@ import { MODE, REDIS_HOST, REDIS_PORT } from './app.settings'
 import { BullModule } from '@nestjs/bullmq'
 import { AdaptorModule } from './adaptor/adaptor.module'
 import { AuthModule } from './auth/auth.module'
+import { InferenceModule } from './inference/inference.module'
+import { ProviderModule } from './providers/provider.module'
 
 @Module({
   imports: [
     CacheModule.register({
-      ttl: 10000,
+      ttl: 1000,
       max: 20,
       isGlobal: true
     }),
@@ -36,7 +38,9 @@ import { AuthModule } from './auth/auth.module'
       }
     }),
     AdaptorModule,
-    AuthModule
+    AuthModule,
+    InferenceModule,
+    ProviderModule
   ],
   controllers: [AppController],
   providers: [

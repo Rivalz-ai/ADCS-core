@@ -8,56 +8,97 @@ datasource db {
 }
 
 model Adaptor {
-  id           Int      @id @default(autoincrement())
-  jobId        String   @map("job_id")
-  name         String
-  description  String
-  variables    String
-  categoryId   Int      @map("category_id")
-  outputTypeId Int      @map("output_type_id")
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-
-  category   Category   @relation(fields: [categoryId], references: [id])
-  outputType OutputType @relation(fields: [outputTypeId], references: [id])
+  name           String
+  description    String
+  variables      String
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime      @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id             Int           @id @default(autoincrement())
+  categoryId     Int           @map("category_id")
+  outputTypeId   Int           @map("output_type_id")
+  jobId          String        @map("job_id")
+  created_by     String?
+  icon_url       String?
+  status         String        @default("draft")
+  chain_id       Int           @default(1)
+  requests       Int           @default(0)
+  example_code   String?
+  adaptorTypeId  Int?
+  dataProviderId Int?          @map("data_provider_id")
+  typeId         Int?          @map("type_id")
+  adaptor_type   AdaptorType?  @relation(fields: [adaptorTypeId], references: [id])
+  category       Category      @relation(fields: [categoryId], references: [id])
+  chain          Chain         @relation(fields: [chain_id], references: [id])
+  dataProvider   DataProvider? @relation(fields: [dataProviderId], references: [id])
+  outputType     OutputType    @relation(fields: [outputTypeId], references: [id])
 
   @@map("adaptor")
 }
 
-model Category {
+model AdaptorType {
   id        Int       @id @default(autoincrement())
   name      String
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  adaptor   Adaptor[]
+
+  @@map("adaptor_type")
+}
+
+model Category {
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id        Int       @id @default(autoincrement())
   adaptors  Adaptor[]
 
   @@map("category")
 }
 
 model OutputType {
-  id        Int       @id @default(autoincrement())
-  name      String
-  coordinatorAddress String? @map("coordinator_address")
-  fulfillDataRequestFn String? @map("fulfill_data_request_fn")
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  adaptors  Adaptor[]
+  name                 String
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                   Int       @id @default(autoincrement())
+  coordinatorAddress   String?   @map("coordinator_address")
+  fulfillDataRequestFn String?   @map("fulfill_data_request_fn")
+  adaptors             Adaptor[]
 
   @@map("output_type")
 }
 
-model Listener {
-  id          Int      @id @default(autoincrement())
-  name        String
-  address     String
-  eventName   String   @map("event_name")
-  chainId     Int      @map("chain_id")
-  serviceId   Int      @map("service_id")
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+model DataProvider {
+  id              Int       @id @default(autoincrement())
+  name            String
+  endpoint        String
+  apiKey          String?   @map("api_key")
+  type            String
+  active          Boolean   @default(true)
+  description     String
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  inputVariables  Json
+  outputVariables Json
+  created_by      String?
+  icon_url        String?
+  documentation   String?
+  example_call    String?
+  Adaptor         Adaptor[]
 
-  chain   Chain   @relation(fields: [chainId], references: [id])
-  service Service @relation(fields: [serviceId], references: [id])
+  @@map("data_provider")
+}
+
+model Listener {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  eventName String   @map("event_name")
+  chainId   Int      @map("chain_id")
+  serviceId Int      @map("service_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  chain     Chain    @relation(fields: [chainId], references: [id])
+  service   Service  @relation(fields: [serviceId], references: [id])
 
   @@map("listener")
 }
@@ -70,11 +111,10 @@ model Reporter {
   privateKey      String   @map("private_key")
   chainId         Int      @map("chain_id")
   serviceId       Int      @map("service_id")
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-
-  chain   Chain   @relation(fields: [chainId], references: [id])
-  service Service @relation(fields: [serviceId], references: [id])
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  chain           Chain    @relation(fields: [chainId], references: [id])
+  service         Service  @relation(fields: [serviceId], references: [id])
 
   @@map("reporter")
 }
@@ -83,8 +123,9 @@ model Chain {
   id          Int        @id @default(autoincrement())
   name        String
   description String
-  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  adaptor     Adaptor[]
   listeners   Listener[]
   reporters   Reporter[]
 
@@ -95,10 +136,23 @@ model Service {
   id          Int        @id @default(autoincrement())
   name        String
   description String
-  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
   listeners   Listener[]
   reporters   Reporter[]
 
   @@map("service")
+}
+
+model user {
+  id              Int      @id @default(autoincrement())
+  email           String?  @unique
+  password        String?
+  name            String?
+  wallet_address  String?  @unique
+  nonce           String?
+  is_admin        Boolean  @default(false)
+  nonce_timestamp DateTime @db.Timestamptz(6)
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime @default(now()) @db.Timestamptz(6)
 }

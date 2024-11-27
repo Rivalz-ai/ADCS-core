@@ -11,6 +11,7 @@ export function buildTransaction(
   logger: Logger
 ): ITransactionParameters {
   const gasLimit = payloadParameters.callbackGasLimit + gasMinimum
+  console.log({ gasLimit })
   const fulfillDataRequestFn = payloadParameters.fulfillDataRequestFn
   if (fulfillDataRequestFn == undefined) {
     const msg = `Unknown requestId ${payloadParameters.requestId}`
@@ -18,7 +19,7 @@ export function buildTransaction(
     throw new RivalzError(RivalzErrorCode.UnknownRequestResponseJob, msg)
   }
 
-  const response = Math.floor(payloadParameters.response)
+  const response = payloadParameters.response
 
   const rc: RequestCommitmentADCS = [
     payloadParameters.blockNum,
@@ -34,13 +35,11 @@ export function buildTransaction(
     rc
   ])
   console.log({ rc, response, fulfillDataRequestFn, requestId: payloadParameters.requestId })
-
   const tx = {
     payload,
     gasLimit,
     to
   }
-  logger.debug(tx, 'tx')
 
   return tx
 }

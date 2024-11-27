@@ -29,4 +29,14 @@ export class CreateAdaptorDto {
   @IsInt()
   @IsNotEmpty()
   outputTypeId: number
+
+  @ApiProperty({ description: 'The ID of the data provider this adaptor uses' })
+  @IsInt()
+  @IsNotEmpty()
+  dataProviderId: number
+
+  @ApiProperty({ description: 'The ID of the adaptor type this adaptor belongs to' })
+  @IsInt()
+  @IsNotEmpty()
+  typeId: number
 }

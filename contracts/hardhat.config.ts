@@ -103,8 +103,8 @@ module.exports = {
       gasMultiplier: 1.2,
       verify: {
         etherscan: {
-          apiUrl: 'https://arb1.arbitrum.io/rpc/api',
-          apiKey: process.env.EXPLORER_API_KEY
+          apiUrl: 'https://api.arbiscan.io/api',
+          apiKey: process.env.ARBITRUM_API_KEY
         }
       }
     },
@@ -118,6 +118,17 @@ module.exports = {
           apiKey: process.env.EXPLORER_API_KEY
         }
       }
+    },
+    base: {
+      url: 'https://rpc.ankr.com/base/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.basescan.org/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
     }
   },
 
@@ -128,19 +139,14 @@ module.exports = {
     artifacts: './build/artifacts',
     deployments: './deployments'
   },
-
-  verify: {
-    etherscan: {
-      apiKey: process.env.EXPLORER_API_KEY
-    }
-  },
-
   etherscan: {
     apiKey: {
       blast_sepolia: process.env.EXPLORER_API_KEY,
       polygon: process.env.EXPLORER_API_KEY,
       rivalz2_test: process.env.EXPLORER_API_KEY,
-      mainnet: process.env.EXPLORER_API_KEY
+      mainnet: process.env.EXPLORER_API_KEY,
+      arbitrum: process.env.ARBITRUM_API_KEY,
+      base: process.env.BASE_API_KEY
     },
     customChains: [
       {
@@ -157,6 +163,22 @@ module.exports = {
         urls: {
           apiURL: 'https://api.routescan.io/v2/network/testnet/evm/168587773/etherscan',
           browserURL: 'https://sepolia.blastscan.io'
+        }
+      },
+      {
+        network: 'arbitrum',
+        chainId: 42161,
+        urls: {
+          apiURL: 'https://api.arbiscan.io/api',
+          browserURL: 'https://arbiscan.io'
+        }
+      },
+      {
+        network: 'base',
+        chainId: 8453,
+        urls: {
+          apiURL: 'https://api.basescan.org/api',
+          browserURL: 'https://basescan.org'
         }
       }
     ]

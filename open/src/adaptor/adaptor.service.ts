@@ -43,7 +43,7 @@ export class AdaptorService {
     data: UpdateAdaptorDto,
     creatorAddress: string
   ): Promise<Adaptor> {
-    let updateData = { ...data }
+    const updateData = { ...data }
     if (data.variables) {
       updateData.variables = this.validateAndFormatVariables(data.variables)
     }
@@ -92,13 +92,25 @@ export class AdaptorService {
     })
   }
 
-  async getAdaptorByJobId(jobId: string): Promise<Adaptor> {
-    return await this.prisma.adaptor.findFirst({
+  async getAdaptorByJobId(jobId: string) {
+    const data = await this.prisma.adaptor.findFirst({
       where: { jobId },
       include: {
-        outputType: true
+        outputType: true,
+        category: true,
+        chain: true
       }
     })
+    const provider = await this.prisma.dataProvider.findFirst({
+      where: { id: data.dataProviderId }
+    })
+    return {
+      ...data,
+      categoryName: data.category.name,
+      outputTypeName: data.outputType.name,
+      chainName: data.chain.name,
+      providerName: provider.name
+    }
   }
 
   generateUniqueJobId = (): string => {
