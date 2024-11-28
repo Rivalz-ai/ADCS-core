@@ -21,18 +21,29 @@ export class AdaptorService {
   }
 
   async createAdaptor(data: CreateAdaptorDto, creatorAddress: string): Promise<Adaptor> {
-    const formattedVariables = this.validateAndFormatVariables(data.variables)
+    // const formattedVariables = this.validateAndFormatVariables(data.variables)
     // Generate a unique jobId compatible with Solidity bytes32
     // Generate the jobId before creating the adaptor
     const jobId = this.generateUniqueJobId()
-
-    // Add the jobId to the data object
+    // Create the adaptor data object with validated fields
     const adaptorData = {
-      ...data,
+      name: data.name,
+      description: data.description,
+      categoryId: data.categoryId,
+      outputTypeId: data.outputTypeId,
+      chainId: data.chainId,
+      dataProviderId: data.dataProviderId,
+      aiPrompt: data.aiPrompt,
       jobId,
-      variables: formattedVariables,
       createdBy: creatorAddress
     }
+
+    // // Add the jobId to the data object
+    // const adaptorData = {
+    //   ...data,
+    //   jobId,
+    //   createdBy: creatorAddress
+    // }
     return await this.prisma.adaptor.create({
       data: adaptorData
     })
@@ -50,7 +61,7 @@ export class AdaptorService {
     const adaptor = await this.prisma.adaptor.findUnique({
       where: { id }
     })
-    if (adaptor.createdBy !== creatorAddress) {
+    if (adaptor.createdBy !== creatorAddress.toLowerCase()) {
       throw new HttpException('You are not authorized to update this adaptor', HttpStatus.FORBIDDEN)
     }
     return await this.prisma.adaptor.update({
@@ -59,7 +70,13 @@ export class AdaptorService {
     })
   }
 
-  async removeAdaptor(id: number): Promise<Adaptor> {
+  async removeAdaptor(id: number, creatorAddress: string): Promise<Adaptor> {
+    const adaptor = await this.prisma.adaptor.findUnique({
+      where: { id }
+    })
+    if (adaptor.createdBy !== creatorAddress.toLowerCase()) {
+      throw new HttpException('You are not authorized to delete this adaptor', HttpStatus.FORBIDDEN)
+    }
     return await this.prisma.adaptor.delete({
       where: { id }
     })
@@ -125,6 +142,28 @@ export class AdaptorService {
   }
 
   async output() {
-    return await this.prisma.outputType.findMany()
+    return await this.prisma.outputType.findMany({
+      select: { id: true, name: true, coordinatorAddress: true, fulfillDataRequestFn: true }
+    })
+  }
+
+  async chain() {
+    return await this.prisma.chain.findMany()
+  }
+
+  async byAddress(address: string) {
+    const data = await this.prisma.adaptor.findMany({
+      where: { createdBy: address.toLowerCase() },
+      include: { category: true, outputType: true, chain: true }
+    })
+
+    return data.map((m) => {
+      return {
+        ...m,
+        categoryName: m.category.name,
+        outputTypeName: m.outputType.name,
+        chainName: m.chain.name
+      }
+    })
   }
 }

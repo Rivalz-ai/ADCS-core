@@ -20,15 +20,13 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Returns JWT token if the signature is valid' })
   @ApiResponse({ status: 401, description: 'Unauthorized if the signature is invalid' })
   async verifySignature(@Body() verifySignatureDto: VerifySignatureDto) {
-    const isValid = await this.authService.verifySignedMessage(
-      verifySignatureDto.address,
+    const token = await this.authService.verifySignedMessage(
+      verifySignatureDto.message,
       verifySignatureDto.signature
     )
-    if (isValid) {
-      const jwtToken = await this.authService.generateJwtToken(verifySignatureDto.address)
-      return { authenticated: true, token: jwtToken }
-    } else {
+    if (!token) {
       throw new UnauthorizedException('Invalid signature')
     }
+    return { accessToken: token }
   }
 }

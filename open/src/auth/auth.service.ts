@@ -18,25 +18,30 @@ export class AuthService {
     return { message: this.getMessage(nonce, timestamp) }
   }
 
-  async verifySignedMessage(message: string, signature: string): Promise<boolean> {
+  async verifySignedMessage(message: string, signature: string): Promise<string> {
     try {
       const recoveredAddress = verifyMessage(message, signature)
       // insert user into db,update if already exists
+      const lowerCaseAddress = recoveredAddress.toLowerCase()
       await this.prisma.user.upsert({
-        where: { walletAddress: recoveredAddress },
-        update: { walletAddress: recoveredAddress },
-        create: { walletAddress: recoveredAddress, nonce: null, nonceTimestamp: null }
+        where: { walletAddress: lowerCaseAddress },
+        update: {},
+        create: {
+          walletAddress: lowerCaseAddress,
+          nonce: 0,
+          nonceTimestamp: new Date()
+        }
       })
 
-      return true
+      return await this.generateJwtToken(lowerCaseAddress)
     } catch (error) {
       console.error('Error verifying signature:', error)
-      return false
+      return ''
     }
   }
 
   async generateJwtToken(address: string): Promise<string> {
-    const payload = { sub: address }
+    const payload = { sub: { address } }
     return this.jwtService.sign(payload)
   }
 

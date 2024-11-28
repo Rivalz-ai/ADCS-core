@@ -24,7 +24,7 @@ export class ProviderService {
           iconUrl: true,
           createdAt: true,
           updatedAt: true,
-
+          aiModel: true
         }
       })
       return providers

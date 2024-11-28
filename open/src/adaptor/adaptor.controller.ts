@@ -26,7 +26,7 @@ export class AdaptorController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
   @ApiOperation({ summary: 'Create a new adaptor' })
   @ApiResponse({
     status: 201,
@@ -41,7 +41,7 @@ export class AdaptorController {
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
   @ApiOperation({ summary: 'Update an existing adaptor' })
   @ApiResponse({
     status: 200,
@@ -56,13 +56,18 @@ export class AdaptorController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT')
   @ApiOperation({ summary: 'Remove an adaptor' })
   @ApiResponse({
     status: 200,
     description: 'The adaptor has been successfully removed.'
   })
-  async removeAdaptor(@Param('id', ParseIntPipe) id: number): Promise<Adaptor> {
-    return await this.adaptorService.removeAdaptor(id)
+  async removeAdaptor(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: Request
+  ): Promise<Adaptor> {
+    return await this.adaptorService.removeAdaptor(id, req.user['address'])
   }
 
   @Get()
@@ -117,5 +122,15 @@ export class AdaptorController {
   @Get('outputType')
   async outputType() {
     return await this.adaptorService.output()
+  }
+
+  @Get('chain')
+  async chain() {
+    return await this.adaptorService.chain()
+  }
+
+  @Get('by-address')
+  async byAddress(@Query('address') address: string) {
+    return await this.adaptorService.byAddress(address)
   }
 }

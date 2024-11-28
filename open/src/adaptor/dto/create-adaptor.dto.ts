@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsInt, Matches } from 'class-validator'
+import { IsString, IsNotEmpty, IsInt, Matches, IsOptional } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateAdaptorDto {
@@ -35,8 +35,13 @@ export class CreateAdaptorDto {
   @IsNotEmpty()
   dataProviderId: number
 
-  @ApiProperty({ description: 'The ID of the adaptor type this adaptor belongs to' })
+  @ApiProperty({ description: 'The ID of the chain this adaptor belongs to' })
   @IsInt()
   @IsNotEmpty()
-  typeId: number
+  chainId: number
+
+  @ApiProperty({ description: 'The AI prompt for the adaptor' })
+  @IsString()
+  @IsOptional()
+  aiPrompt?: string
 }

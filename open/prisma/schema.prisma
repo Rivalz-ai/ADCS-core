@@ -12,7 +12,7 @@ model Adaptor {
   jobId          String   @map("job_id")
   name           String
   description    String
-  variables      String
+  variables      String?  @map("variables")
   categoryId     Int      @map("category_id")
   outputTypeId   Int      @map("output_type_id")
   createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
@@ -25,6 +25,7 @@ model Adaptor {
   exampleCode    String?  @map("example_code")
   typeId         Int?     @map("type_id")
   dataProviderId Int?     @map("data_provider_id")
+  aiPrompt       String?  @map("ai_prompt")
 
   category      Category      @relation(fields: [categoryId], references: [id])
   outputType    OutputType    @relation(fields: [outputTypeId], references: [id])
@@ -51,6 +52,7 @@ model OutputType {
   name                 String
   coordinatorAddress   String?   @map("coordinator_address")
   fulfillDataRequestFn String?   @map("fulfill_data_request_fn")
+  format               String?   @map("format")
   createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   adaptors             Adaptor[]
@@ -123,7 +125,7 @@ model User {
   password       String?
   name           String?
   walletAddress  String?  @unique @map("wallet_address")
-  nonce          String?  @map("nonce")
+  nonce          Int      @default(0) @map("nonce")
   isAdmin        Boolean  @default(false) @map("is_admin")
   nonceTimestamp DateTime @map("nonce_timestamp") @db.Timestamptz
   createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
@@ -148,13 +150,16 @@ model DataProvider {
   inputVariables  Json
   outputVariables Json
   endpoint        String
+  method          String    @default("GET")
   apiKey          String?   @map("api_key")
   type            String
   active          Boolean   @default(true)
   iconUrl         String?   @map("icon_url")
   description     String
   exampleCall     String?   @map("example_call")
+  exampleBody     String?   @map("example_body")
   documentation   String?   @map("documentation")
+  aiModel         String?   @map("ai_model")
   createdBy       String?   @map("created_by")
   createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz

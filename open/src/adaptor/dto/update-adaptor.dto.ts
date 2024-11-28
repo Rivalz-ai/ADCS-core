@@ -26,4 +26,14 @@ export class UpdateAdaptorDto {
   @IsInt()
   @IsOptional()
   outputTypeId?: number
+
+  @ApiPropertyOptional({ description: 'The ID of the chain this adaptor belongs to' })
+  @IsInt()
+  @IsOptional()
+  chainId?: number
+
+  @ApiPropertyOptional({ description: 'The AI prompt for the adaptor' })
+  @IsString()
+  @IsOptional()
+  aiPrompt?: string
 }
