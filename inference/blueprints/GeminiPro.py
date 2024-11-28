@@ -18,7 +18,7 @@ def analyze_with_geminipro(content, format):
         model = genai.GenerativeModel('gemini-pro')
         
         # Create prompt
-        prompt = """You are an AI assistant that analyzes content and returns structured decisions.
+        prompt = f"""You are an AI assistant that analyzes content and returns structured decisions.
         
         Instructions:
         1. Analyze the provided content
@@ -42,7 +42,7 @@ def analyze_with_geminipro(content, format):
                 max_output_tokens=1024,
             )
         )
-        print("Raw response:", response)
+        print("Raw response:", prompt)
         
         return response.text
     except Exception as e:

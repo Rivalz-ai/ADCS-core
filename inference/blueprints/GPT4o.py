@@ -39,7 +39,7 @@ def analyze_with_gpt4(content,format):
     
     try:
         # Create prompt
-        prompt = """You are an AI assistant that do whatever in the content provided.
+        prompt = f"""You are an AI assistant that do whatever in the content provided.
         
         Instructions:
         1. Do whatever in the content provided
@@ -58,6 +58,8 @@ def analyze_with_gpt4(content,format):
             max_tokens=500,
             temperature=0.7
         )
+        print(content,format)
+        print(response.choices[0].message.content)
         
         return response.choices[0].message.content
     except Exception as e:

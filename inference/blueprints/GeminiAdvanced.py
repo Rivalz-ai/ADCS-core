@@ -15,7 +15,7 @@ geminiadvanced_bp = Blueprint('geminiadvanced', __name__)
 def analyze_with_geminiadvanced(content, format):
     try:
         # Initialize Gemini-Pro model with advanced settings
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-1.5-pro')
         
         # Create prompt
         prompt = f"""You are an AI assistant that analyzes content and returns structured decisions.
