@@ -21,3 +21,8 @@ export interface IDeviationData {
   submission: bigint
   oracleAddress: string
 }
+
+export interface IFetchAiModelData {
+  content: string
+  dataTypeId: number
+}

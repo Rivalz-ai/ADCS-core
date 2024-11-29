@@ -56,6 +56,7 @@ export const PROVIDER_URL = process.env.PROVIDER_URL || 'http://127.0.0.1:8545'
 export const API_URL = process.env.API_URL || 'http://localhost:3010'
 export const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || ''
 export const ADCS_API_URL = process.env.ADCS_API_URL || 'http://localhost:3012'
+export const INTFERENCE_API_URL = process.env.INTFERENCE_API_URL || 'http://localhost:3013'
 
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,
