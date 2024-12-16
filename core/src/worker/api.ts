@@ -12,6 +12,7 @@ import {
 } from '../types'
 import { buildUrl } from '../utils'
 import { RivalzError, RivalzErrorCode } from '../errors'
+import { IFetchAiModelData } from './types'
 
 export const AGGREGATE_ENDPOINT = buildUrl(API_URL, 'aggregate')
 export const AGGREGATOR_ENDPOINT = buildUrl(API_URL, 'aggregator')
@@ -224,6 +225,9 @@ export async function fetchAdapterByJobId(jobId: string, logger: Logger): Promis
       name: item.name,
       description: item.description,
       categoryId: item.categoryId,
+      aiPrompt: item.aiPrompt,
+      provider: item.provider,
+      outputTypeId: item.outputType.id,
       outputTypeName: item.outputType.name,
       coordinatorAddress: item.outputType.coordinatorAddress,
       fulfillDataRequestFn: item.outputType.fulfillDataRequestFn
@@ -238,6 +242,23 @@ export async function fetchMemeCoinData({ logger }: { logger: Logger }): Promise
   try {
     const url = buildUrl(MEME_ENDPOINT, 'meme')
     return (await axios.get(url))?.data
+  } catch (e) {
+    logger.error(e)
+    throw new RivalzError(RivalzErrorCode.FailedToGetAggregate)
+  }
+}
+
+export async function fetchAiModelData({
+  logger,
+  url,
+  data
+}: {
+  logger: Logger
+  url: string
+  data: IFetchAiModelData
+}) {
+  try {
+    return (await axios.post(url, data))?.data.result
   } catch (e) {
     logger.error(e)
     throw new RivalzError(RivalzErrorCode.FailedToGetAggregate)

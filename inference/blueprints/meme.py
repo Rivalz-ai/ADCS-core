@@ -106,18 +106,14 @@ def market_research_agent():
     meme_trends = search_meme_trends()
     trends_text = "\n".join([f"- {trend['title']}:\n  Snippet: {trend['snippet']}\n  Content: {trend['content']}" for trend in meme_trends])
 
-    research_prompt = f"""You are a cryptocurrency market research agent specializing in meme coins. Your task is to gather and summarize the latest trends, news, and market sentiment for popular meme coins. Please provide a concise report covering the following aspects:
-
-    1. Latest price movements and trading volumes for top meme coins (e.g., Dogecoin, Shiba Inu, Pepe, Floki, Bonk)
-    2. Recent news or events that might impact meme coin markets
-    3. Social media trends and sentiment around meme coins
-    4. Any emerging meme coins gaining traction
-    5. Overall market sentiment towards meme coins
-
-    Consider the following recent meme trends in your analysis:
-    {trends_text}
-
-    Present your findings in a structured, easy-to-read format."""
+    research_prompt = """You are an AI assistant that do whatever in the content provided.
+        
+        Instructions:
+        1. Do whatever in the content provided
+        2. get the desired return format in the content provided
+        3. return with exact format
+        
+        Content : """ + trends_text
 
     research_completion = client.chat.completions.create(
         messages=[
@@ -153,22 +149,20 @@ def main():
         messages=[
             {
                 "role": "user",
-                "content": f"""Based on the following comprehensive data for meme coins, which includes both market research and specific coin metrics: 
+                "content": f"""You are an AI assistant that do whatever in the content provided.
+        
+        Instructions:
+        1. Do whatever in the content provided
+        2. get the desired return format in the content provided
+        3. return with exact format
+        
+        Content : Based on the following comprehensive data for meme coins: 
 
     {combined_data}
 
-    Please analyze the market trends and provide a decision on the single most profitable trade for a specific meme coin. Your analysis should include:
-
-    1. A summary of the current meme coin market landscape based on the provided research.
-    2. An overview of each coin's current market position, including price, volume, and market cap.
-    3. Correlation between the market research findings and the specific coin metrics.
-    4. Identification of any notable trends, patterns, or discrepancies between general market sentiment and individual coin performance.
-    5. A detailed explanation of why you've chosen a particular coin for the most profitable trade, considering both the market research and specific coin data.
-    6. Potential risks and factors that could affect your decision, including market volatility, regulatory concerns, and the often unpredictable nature of meme coin markets.
-
-    After your analysis, provide your final decision in the exact format of an array containing two elements: [token_name, decision]. The token_name should be a string representing the name of the meme coin you've chosen, and decision should be a boolean where true indicates buy and false indicates sell.
-
-    Focus on the coin that you believe will yield the highest profit based on the comprehensive data provided, and explain your reasoning thoroughly.""",
+    Analyze the market trends and provide a decision on the single most profitable trade for a specific meme coin.
+    Return your final decision in the exact format of an array containing two elements: [token_name, decision].
+    The token_name should be a string representing the name of the meme coin you've chosen, and decision should be a boolean where true indicates buy and false indicates sell.""",
             }
         ],
         model="llama3-70b-8192",

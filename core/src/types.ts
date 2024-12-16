@@ -270,8 +270,12 @@ export interface IAdapter {
   description: string
   categoryId: string
   outputTypeName: string
+  outputTypeId: number
   coordinatorAddress: string
   fulfillDataRequestFn: string
+  aiPrompt: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  provider: any
 }
 
 export interface IAggregator {

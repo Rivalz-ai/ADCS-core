@@ -1,5 +1,5 @@
 import { Worker } from 'bullmq'
-import { formatUnits, Interface, parseUnits } from 'ethers'
+import { Interface, parseUnits } from 'ethers'
 import { Logger } from 'pino'
 import type { RedisClientType } from 'redis'
 import {
@@ -12,12 +12,18 @@ import {
 } from '../settings'
 import { IADCSListenerWorker, IADCSTransactionParameters } from '../types'
 
-import { fetchAdapterByJobId, fetchMemeCoinData, fetchPriceByPairName } from './api'
+import {
+  fetchAdapterByJobId,
+  fetchAiModelData,
+  fetchMemeCoinData,
+  fetchPriceByPairName
+} from './api'
 import { buildTransaction } from './adcs.utils'
 import { ADCS_ABI as ADCSAbis } from '../constants/adcs.coordinator.abi'
 import { getReporterByAddress } from '../apis'
 import { buildWallet, sendTransaction } from './utils'
 import { decodeRequest } from './decoding'
+import { IFetchAiModelData } from './types'
 
 const FILE_NAME = import.meta.url
 const DECIMALS = 6
@@ -46,6 +52,7 @@ export async function job(_logger: Logger) {
     logger.debug(inData, 'inData')
     // decode data
     const decodedData = await decodeRequest(inData.data)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let formattedResponse: any
     try {
       const adapter = await fetchAdapterByJobId(inData.jobId, _logger)
@@ -55,7 +62,9 @@ export async function job(_logger: Logger) {
 
       switch (Number(adapter.categoryId)) {
         case 5:
+          // eslint-disable-next-line
           const pairName = `${decodedData[0].value}-${decodedData[1].value}`
+          // eslint-disable-next-line
           const rawData = await fetchPriceByPairName({
             pairName,
             logger: _logger
@@ -64,6 +73,7 @@ export async function job(_logger: Logger) {
             throw new Error('No data')
           }
           console.log({ rawData })
+          // eslint-disable-next-line
           const response = Object.values(Object.values(rawData)[0])[0]
           formattedResponse = parseUnits(Number(response).toFixed(DECIMALS), DECIMALS).toString()
 
@@ -72,9 +82,32 @@ export async function job(_logger: Logger) {
           }
           break
         case 6: // meme
+          // eslint-disable-next-line
           const meme = await fetchMemeCoinData({ logger: _logger })
           formattedResponse = [meme.final_decision.token_name, meme.final_decision.decision]
           break
+        case 7: {
+          // ai model
+          const data: IFetchAiModelData = {
+            content: adapter.aiPrompt,
+            dataTypeId: adapter.outputTypeId
+          }
+          formattedResponse = await fetchAiModelData({
+            logger: _logger,
+            url: adapter.provider.endpoint,
+            data
+          })
+          if (formattedResponse.length === 0) {
+            throw new Error('No response')
+          }
+          if (formattedResponse.length === 1) {
+            formattedResponse = formattedResponse[0]
+          }
+          break
+        }
+      }
+      if (!formattedResponse) {
+        throw new Error('No response')
       }
 
       const payloadParameters: IADCSTransactionParameters = {
@@ -103,6 +136,7 @@ export async function job(_logger: Logger) {
   return wrapper
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function sendTx(tx: any, logger: Logger) {
   const reporter = await getReporterByAddress({
     service: ADCS_SERVICE_NAME,

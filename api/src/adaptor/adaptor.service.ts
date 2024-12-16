@@ -71,13 +71,23 @@ export class AdaptorService {
     })
   }
 
-  async getAdaptorByJobId(jobId: string): Promise<Adaptor> {
-    return await this.prisma.adaptor.findFirst({
+  async getAdaptorByJobId(jobId: string) {
+    const adaptor = await this.prisma.adaptor.findFirst({
       where: { jobId },
       include: {
         outputType: true
       }
     })
+    let provider: any
+    if (adaptor?.dataProviderId) {
+      provider = await this.prisma.dataProvider.findUnique({
+        where: { id: adaptor.dataProviderId }
+      })
+    }
+    return {
+      ...adaptor,
+      provider
+    }
   }
 
   generateUniqueJobId = (): string => {
