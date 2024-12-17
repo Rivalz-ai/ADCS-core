@@ -20,4 +20,10 @@ export class InferenceController {
     const data = await this.inferenceService.analyze(model, content, dataTypeId)
     return data
   }
+
+  @Post('cmc-analyze')
+  async cmcAnalyze() {
+    const data = await this.inferenceService.cmcAnalyze()
+    return data
+  }
 }
