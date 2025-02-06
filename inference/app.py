@@ -7,6 +7,7 @@ from blueprints.GeminiFlash8b import geminiflash8b_bp
 from blueprints.GeminiPro import geminipro_bp
 from blueprints.GeminiAdvanced import geminiadvanced_bp
 from blueprints.GeminiUltr import geminiultr_bp
+from blueprints.crypto_analyzer import crypto_analyzer_bp
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -20,6 +21,7 @@ app.register_blueprint(geminiultr_bp, url_prefix='/geminiultr')
 app.register_blueprint(geminiflash8b_bp, url_prefix='/geminiflash8b')
 app.register_blueprint(geminipro_bp, url_prefix='/geminipro')
 app.register_blueprint(geminiadvanced_bp, url_prefix='/geminiadvanced')
+app.register_blueprint(crypto_analyzer_bp, url_prefix='/crypto_analyzer')
 
 if __name__ == '__main__':
     app.run(debug=True,host='localhost',port=3003)

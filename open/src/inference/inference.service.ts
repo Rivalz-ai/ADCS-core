@@ -47,6 +47,17 @@ export class InferenceService {
       console.log(error)
     }
   }
+
+  async cmcAnalyze() {
+    const url = join('crypto_analyzer', 'analyze')
+    try {
+      const rs = await this.axiosInstance.post(url)
+      return rs.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   // create sleep function
   async sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
