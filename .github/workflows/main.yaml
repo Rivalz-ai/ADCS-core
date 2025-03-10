@@ -8,7 +8,7 @@ on:
 env:
   REPO_URL: "asia-southeast1-docker.pkg.dev/rivalz-be/adcs" #sjc.vultrcr.com/rome"
   SERVICE_NAME: "adcs-core"
-
+  NAMESPACE: "adcs"
 jobs:
   build-adcs-core:
     runs-on: rivalz-be
@@ -35,7 +35,7 @@ jobs:
     steps:
       - run: |
           echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
-          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${COMMIT_HASH} -n ${SERVICE_NAME} --kubeconfig=rome_kubeconfig
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${COMMIT_HASH} -n ${NAMESPACE} --kubeconfig=rome_kubeconfig
   deploy-dev-adcs-core:
     runs-on: rivalz-dc
     needs: build-adcs-core
@@ -45,4 +45,4 @@ jobs:
     steps:
       - run: |
           echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
-          kubectl set image deployment/testnet-${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${COMMIT_HASH} -n testnet-${SERVICE_NAME} --kubeconfig=rome_kubeconfig
+          kubectl set image deployment/testnet-${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${COMMIT_HASH} -n testnet-${NAMESPACE} --kubeconfig=rome_kubeconfig
