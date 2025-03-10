@@ -1,0 +1,48 @@
+name: deploy-adcs-core
+
+on:
+  push:
+    branches: 
+      - 'main'
+      - 'testnet'
+env:
+  REPO_URL: "asia-southeast1-docker.pkg.dev/rivalz-be/adcs" #sjc.vultrcr.com/rome"
+  SERVICE_NAME: "adcs-core"
+
+jobs:
+  build-adcs-core:
+    runs-on: rivalz-be
+    outputs: 
+      commit_hash: ${{ steps.build.outputs.COMMIT_HASH }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: build and push image
+        id: build
+        run: |
+          mv .env.${{ github.ref_name }} .env
+          commit_hash=$(git rev-parse --short $GITHUB_SHA)
+          docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
+          echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
+          docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
+          echo "COMMIT_HASH=$commit_hash" >> $GITHUB_OUTPUT
+  deploy-prod-adcs-core:
+    runs-on: rivalz-dc
+    needs: build-adcs-core
+    if: github.ref_name == 'main'
+    env:
+      COMMIT_HASH: ${{ needs.build-adcs-core.outputs.commit_hash }}
+    steps:
+      - run: |
+          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${COMMIT_HASH} -n ${SERVICE_NAME} --kubeconfig=rome_kubeconfig
+  deploy-dev-adcs-core:
+    runs-on: rivalz-dc
+    needs: build-adcs-core
+    if: github.ref_name == 'testnet'
+    env:
+      COMMIT_HASH: ${{ needs.build-adcs-core.outputs.commit_hash }}
+    steps:
+      - run: |
+          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
+          kubectl set image deployment/testnet-${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${COMMIT_HASH} -n testnet-${SERVICE_NAME} --kubeconfig=rome_kubeconfig
