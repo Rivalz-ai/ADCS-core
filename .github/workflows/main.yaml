@@ -20,7 +20,8 @@ jobs:
       - name: build and push image
         id: build
         run: |
-          mv .env.${{ github.ref_name }} .env
+          mv .env.${{ github.ref_name }} api/.env && \
+          mv .env.${{ github.ref_name }} core/.env && \
           commit_hash=$(git rev-parse --short $GITHUB_SHA)
           docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
           echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
