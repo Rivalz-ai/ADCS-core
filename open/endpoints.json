@@ -1,0 +1,18 @@
+[
+  {
+    "name": "analyze",
+    "endpoint": "https://devadcsapi.rivalz.ai/open/v1/inference/analyze/gpt4",
+    "description": "Using GPT4 model to analyze and return the result",
+    "input": {
+      "content": "decision should buy or sell BTC at this time",
+      "dataTypeId": 2
+    },
+    "output": {
+      "result": "true/false",
+      "message": "success/error message"
+    },
+    "icon_url": "https://api.rivalz.ai/fragmentz/logo.png",
+    "method": "GET",
+    "key": "if needed"
+  }
+]
