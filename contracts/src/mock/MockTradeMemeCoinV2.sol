@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.10;
 
 import "../ADCSConsumerFulfill.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
-import "@uniswap/v3-periphery/contracts/interfaces/IPeripheryPayments.sol";
+import "@uniswap/swap-router-contracts/contracts/interfaces/IV3SwapRouter.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract MockTradeMemeCoin is ADCSConsumerFulfillStringAndBool, Ownable {
+contract MockTradeMemeCoinV2 is ADCSConsumerFulfillStringAndBool, Ownable {
     using ADCS for ADCS.Request;
 
     // Store the last received response for testing
@@ -30,7 +29,7 @@ contract MockTradeMemeCoin is ADCSConsumerFulfillStringAndBool, Ownable {
     event TradeSuccess(uint256 indexed requestId, uint256 amountIn, bool isBuy);
 
     address public immutable WETH;
-    ISwapRouter public immutable swapRouter;
+    IV3SwapRouter public swapRouter;
 
     constructor(
         address _coordinator,
@@ -38,7 +37,7 @@ contract MockTradeMemeCoin is ADCSConsumerFulfillStringAndBool, Ownable {
         address _swapRouter
     ) ADCSConsumerBase(_coordinator) Ownable(msg.sender) {
         WETH = _weth;
-        swapRouter = ISwapRouter(_swapRouter);
+        swapRouter = IV3SwapRouter(_swapRouter);
     }
 
     function setWethAmountForTrade(uint256 amount) external onlyOwner {
@@ -53,6 +52,14 @@ contract MockTradeMemeCoin is ADCSConsumerFulfillStringAndBool, Ownable {
      */
     function addMemeCoin(string memory name, address addr, uint8 decimals) external onlyOwner {
         memeCoins.push(MemeCoin({name: name, addr: addr, decimals: decimals}));
+    }
+
+    function setTokenAmount(uint256 _newAmount) external onlyOwner {
+        memeCoinAmount = _newAmount;
+    }
+
+    function setSwapRouter(address _swapRouter) external onlyOwner {
+        swapRouter = IV3SwapRouter(_swapRouter);
     }
 
     /**
@@ -121,12 +128,11 @@ contract MockTradeMemeCoin is ADCSConsumerFulfillStringAndBool, Ownable {
             // buy memecoin with eth
             IERC20(WETH).approve(address(swapRouter), wethAmountForTrade);
             swapRouter.exactInputSingle(
-                ISwapRouter.ExactInputSingleParams({
+                IV3SwapRouter.ExactInputSingleParams({
                     tokenIn: WETH,
                     tokenOut: memeTokenAddress,
                     fee: 3000,
                     recipient: address(this),
-                    deadline: block.timestamp + 15 minutes,
                     amountIn: wethAmountForTrade,
                     amountOutMinimum: 0,
                     sqrtPriceLimitX96: 0
@@ -141,68 +147,11 @@ contract MockTradeMemeCoin is ADCSConsumerFulfillStringAndBool, Ownable {
             IERC20(memeTokenAddress).approve(address(swapRouter), memeCoinAmountInWei);
 
             swapRouter.exactInputSingle(
-                ISwapRouter.ExactInputSingleParams({
+                IV3SwapRouter.ExactInputSingleParams({
                     tokenIn: memeTokenAddress, // memecoin token
                     tokenOut: WETH, // eth
                     fee: 3000, // 0.3% fee tier
                     recipient: address(this),
-                    deadline: block.timestamp + 15 minutes,
-                    amountIn: memeCoinAmountInWei,
-                    amountOutMinimum: 0, // Set minimum amount out to 0 (should use proper slippage in production)
-                    sqrtPriceLimitX96: 0
-                })
-            );
-            emit TradeSuccess(requestId, memeCoinAmountInWei, false);
-        }
-    }
-
-    function tradeMemeCoinV2(uint256 requestId, string memory tokenName, bool result) internal {
-        // Find memecoin address and decimals by name
-        address memeTokenAddress;
-        uint8 tokenDecimals;
-        for (uint i = 0; i < memeCoins.length; i++) {
-            if (keccak256(bytes(memeCoins[i].name)) == keccak256(bytes(tokenName))) {
-                memeTokenAddress = memeCoins[i].addr;
-                tokenDecimals = memeCoins[i].decimals;
-                break;
-            }
-        }
-        if (memeTokenAddress == address(0)) {
-            emit MemecoinNotFound(tokenName);
-            return;
-        }
-
-        // Execute trade through Uniswap V2
-        if (result) {
-            // buy memecoin with eth
-            IERC20(WETH).approve(address(swapRouter), wethAmountForTrade);
-            swapRouter.exactInputSingle(
-                ISwapRouter.ExactInputSingleParams({
-                    tokenIn: WETH,
-                    tokenOut: memeTokenAddress,
-                    fee: 3000,
-                    recipient: address(this),
-                    deadline: block.timestamp + 15 minutes,
-                    amountIn: wethAmountForTrade,
-                    amountOutMinimum: 0,
-                    sqrtPriceLimitX96: 0
-                })
-            );
-
-            emit TradeSuccess(requestId, wethAmountForTrade, true);
-        } else {
-            // sell memecoin for eth
-            // First approve router to spend our tokens
-            uint256 memeCoinAmountInWei = memeCoinAmount * (10 ** tokenDecimals);
-            IERC20(memeTokenAddress).approve(address(swapRouter), memeCoinAmountInWei);
-
-            swapRouter.exactInputSingle(
-                ISwapRouter.ExactInputSingleParams({
-                    tokenIn: memeTokenAddress, // memecoin token
-                    tokenOut: WETH, // eth
-                    fee: 3000, // 0.3% fee tier
-                    recipient: address(this),
-                    deadline: block.timestamp + 15 minutes,
                     amountIn: memeCoinAmountInWei,
                     amountOutMinimum: 0, // Set minimum amount out to 0 (should use proper slippage in production)
                     sqrtPriceLimitX96: 0
