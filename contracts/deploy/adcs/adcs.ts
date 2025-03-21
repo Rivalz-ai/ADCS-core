@@ -18,11 +18,13 @@ module.exports = async ({
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
 
-  const migrationDirPath = `./migration/${network.name}/ADCS`
+  const migrationDirPath = `./migration/${network.name}/adcs`
   const migrationFilesNames = await loadMigration(migrationDirPath)
+  console.log(migrationFilesNames)
 
   for (const migration of migrationFilesNames) {
     const config = await loadJson(path.join(migrationDirPath, migration))
+    console.log({config})
     let ADCSCoordinator = undefined
 
     // Deploy ADCSCoordinator ////////////////////////////////////////
@@ -41,6 +43,8 @@ module.exports = async ({
         from: deployer,
         log: true
       })
+
+      console.log('deployed',ADCSDeployment.address)
 
       ADCSCoordinator = await ethers.getContractAt('ADCSCoordinator', ADCSDeployment.address)
     }

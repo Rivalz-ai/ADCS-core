@@ -58,6 +58,8 @@ export const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || ''
 export const ADCS_API_URL = process.env.ADCS_API_URL || 'http://localhost:3012'
 export const INTFERENCE_API_URL = process.env.INTFERENCE_API_URL || 'http://localhost:3013'
 
+export const D0G_PRIVATE_KEY = process.env.D0G_PRIVATE_KEY || ''
+
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,
   connection: {

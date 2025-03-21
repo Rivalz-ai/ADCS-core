@@ -63,18 +63,6 @@ module.exports = {
         }
       }
     },
-    polygon: {
-      url: process.env.POLOGON_PROVIDER,
-      accounts: [process.env.TESTNET_DEPLOYER],
-      gasMultiplier: 1.3,
-      saveDeployments: true,
-      verify: {
-        etherscan: {
-          apiUrl: 'https://api.polygonscan.com/api',
-          apiKey: process.env.EXPLORER_API_KEY
-        }
-      }
-    },
     rivalz2_test: {
       url: 'https://rivalz2.rpc.caldera.xyz/infra-partner-http',
       accounts: [process.env.TESTNET_DEPLOYER],
@@ -129,7 +117,96 @@ module.exports = {
           apiKey: process.env.EXPLORER_API_KEY
         }
       }
+    },
+    bsc: {
+      url: 'https://bsc-mainnet.public.blastapi.io',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.basescan.org/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
+    },
+    polygon: {
+      url: 'https://rpc.ankr.com/polygon/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.basescan.org/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
+    },
+    avalanche: {
+      url: 'https://avalanche-c-chain-rpc.publicnode.com',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.snowtrace.io/api',
+          apiKey: "abc"
+        }
+      }
+    },
+    berachain: {
+      url: 'https://berachain-rpc.publicnode.com',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.basescan.org/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
+    },
+    sonic: {
+      url: 'https://rpc.soniclabs.com',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.basescan.org/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
+    },
+    optimism: {
+      url: 'https://optimism.llamarpc.com',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.basescan.org/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
+    },
+    abstract: {
+      url: 'https://api.mainnet.abs.xyz',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.basescan.org/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
+    },
+    mega_eth_test: {
+      url: 'https://carrot.megaeth.com/rpc',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.basescan.org/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
     }
+
   },
 
   paths: {
@@ -146,7 +223,9 @@ module.exports = {
       rivalz2_test: process.env.EXPLORER_API_KEY,
       mainnet: process.env.EXPLORER_API_KEY,
       arbitrum: process.env.ARBITRUM_API_KEY,
-      base: process.env.BASE_API_KEY
+      base: process.env.BASE_API_KEY,
+      avalanche: 'https://api.snowtrace.io/api'
+
     },
     customChains: [
       {

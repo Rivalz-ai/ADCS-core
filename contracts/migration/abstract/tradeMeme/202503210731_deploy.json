@@ -1,0 +1,8 @@
+{
+  "deploy": {
+    "coordinatorAddress": "",
+    "wethAddress": "",
+    "routerAddress": "",
+    "quoterAddress": ""
+  }
+}
