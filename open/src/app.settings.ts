@@ -1,6 +1,6 @@
 import { INestApplication, RequestMethod, VersioningType } from '@nestjs/common'
 import * as dotenv from 'dotenv'
-dotenv.config()
+dotenv.config({ path: '/app/.env' })
 export const MODE = process.env.MODE || 'dev'
 export const RPC_URL = process.env.RPC_URL || ''
 
@@ -28,10 +28,17 @@ export function setAppSetting(app: INestApplication) {
       'https://dev.rivalz.ai',
       /\.rivalz.ai$/,
       'https://adcsdev.rivalz.ai',
-      'https://adcs.rivalz.ai'
+      'https://adcs.rivalz.ai',
+      'https://testnet-adcs.rivalz.ai',
+      'https://testnet-adcs-v2.rivalz.ai'
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204
   })
 }
+
+console.log('Database URL:', process.env.DATABASE_URL);
+console.log('API URL:', process.env.API_URL);
+console.log('RPC URL:', process.env.RPC_URL);
+console.log('APP PORT:', process.env.APP_PORT);

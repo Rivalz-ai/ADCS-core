@@ -79,7 +79,6 @@ jobs:
             echo "No changes detected, skipping build and deploy."
             exit 0
           fi
-          fi
 
           commit_hash=$(git rev-parse --short $GITHUB_SHA)
           docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
