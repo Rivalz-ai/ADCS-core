@@ -23,6 +23,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
       - name: Detect changes
         uses: dorny/paths-filter@v2
         id: filter
@@ -48,15 +51,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
 
       - name: Set environment variables
         run: |
           if [[ "${{ github.ref_name }}" == "testnet" ]]; then
-            export NAMESPACE="testnet-${NAMESPACE}"
+            NAMESPACE="testnet-adcs"
           else
-            export NAMESPACE="${NAMESPACE}"
+            NAMESPACE="adcs"
           fi
           echo "NAMESPACE=${NAMESPACE}" >> $GITHUB_ENV
+
+      - name: Debug Outputs
+        run: |
+          echo "open_changed: ${{ needs.detect-changes.outputs.open_changed }}"
+          echo "api_changed: ${{ needs.detect-changes.outputs.api_changed }}"
+          echo "core_changed: ${{ needs.detect-changes.outputs.core_changed }}"
+          echo "inference_changed: ${{ needs.detect-changes.outputs.inference_changed }}"
+          echo "adaptors_changed: ${{ needs.detect-changes.outputs.adaptors_changed }}"
 
       - name: Detect changes and build
         run: |
@@ -84,7 +98,7 @@ jobs:
           docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
           echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
           docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
-          echo "COMMIT_HASH=$commit_hash" >> $GITHUB_OUTPUT
+          echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV
 
       - name: Set up Kubernetes context
         run: |

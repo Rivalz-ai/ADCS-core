@@ -37,7 +37,6 @@ export function setAppSetting(app: INestApplication) {
     optionsSuccessStatus: 204
   })
 }
-
 console.log('Database URL:', process.env.DATABASE_URL);
 console.log('API URL:', process.env.API_URL);
 console.log('RPC URL:', process.env.RPC_URL);
