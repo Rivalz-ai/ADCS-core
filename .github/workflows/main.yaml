@@ -15,16 +15,15 @@ jobs:
   detect-changes:
     runs-on: rivalz-be
     outputs:
-      open_changed: ${{ steps.filter.outputs.open_matches }}
-      api_changed: ${{ steps.filter.outputs.api_matches }}
-      core_changed: ${{ steps.filter.outputs.core_matches }}
-      inference_changed: ${{ steps.filter.outputs.inference_matches }}
-      adaptors_changed: ${{ steps.filter.outputs.adaptors_matches }}
+      open_changed: ${{ steps.filter.outputs.open }}
+      api_changed: ${{ steps.filter.outputs.api }}
+      core_changed: ${{ steps.filter.outputs.core }}
+      inference_changed: ${{ steps.filter.outputs.inference }}
+      adaptors_changed: ${{ steps.filter.outputs.adaptors }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        # with:
-        #   submodules: "recursive"
+
       - name: Detect changes
         uses: dorny/paths-filter@v2
         id: filter
@@ -50,8 +49,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        # with:
-        #   submodules: "recursive"
 
       - name: Set environment variables
         run: |
@@ -70,40 +67,87 @@ jobs:
           echo "inference_changed: ${{ needs.detect-changes.outputs.inference_changed }}"
           echo "adaptors_changed: ${{ needs.detect-changes.outputs.adaptors_changed }}"
 
-      - name: Detect changes and build
+      - name: Build and deploy open service
+        if: needs.detect-changes.outputs.open_changed == 'true'
         run: |
-          if [[ "${{ needs.detect-changes.outputs.open_changed }}" == "true" ]]; then
-            export SERVICE_NAME="adcs-open"
-            cd open
-          elif [[ "${{ needs.detect-changes.outputs.api_changed }}" == "true" ]]; then
-            export SERVICE_NAME="adcs-api"
-            cd api
-          elif [[ "${{ needs.detect-changes.outputs.core_changed }}" == "true" ]]; then
-            export SERVICE_NAME="adcs-core"
-            cd core
-          elif [[ "${{ needs.detect-changes.outputs.inference_changed }}" == "true" ]]; then
-            export SERVICE_NAME="adcs-inference"
-            cd inference
-          elif [[ "${{ needs.detect-changes.outputs.adaptors_changed }}" == "true" ]]; then
-            export SERVICE_NAME="adcs-adaptors"
-            cd adaptors
-          else
-            echo "No changes detected, skipping build and deploy."
-            exit 0
-          fi
-
+          export SERVICE_NAME="adcs-open"
+          cd open
           commit_hash=$(git rev-parse --short $GITHUB_SHA)
           docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
           echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
           docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
           echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV
-
-      - name: Set up Kubernetes context
-        run: |
+          
           echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
           export KUBECONFIG=rome_kubeconfig
+          
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${commit_hash} -n ${NAMESPACE} --kubeconfig=rome_kubeconfig
+          kubectl rollout status deployment/${SERVICE_NAME}
 
-      - name: Deploy ${SERVICE_NAME} to Kubernetes
+      - name: Build and deploy api service
+        if: needs.detect-changes.outputs.api_changed == 'true'
         run: |
-          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${COMMIT_HASH} -n ${NAMESPACE} --kubeconfig=rome_kubeconfig
+          export SERVICE_NAME="adcs-api"
+          cd api
+          commit_hash=$(git rev-parse --short $GITHUB_SHA)
+          docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
+          echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
+          docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
+          echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV
+          
+          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
+          export KUBECONFIG=rome_kubeconfig
+          
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${commit_hash} -n ${NAMESPACE} --kubeconfig=rome_kubeconfig
+          kubectl rollout status deployment/${SERVICE_NAME}
+
+      - name: Build and deploy core service
+        if: needs.detect-changes.outputs.core_changed == 'true'
+        run: |
+          export SERVICE_NAME="adcs-core"
+          cd core
+          commit_hash=$(git rev-parse --short $GITHUB_SHA)
+          docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
+          echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
+          docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
+          echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV
+          
+          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
+          export KUBECONFIG=rome_kubeconfig
+          
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${commit_hash} -n ${NAMESPACE} --kubeconfig=rome_kubeconfig
+          kubectl rollout status deployment/${SERVICE_NAME}
+
+      - name: Build and deploy inference service
+        if: needs.detect-changes.outputs.inference_changed == 'true'
+        run: |
+          export SERVICE_NAME="adcs-inference"
+          cd inference
+          commit_hash=$(git rev-parse --short $GITHUB_SHA)
+          docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
+          echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
+          docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
+          echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV
+          
+          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
+          export KUBECONFIG=rome_kubeconfig
+          
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${commit_hash} -n ${NAMESPACE} --kubeconfig=rome_kubeconfig
+          kubectl rollout status deployment/${SERVICE_NAME}
+
+      - name: Build and deploy adaptors service
+        if: needs.detect-changes.outputs.adaptors_changed == 'true'
+        run: |
+          export SERVICE_NAME="adcs-adaptors"
+          cd adaptors
+          commit_hash=$(git rev-parse --short $GITHUB_SHA)
+          docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
+          echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
+          docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
+          echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV
+          
+          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
+          export KUBECONFIG=rome_kubeconfig
+          
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${commit_hash} -n ${NAMESPACE} --kubeconfig=rome_kubeconfig
           kubectl rollout status deployment/${SERVICE_NAME}
