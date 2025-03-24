@@ -97,6 +97,7 @@ model Chain {
   id          Int        @id @default(autoincrement())
   name        String
   description String
+  isevm       Boolean
   createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
   updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   listeners   Listener[]
