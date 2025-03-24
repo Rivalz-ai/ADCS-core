@@ -24,8 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          submodules: true
-          fetch-depth: 0
+          submodules: "recursive"
       - name: Detect changes
         uses: dorny/paths-filter@v2
         id: filter
@@ -52,8 +51,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          submodules: true
-          fetch-depth: 0
+          submodules: "recursive"
 
       - name: Set environment variables
         run: |
