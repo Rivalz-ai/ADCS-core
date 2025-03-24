@@ -23,8 +23,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          submodules: "recursive"
+        # with:
+        #   submodules: "recursive"
       - name: Detect changes
         uses: dorny/paths-filter@v2
         id: filter
@@ -50,8 +50,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          submodules: "recursive"
+        # with:
+        #   submodules: "recursive"
 
       - name: Set environment variables
         run: |
