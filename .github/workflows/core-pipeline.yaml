@@ -6,11 +6,10 @@ on:
       - main
       - testnet
     paths:
-      - core/**
-    paths-ignore:
-      - 'api/**'
-      - 'open/**'
-      - 'inference/**'
+      - 'core/**' 
+      - '!api/**'
+      - '!open/**'
+      - '!inference/**'
 
 # Prevent concurrent deployments
 concurrency:

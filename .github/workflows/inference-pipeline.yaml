@@ -6,11 +6,10 @@ on:
       - main
       - testnet
     paths:
-      - inference/**
-    paths-ignore:
-      - 'api/**'
-      - 'core/**'
-      - 'open/**'
+      - 'inference/**'
+      - '!api/**'
+      - '!core/**'
+      - '!open/**'
 
 # Prevent concurrent deployments
 concurrency:
@@ -51,7 +50,7 @@ jobs:
           else
             echo "NAMESPACE=adcs" >> $GITHUB_ENV
           fi
-          
+
       - name: Deploy inference service
         run: |
           echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig

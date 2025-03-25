@@ -7,10 +7,9 @@ on:
       - testnet
     paths:
       - 'api/**'
-    paths-ignore:
-      - 'open/**'
-      - 'core/**'
-      - 'inference/**'
+      - '!open/**'
+      - '!core/**'
+      - '!inference/**'
 
 # Prevent concurrent deployments
 concurrency:
