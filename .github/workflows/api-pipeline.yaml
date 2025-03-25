@@ -25,18 +25,21 @@ env:
 jobs:
   build-and-push:
     runs-on: rivalz-be
+    outputs:
+      commit_hash: ${{ steps.build.outputs.commit_hash }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Build api service
+        id: build
         run: |
           cd api
           commit_hash=$(git rev-parse --short HEAD)
           docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
           echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
           docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
-          echo "COMMIT_HASH=${commit_hash}" >> $GITHUB_ENV
+          echo "commit_hash=${commit_hash}" >> $GITHUB_OUTPUT
 
   deploy:
     needs: build-and-push
@@ -57,5 +60,5 @@ jobs:
         run: |
           echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
           export KUBECONFIG=rome_kubeconfig
-          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${COMMIT_HASH} -n ${NAMESPACE}
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${{ needs.build-and-push.outputs.commit_hash }} -n ${NAMESPACE}
           kubectl rollout status deployment/${SERVICE_NAME} -n ${NAMESPACE}
