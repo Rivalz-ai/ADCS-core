@@ -7,6 +7,7 @@ on:
       - testnet
     paths:
       - 'open/**'
+      - '.github/workflows/open-pipeline.yaml'
       # - '!api/**'
       # - '!core/**'
       # - '!inference/**'
