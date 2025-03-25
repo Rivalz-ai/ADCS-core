@@ -24,13 +24,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 2
+          fetch-depth: 0  # Fetch all history to ensure we can determine changes
+
+      - name: Get commit range
+        id: commit_range
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            echo "range=${{ github.event.before }} ${{ github.event.after }}" >> $GITHUB_OUTPUT
+          else
+            # For pull requests or other events, use a simpler approach
+            git fetch origin
+            echo "range=HEAD~1 HEAD" >> $GITHUB_OUTPUT
+          fi
 
       - name: Detect changes
         uses: dorny/paths-filter@v2
         id: filter
         with:
-          base: HEAD^1  # Compare against previous commit
+          # Use the dynamic commit range instead of a hardcoded reference
+          base: ${{ steps.commit_range.outputs.range }}
           filters: |
             open:
               - 'open/**'
