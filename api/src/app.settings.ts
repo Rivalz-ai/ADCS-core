@@ -1,6 +1,6 @@
 import { INestApplication, RequestMethod, VersioningType } from '@nestjs/common'
 import * as dotenv from 'dotenv'
-dotenv.config({ path: 'app/.env' })
+dotenv.config({ path: '/app/.env' })
 export const MODE = process.env.MODE || 'dev'
 export const RPC_URL = process.env.RPC_URL || ''
 
