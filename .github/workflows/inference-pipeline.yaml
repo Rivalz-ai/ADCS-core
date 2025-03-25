@@ -7,6 +7,7 @@ on:
       - testnet
     paths:
       - 'inference/**'
+      - '.github/workflows/inference-pipeline.yaml'
       # - '!api/**'
       # - '!core/**'
       # - '!open/**'
