@@ -20,6 +20,7 @@ export const ERROR_ENDPOINT = buildUrl(API_URL, 'error')
 export const PRICE_ENDPOINT = buildUrl(API_URL, 'price')
 export const OUTPUT_TYPE_ENDPOINT = buildUrl(ADCS_API_URL, 'adaptors/by-job-id')
 export const MEME_ENDPOINT = buildUrl(ADCS_API_URL, 'inference')
+export const ADD_0G_KEY_ENDPOINT = buildUrl(ADCS_API_URL, 'zero')
 
 /**
 /**
@@ -262,5 +263,14 @@ export async function fetchAiModelData({
   } catch (e) {
     logger.error(e)
     throw new RivalzError(RivalzErrorCode.FailedToGetAggregate)
+  }
+}
+
+export async function add0GKey(key: string) {
+  try {
+    const url = `${ADD_0G_KEY_ENDPOINT}/${key}`
+    await axios.post(url)
+  } catch (error) {
+    console.log(error)
   }
 }

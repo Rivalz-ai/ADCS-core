@@ -124,8 +124,8 @@ module.exports = {
       gasMultiplier: 1.1,
       verify: {
         etherscan: {
-          apiUrl: 'https://api.basescan.org/api',
-          apiKey: process.env.EXPLORER_API_KEY
+          apiUrl: 'https://api.bscscan.com/api',
+          apiKey: 'UJWJCKIXM87H412E5GSZPC487D6YK2ZEMP'
         }
       }
     },
@@ -135,8 +135,8 @@ module.exports = {
       gasMultiplier: 1.1,
       verify: {
         etherscan: {
-          apiUrl: 'https://api.basescan.org/api',
-          apiKey: process.env.EXPLORER_API_KEY
+          apiUrl: 'https://api.polygonscan.com/api',
+          apiKey: 'FKBNQ1Z96FHZEEURN2QYS4S685FGN692JG'
         }
       }
     },
@@ -157,8 +157,8 @@ module.exports = {
       gasMultiplier: 1.1,
       verify: {
         etherscan: {
-          apiUrl: 'https://api.basescan.org/api',
-          apiKey: process.env.EXPLORER_API_KEY
+          apiUrl: 'https://api.berascan.com/api',
+          apiKey: 'M15PPEK29J855G5KPF1ZZB4GS1PTPQZ1IP'
         }
       }
     },
@@ -168,19 +168,19 @@ module.exports = {
       gasMultiplier: 1.1,
       verify: {
         etherscan: {
-          apiUrl: 'https://api.basescan.org/api',
-          apiKey: process.env.EXPLORER_API_KEY
+          apiUrl: 'https://api.sonicscan.org/api',
+          apiKey: '6I4PQHIHD2NYEHKZ5WBF25VYVK2UJZNNQ9'
         }
       }
     },
     optimism: {
-      url: 'https://optimism.llamarpc.com',
+      url: 'https://rpc.ankr.com/optimism/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
         etherscan: {
-          apiUrl: 'https://api.basescan.org/api',
-          apiKey: process.env.EXPLORER_API_KEY
+          apiUrl: 'https://api-optimistic.etherscan.io/api',
+          apiKey: 'KHNQNR2WTC5AVZ1TTPMIACYURK574UQ8QZ'
         }
       }
     },
@@ -219,13 +219,16 @@ module.exports = {
   etherscan: {
     apiKey: {
       blast_sepolia: process.env.EXPLORER_API_KEY,
-      polygon: process.env.EXPLORER_API_KEY,
+      polygon: 'FKBNQ1Z96FHZEEURN2QYS4S685FGN692JG',
       rivalz2_test: process.env.EXPLORER_API_KEY,
       mainnet: process.env.EXPLORER_API_KEY,
       arbitrum: process.env.ARBITRUM_API_KEY,
       base: process.env.BASE_API_KEY,
-      avalanche: 'https://api.snowtrace.io/api'
-
+      avalanche: 'https://api.snowtrace.io/api',
+      berachain:'M15PPEK29J855G5KPF1ZZB4GS1PTPQZ1IP',
+      bsc:'UJWJCKIXM87H412E5GSZPC487D6YK2ZEMP',
+      sonic:'6I4PQHIHD2NYEHKZ5WBF25VYVK2UJZNNQ9',
+      optimism:'KHNQNR2WTC5AVZ1TTPMIACYURK574UQ8QZ'
     },
     customChains: [
       {
@@ -259,7 +262,40 @@ module.exports = {
           apiURL: 'https://api.basescan.org/api',
           browserURL: 'https://basescan.org'
         }
+      },
+      {
+        network: 'berachain',
+        chainId: 80094,
+        urls: {
+          apiURL: 'https://api.berascan.com/api',
+          browserURL: 'https://api.berascan.com'
+        }
+      },
+      {
+        network: 'optimism',
+        chainId: 10,
+        urls: {
+          apiURL: 'https://api-optimistic.etherscan.io/api',
+          browserURL: 'https://optimistic.etherscan.io/'
+        }
+      },
+     ,
+     {
+      network: 'sonic',
+      chainId: 146,
+      urls: {
+        apiURL: 'https://api.sonicscan.org/api',
+        browserURL: 'https://sonicscan.org'
       }
+    },
+    {
+      network: 'polygon',
+      chainId: 137,
+      urls: {
+        apiURL: 'https://api.polygonscan.com/api',
+        browserURL: 'https://polygonscan.com'
+      }
+    }
     ]
   },
   namedAccounts: {

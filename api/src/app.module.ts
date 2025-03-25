@@ -12,6 +12,7 @@ import { ReporterModule } from './reporter/reporter.module'
 import { InferenceModule } from './inference/inference.module'
 import { ProviderModule } from './providers/provider.module'
 import { CacheModule } from '@nestjs/cache-manager'
+import { ZeroModule } from './zero/zero.module'
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -32,7 +33,8 @@ import { CacheModule } from '@nestjs/cache-manager'
     ListenerModule,
     ReporterModule,
     InferenceModule,
-    ProviderModule
+    ProviderModule,
+    ZeroModule
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService]

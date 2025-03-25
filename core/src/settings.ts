@@ -52,6 +52,9 @@ export const LOG_DIR = process.env.LOG_DIR || './log'
 
 export const REDIS_HOST = process.env.REDIS_HOST || 'localhost'
 export const REDIS_PORT = process.env.REDIS_PORT ? Number(process.env.REDIS_PORT) : 6379
+export const REDIS_USERNAME = process.env.REDIS_USERNAME || ''
+export const REDIS_PASSWORD = process.env.REDIS_PASSWORD || ''
+
 export const PROVIDER_URL = process.env.PROVIDER_URL || 'http://127.0.0.1:8545'
 export const API_URL = process.env.API_URL || 'http://localhost:3010'
 export const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || ''
@@ -59,12 +62,17 @@ export const ADCS_API_URL = process.env.ADCS_API_URL || 'http://localhost:3012'
 export const INTFERENCE_API_URL = process.env.INTFERENCE_API_URL || 'http://localhost:3013'
 
 export const D0G_PRIVATE_KEY = process.env.D0G_PRIVATE_KEY || ''
+export const ZeroG_RPC_URL =
+  process.env.ZeroG_RPC_URL ||
+  'https://rpc.ankr.com/0g_newton/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948'
 
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,
   connection: {
     host: REDIS_HOST,
-    port: REDIS_PORT
+    port: REDIS_PORT,
+    username: 'default',
+    password: REDIS_PASSWORD
   }
 }
 
