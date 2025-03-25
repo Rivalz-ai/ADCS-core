@@ -7,7 +7,15 @@ on:
       - testnet
     paths:
       - core/**
+    paths-ignore:
+      - 'api/**'
+      - 'open/**'
+      - 'inference/**'
 
+# Prevent concurrent deployments
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   REPO_URL: "asia-southeast1-docker.pkg.dev/rivalz-be/adcs"
   NAMESPACE: "adcs"
@@ -21,6 +29,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build core service
+        run: |
+          cd core
+          commit_hash=$(git rev-parse --short HEAD)
+          docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
           echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
           docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
           echo "COMMIT_HASH=$commit_hash" >> $GITHUB_ENV
@@ -36,14 +48,13 @@ jobs:
       - name: Set environment variables
         run: |
           if [[ "${{ github.ref_name }}" == "testnet" ]]; then
-            NAMESPACE="testnet-adcs"
+            echo "NAMESPACE=testnet-adcs" >> $GITHUB_ENV
           else
-            NAMESPACE="adcs"
+            echo "NAMESPACE=adcs" >> $GITHUB_ENV
           fi
-          echo "NAMESPACE=${NAMESPACE}" >> $GITHUB_ENV
       - name: Deploy core service
         run: |
           echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
           export KUBECONFIG=rome_kubeconfig
-          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${commit_hash} -n ${NAMESPACE}
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${COMMIT_HASH} -n ${NAMESPACE}
           kubectl rollout status deployment/${SERVICE_NAME} -n ${NAMESPACE}
