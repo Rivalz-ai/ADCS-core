@@ -39,7 +39,7 @@ jobs:
           docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
           echo "commit_hash=${commit_hash}" >> $GITHUB_OUTPUT
           
-  deploy core service:
+  deploy-core-service:
     needs: build-and-push
     runs-on: rivalz-be
     steps:
