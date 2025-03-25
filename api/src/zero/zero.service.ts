@@ -10,7 +10,7 @@ export class ZeroService {
       data: {
         name: key,
         rootHash: key,
-        createAt: new Date()
+        createdAt: new Date()
       }
     })
   }

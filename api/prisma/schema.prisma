@@ -163,3 +163,10 @@ model DataProvider {
 
   @@map("data_provider")
 }
+
+model zeroGUploaded {
+  id        Int      @id @default(autoincrement())
+  name      String
+  rootHash  String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+}
