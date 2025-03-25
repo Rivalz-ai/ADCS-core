@@ -19,6 +19,7 @@ env:
   REPO_URL: "asia-southeast1-docker.pkg.dev/rivalz-be/adcs"
   NAMESPACE: "adcs"
   KUBECONFIG: "${{ vars.ROME_KUBECONFIG }}"
+  SERVICE_NAME: "adcs-inference"
 
 jobs:
   build-and-push:
