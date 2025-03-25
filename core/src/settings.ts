@@ -139,7 +139,6 @@ export function getObservedBlockRedisKey(contractAddress: string) {
 }
 
 console.log(process.env.REDIS_HOST)
-console.log(process.env.REDIS_PASSWORD)
 console.log(process.env.REDIS_USERNAME)
 console.log(process.env.REDIS_PORT)
 console.log(process.env.PROVIDER_URL)
