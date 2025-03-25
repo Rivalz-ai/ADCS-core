@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { join } from 'path'
-import { MODE, REDIS_HOST, REDIS_PORT } from './app.settings'
+import { MODE, REDIS_HOST, REDIS_PASSWORD, REDIS_PORT, REDIS_USER } from './app.settings'
 import { BullModule } from '@nestjs/bullmq'
 import { AdaptorModule } from './adaptor/adaptor.module'
 import { ListenerModule } from './listener/listener.module'
@@ -22,7 +22,9 @@ import { ZeroModule } from './zero/zero.module'
     BullModule.forRoot({
       connection: {
         host: REDIS_HOST,
-        port: Number(REDIS_PORT)
+        port: Number(REDIS_PORT),
+        username: REDIS_USER,
+        password: REDIS_PASSWORD
       }
     }),
     CacheModule.register({
