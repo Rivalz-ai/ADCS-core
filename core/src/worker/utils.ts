@@ -119,6 +119,7 @@ export async function sendTransaction({
     if (txReceipt === null) {
       throw new RivalzError(RivalzErrorCode.TxNotMined)
     }
+    return txReceipt
   } catch (e) {
     _logger.debug(e, 'e')
 

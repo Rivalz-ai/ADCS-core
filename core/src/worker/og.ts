@@ -6,9 +6,10 @@ import {
   FixedPriceFlow__factory,
   FixedPriceFlow
 } from '@0glabs/0g-ts-sdk'
-import { ethers, getBytes, JsonRpcProvider, Wallet } from 'ethers'
+import { encodeBase64, ethers, getBytes, JsonRpcProvider, Wallet } from 'ethers'
 import { D0G_PRIVATE_KEY, ZeroG_RPC_URL } from '../settings'
 import { writeFileSync, unlinkSync } from 'fs'
+import { error } from 'console'
 
 export class ZeroG {
   indexer: Indexer
@@ -42,7 +43,6 @@ export class ZeroG {
 
       // Initialize batcher with flowContract
       const batcher = new Batcher(1, nodes, this.flowContract, ZeroG_RPC_URL)
-
       // Prepare KV data
       const key1 = Uint8Array.from(Buffer.from(key, 'utf-8'))
       const val1 = Uint8Array.from(Buffer.from(data, 'utf-8'))
@@ -50,36 +50,51 @@ export class ZeroG {
       let streamId = ethers.keccak256(
         ethers.solidityPacked(['address', 'uint256'], [this.signer.address, Date.now()])
       )
-      batcher.streamDataBuilder.set(streamId, key1, val1)
+      batcher.streamDataBuilder.set(key, key1, val1)
+      console.log('rpc', ZeroG_RPC_URL)
       // Execute batch
-      const [tx, batchErr] = await batcher.exec()
+      const [tx, batchErr] = await batcher.exec({
+        fee: 10000000000000n,
+        tags: '0x',
+        finalityRequired: true,
+        taskSize: 1,
+        expectedReplica: 1,
+        skipTx: false
+      })
       if (batchErr === null) {
         console.log('Batcher executed successfully, tx: ', tx)
       } else {
         console.log('Error executing batcher: ', batchErr)
       }
     } catch (error) {
-      console.error('Unexpected error:', error.message)
+      console.error('Unexpected error:', error)
     }
   }
 
   async downloadKV(key: string) {
-    const KvClientAddr = 'http://3.101.147.150:6789'
-    const streamId = ethers.keccak256(
-      ethers.solidityPacked(['address', 'uint256'], [this.signer.address, Date.now()])
-    )
-    const kvClient = new KvClient(KvClientAddr)
-    const keyUintArray = Uint8Array.from(Buffer.from(key, 'utf-8'))
-    const keyBytes = getBytes(keyUintArray)
-    let val = await kvClient.getValue(streamId, keyBytes)
-    console.log(val)
+    try {
+      console.log('start...')
+      const KvClientAddr = 'http://3.101.147.150:6789'
+      const streamId = ethers.keccak256(
+        ethers.solidityPacked(['address', 'uint256'], [this.signer.address, Date.now()])
+      )
+
+      const kvClient = new KvClient(KvClientAddr)
+      const first = await kvClient.getFirst(streamId, 0, 1)
+      console.log({ first })
+      const keyUintArray = Uint8Array.from(Buffer.from(key, 'utf-8'))
+      console.log('downloading...')
+      let val = await kvClient.getValue(key, keyUintArray)
+      console.log('data', val)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async uploadFile(fileName: string, data: string) {
     try {
       // Prepare a sample file (or use your own)
       writeFileSync(`${fileName}.txt`, data)
-
       // Create ZgFile object from file path
       const zgFile = await ZgFile.fromFilePath(`${fileName}.txt`)
 
@@ -88,12 +103,28 @@ export class ZeroG {
       if (treeErr !== null) {
         throw new Error(`Error generating Merkle tree: ${treeErr}`)
       }
-
       // Get root hash for future reference
       console.log('File Root Hash:', tree?.rootHash() ?? '')
       console.log('zero g rpc', ZeroG_RPC_URL)
       try {
-        const [tx, uploadErr] = await this.indexer.upload(zgFile, ZeroG_RPC_URL, this.signer)
+        const feeInfo = await this.provider.getFeeData()
+        console.log({ feeInfo })
+        const feeMutiplier = 5
+        const gasPrice =
+          BigInt(Number(feeInfo.gasPrice) * feeMutiplier) > BigInt(feeInfo.maxFeePerGas || 0)
+            ? BigInt(feeInfo.maxFeePerGas || 0)
+            : BigInt(Number(feeInfo.gasPrice) * feeMutiplier)
+        const [tx, uploadErr] = await this.indexer.upload(
+          zgFile,
+          ZeroG_RPC_URL,
+          this.signer,
+          undefined,
+          undefined,
+          {
+            //gasPrice: 10000000000000n
+            gasLimit: 30000000000000n
+          }
+        )
         if (uploadErr !== null) {
           throw new Error(`Upload error: ${uploadErr}`)
         }
@@ -145,3 +176,16 @@ export class ZeroG {
     }
   }
 }
+
+const zero = new ZeroG()
+zero
+  .uploadKvData('0x391aaf047f156a9e8812b0d8b541dbdd0f3fcee35b03a974396f887c721003cb', 'hello')
+  .catch((err) => {
+    console.error(err)
+  })
+
+// zero
+//   .downloadKV('0x07253d7815290ca5813298e93eaa8912ab62295bb65ecffca9db92394380fce2')
+//   .catch((err) => {
+//     console.error(err)
+//   })

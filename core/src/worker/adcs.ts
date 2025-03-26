@@ -159,13 +159,14 @@ async function sendTx(tx: any, logger: Logger, zeroG: ZeroG) {
     gasLimit: ADCS_FULFILL_GAS_MINIMUM,
     logger
   }
-  await sendTransaction(txParams)
+  const txReceipt = await sendTransaction(txParams)
 
   // send to 0G
   try {
-    const fileData = tx.rc.toString()
-    const randomWords = crypto.randomUUID()
-    await zeroG.uploadKvData(randomWords, fileData)
-    await add0GKey(randomWords)
+    if (txReceipt) {
+      const fileData = tx.rc.toString()
+      await zeroG.uploadKvData(txReceipt.transactionHash, fileData)
+      await add0GKey(txReceipt.transactionHash)
+    }
   } catch (error) {}
 }
