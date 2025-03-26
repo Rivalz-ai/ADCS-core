@@ -1,12 +1,8 @@
 import { IsString, IsOptional, IsInt } from 'class-validator'
 import { ApiPropertyOptional } from '@nestjs/swagger'
+import { ChainType } from '../types/chain.types';
 
 
-
-export enum ChainType {
-  EVM = 'EVM',
-  NON_EVM = 'NON_EVM',
-}
 
 export class UpdateAdaptorDto {
   @ApiPropertyOptional({ description: 'The name of the adaptor' })
