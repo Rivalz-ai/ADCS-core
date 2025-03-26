@@ -1,11 +1,18 @@
 import { IsString, IsNotEmpty, IsInt, Matches, IsOptional } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
+
+
+export enum ChainType {
+  EVM = 'EVM',
+  NON_EVM = 'NON_EVM',
+}
 export class CreateAdaptorDto {
   @ApiProperty({ description: 'The name of the adaptor' })
   @IsString()
   @IsNotEmpty()
   name: string
+  chainType: ChainType;
 
   @ApiProperty({ description: 'The description of the adaptor' })
   @IsString()

@@ -28,6 +28,7 @@ export class AdaptorService {
     // Create the adaptor data object with validated fields
     const adaptorData = {
       name: data.name,
+      chainType: data.chainType,
       description: data.description,
       categoryId: data.categoryId,
       outputTypeId: data.outputTypeId,

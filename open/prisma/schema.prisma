@@ -7,11 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ChainType {
+  EVM
+  NON_EVM
+}
+
 model Adaptor {
   id             Int      @id @default(autoincrement())
   jobId          String   @map("job_id")
   name           String
   description    String
+  chainType      ChainType  @default(EVM)
   variables      String?  @map("variables")
   categoryId     Int      @map("category_id")
   outputTypeId   Int      @map("output_type_id")
