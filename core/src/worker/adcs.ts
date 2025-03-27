@@ -1,5 +1,5 @@
 import { Worker } from 'bullmq'
-import { Interface, parseUnits } from 'ethers'
+import { Interface, parseUnits, randomBytes, uuidV4 } from 'ethers'
 import { Logger } from 'pino'
 import type { RedisClientType } from 'redis'
 import {
@@ -13,6 +13,7 @@ import {
 import { IADCSListenerWorker, IADCSTransactionParameters } from '../types'
 
 import {
+  add0GKey,
   fetchAdapterByJobId,
   fetchAiModelData,
   fetchMemeCoinData,
@@ -24,13 +25,16 @@ import { getReporterByAddress } from '../apis'
 import { buildWallet, sendTransaction } from './utils'
 import { decodeRequest } from './decoding'
 import { IFetchAiModelData } from './types'
+import { ZeroG } from './og'
+
+import * as crypto from 'crypto'
 
 const FILE_NAME = import.meta.url
 const DECIMALS = 6
 
-export async function buildWorker(redisClient: RedisClientType, _logger: Logger) {
+export async function buildWorker(redisClient: RedisClientType, _logger: Logger, zeroG: ZeroG) {
   const logger = _logger.child({ name: 'worker', file: FILE_NAME })
-  const worker = new Worker(WORKER_ADCS_QUEUE_NAME, await job(_logger), BULLMQ_CONNECTION)
+  const worker = new Worker(WORKER_ADCS_QUEUE_NAME, await job(zeroG, _logger), BULLMQ_CONNECTION)
 
   async function handleExit() {
     logger.info('Exiting. Wait for graceful shutdown.')
@@ -42,7 +46,7 @@ export async function buildWorker(redisClient: RedisClientType, _logger: Logger)
   process.on('SIGTERM', handleExit)
 }
 
-export async function job(_logger: Logger) {
+export async function job(zeroG: ZeroG, _logger: Logger) {
   const logger = _logger.child({ name: 'job', file: FILE_NAME })
   const iface = new Interface(ADCSAbis)
 
@@ -125,7 +129,8 @@ export async function job(_logger: Logger) {
       logger.debug(tx, 'tx')
       console.log({ tx })
       //send transaction
-      await sendTx(tx, logger)
+      await sendTx(tx, logger, zeroG)
+
       return tx
     } catch (e) {
       logger.error(e)
@@ -137,7 +142,7 @@ export async function job(_logger: Logger) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function sendTx(tx: any, logger: Logger) {
+async function sendTx(tx: any, logger: Logger, zeroG: ZeroG) {
   const reporter = await getReporterByAddress({
     service: ADCS_SERVICE_NAME,
     chain: CHAIN,
@@ -154,5 +159,14 @@ async function sendTx(tx: any, logger: Logger) {
     gasLimit: ADCS_FULFILL_GAS_MINIMUM,
     logger
   }
-  await sendTransaction(txParams)
+  const txReceipt = await sendTransaction(txParams)
+
+  // send to 0G
+  try {
+    if (txReceipt) {
+      const fileData = tx.rc.toString()
+      await zeroG.uploadKvData(txReceipt.transactionHash, fileData)
+      await add0GKey(txReceipt.transactionHash)
+    }
+  } catch (error) {}
 }

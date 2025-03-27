@@ -4,7 +4,7 @@ import { buildLogger } from '../logger'
 import { buildListener as buildADCSListener } from './adcs'
 import { postprocessListeners } from './utils'
 import { RivalzError, RivalzErrorCode } from '../errors'
-import { CHAIN, REDIS_HOST, REDIS_PORT } from '../settings'
+import { CHAIN, REDIS_HOST, REDIS_PORT, REDIS_USERNAME, REDIS_PASSWORD } from '../settings'
 import { getListeners } from './api'
 import { hookConsoleError } from '../utils'
 import { IListeners } from './types'
@@ -35,7 +35,9 @@ async function main() {
     throw new RivalzError(RivalzErrorCode.UndefinedListenerRequested)
   }
 
-  const redisClient: RedisClientType = createClient({ url: `redis://${REDIS_HOST}:${REDIS_PORT}` })
+  const redisClient: RedisClientType = createClient({
+    url: `redis://${REDIS_USERNAME}:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}`
+  })
 
   await redisClient.connect()
 

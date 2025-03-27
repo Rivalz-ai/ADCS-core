@@ -9,6 +9,9 @@ export const JWT_EXP = process.env.JWT_EXP || '1h'
 
 export const REDIS_HOST = process.env.REDIS_HOST || 'localhost'
 export const REDIS_PORT = process.env.REDIS_PORT || '6379'
+export const REDIS_USER = process.env.REDIS_USER || 'default'
+export const REDIS_PASSWORD = process.env.REDIS_PASSWORD || ''
+
 export const API_URL = process.env.API_URL || 'http://localhost:3010/fetcher/v1'
 
 export const INFERENCE_API_URL = process.env.INFERENCE_API_URL || 'http://localhost:5000'

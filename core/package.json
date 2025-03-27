@@ -12,6 +12,7 @@
   "author": "Rivalz",
   "license": "MIT",
   "devDependencies": {
+    "@0glabs/0g-ts-sdk": "^0.2.8",
     "@slack/webhook": "^7.0.3",
     "@types/express": "^4.17.21",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
@@ -22,6 +23,7 @@
     "express": "^4.19.2",
     "prettier": "^3.0.2",
     "specifier-resolution-node": "^1.1.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
   },
   "scripts": {
