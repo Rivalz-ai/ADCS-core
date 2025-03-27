@@ -1,88 +1,93 @@
-import { HardhatRuntimeEnvironment } from 'hardhat/types'
-
-import path from 'node:path'
+import { HardhatRuntimeEnvironment } from 'hardhat/types';
+import path from 'node:path';
 import {
   loadJson,
   loadMigration,
   updateMigration,
   validateCoordinatorDeployConfig,
-  validateSetConfig
-} from '../../scripts/utils'
+  validateSetConfig,
+} from '../../scripts/utils';
 
 module.exports = async ({
   getNamedAccounts,
   deployments,
   network,
-  ethers
+  ethers,
 }: HardhatRuntimeEnvironment) => {
-  const { deploy } = deployments
-  const { deployer } = await getNamedAccounts()
+  const { deploy } = deployments;
+  const { deployer } = await getNamedAccounts();
 
-  const migrationDirPath = `./migration/${network.name}/ADCS`
-  const migrationFilesNames = await loadMigration(migrationDirPath)
+  const migrationDirPath = `./migration/${network.name}/ADCS`;
+  const migrationFilesNames = await loadMigration(migrationDirPath);
 
   for (const migration of migrationFilesNames) {
-    const config = await loadJson(path.join(migrationDirPath, migration))
-    let ADCSCoordinator = undefined
+    const config = await loadJson(path.join(migrationDirPath, migration));
 
-    // Deploy ADCSCoordinator ////////////////////////////////////////
+    let ADCSCoordinator = config.ADCSCoordinatorAddress
+      ? await ethers.getContractAt('ADCSCoordinator', config.ADCSCoordinatorAddress)
+      : undefined;
+
+    // Deploy ADCSCoordinator if specified in config
     if (config.deploy) {
-      console.log('deploy')
-      const deployConfig = config.deploy
-      if (!validateCoordinatorDeployConfig(deployConfig)) {
-        throw new Error('Invalid RRC deploy config')
+      console.log('Deploying ADCSCoordinator...');
+
+      if (!validateCoordinatorDeployConfig(config.deploy)) {
+        throw new Error('Invalid ADCS deploy config');
       }
 
-      const ADCSCoordinatorName = `ADCSCoordinator_${deployConfig.version}`
-
+      const ADCSCoordinatorName = `ADCSCoordinator_${config.deploy.version}`;
       const ADCSDeployment = await deploy(ADCSCoordinatorName, {
         contract: 'ADCSCoordinator',
         args: [],
         from: deployer,
-        log: true
-      })
+        log: true,
+      });
 
-      ADCSCoordinator = await ethers.getContractAt('ADCSCoordinator', ADCSDeployment.address)
+      ADCSCoordinator = await ethers.getContractAt('ADCSCoordinator', ADCSDeployment.address);
     }
 
-    ADCSCoordinator = ADCSCoordinator
-      ? ADCSCoordinator
-      : await ethers.getContractAt('ADCSCoordinator', config.ADCSCoordinatorAddress)
+    if (!ADCSCoordinator) {
+      throw new Error('ADCSCoordinator is not deployed or address is missing in config.');
+    }
 
-    // Register Oracle //////////////////////////////////////////////////////////
+    // Helper function to process Oracle registration/deregistration
+    const processOracles = async (action, oracles, method) => {
+      console.log(`${action} Oracles...`);
+
+      await Promise.all(
+        oracles.map(async (oracle) => {
+          const tx = await (await ADCSCoordinator[method](oracle)).wait();
+          const log = ADCSCoordinator.interface.parseLog(tx.logs[0]);
+          console.log(`${action} Oracle`, log?.args.oracle);
+        })
+      );
+    };
+
+    // Register Oracles
     if (config.registerOracle) {
-      console.log('registerOracle', await ADCSCoordinator.getAddress())
-
-      for (const oracle of config.registerOracle) {
-        const tx: any = await (await ADCSCoordinator.registerOracle(oracle)).wait()
-        const log = ADCSCoordinator.interface.parseLog(tx.logs[0])
-        console.log('Oracle Registered', log?.args.oracle)
-      }
+      await processOracles('Registering', config.registerOracle, 'registerOracle');
     }
 
-    // Deregister Oracle ////////////////////////////////////////////////////////
+    // Deregister Oracles
     if (config.deregisterOracle) {
-      console.log('deregisterOracle')
-
-      for (const oracle of config.deregisterOracle) {
-        const tx: any = await (await ADCSCoordinator.deregisterOracle(oracle)).wait()
-        const log = ADCSCoordinator.interface.parseLog(tx.logs[0])
-        console.log('Oracle Deregistered', log?.args.oracle)
-      }
+      await processOracles('Deregistering', config.deregisterOracle, 'deregisterOracle');
     }
 
-    // Configure Request-Response coordinator ///////////////////////////////////
+    // Configure ADCSCoordinator
     if (config.setConfig) {
-      console.log('setConfig')
-      const setConfig = config.setConfig
-      if (!validateSetConfig(setConfig)) {
-        throw new Error('Invalid RRC setConfig config')
+      console.log('Setting ADCSCoordinator Config...');
+
+      if (!validateSetConfig(config.setConfig)) {
+        throw new Error('Invalid ADCS setConfig config');
       }
 
-      await (
-        await ADCSCoordinator.setConfig(setConfig.maxGasLimit, setConfig.gasAfterPaymentCalculation)
-      ).wait()
+      const { maxGasLimit, gasAfterPaymentCalculation } = config.setConfig;
+      await (await ADCSCoordinator.setConfig(maxGasLimit, gasAfterPaymentCalculation)).wait();
+      console.log('Configuration updated successfully.');
     }
-    await updateMigration(migrationDirPath, migration)
+
+    // Update migration status
+    await updateMigration(migrationDirPath, migration);
+    console.log(`Migration ${migration} processed successfully.`);
   }
-}
+};
