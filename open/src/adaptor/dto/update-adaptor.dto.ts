@@ -1,11 +1,15 @@
 import { IsString, IsOptional, IsInt } from 'class-validator'
 import { ApiPropertyOptional } from '@nestjs/swagger'
+import { ChainType } from '../types/chain.types';
+
+
 
 export class UpdateAdaptorDto {
   @ApiPropertyOptional({ description: 'The name of the adaptor' })
   @IsString()
   @IsOptional()
   name?: string
+  chainType?: ChainType;
 
   @ApiPropertyOptional({ description: 'The description of the adaptor' })
   @IsString()

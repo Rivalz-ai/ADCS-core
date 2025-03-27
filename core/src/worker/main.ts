@@ -3,8 +3,9 @@ import type { RedisClientType } from 'redis'
 import { createClient } from 'redis'
 import { IWorkers } from './types'
 import { buildLogger } from '../logger'
-import { REDIS_HOST, REDIS_PORT } from '../settings'
+import { REDIS_HOST, REDIS_PASSWORD, REDIS_PORT, REDIS_USERNAME } from '../settings'
 import { buildWorker as adcsWorker } from './adcs'
+import { ZeroG } from './og'
 
 const WORKERS: IWorkers = {
   ADCS: adcsWorker
@@ -15,10 +16,13 @@ const LOGGER = buildLogger('worker')
 async function main() {
   const worker = loadArgs()
 
-  const redisClient: RedisClientType = createClient({ url: `redis://${REDIS_HOST}:${REDIS_PORT}` })
+  const redisClient: RedisClientType = createClient({
+    url: `redis://${REDIS_USERNAME}:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}`
+  })
   await redisClient.connect()
+  const zeroG = new ZeroG()
 
-  WORKERS[worker](redisClient, LOGGER)
+  WORKERS[worker](redisClient, LOGGER, zeroG)
 
   LOGGER.info('Worker launched')
 }

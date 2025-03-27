@@ -156,6 +156,62 @@ contract MockTradeMemeCoin is ADCSConsumerFulfillStringAndBool, Ownable {
         }
     }
 
+    function tradeMemeCoinV2(uint256 requestId, string memory tokenName, bool result) internal {
+        // Find memecoin address and decimals by name
+        address memeTokenAddress;
+        uint8 tokenDecimals;
+        for (uint i = 0; i < memeCoins.length; i++) {
+            if (keccak256(bytes(memeCoins[i].name)) == keccak256(bytes(tokenName))) {
+                memeTokenAddress = memeCoins[i].addr;
+                tokenDecimals = memeCoins[i].decimals;
+                break;
+            }
+        }
+        if (memeTokenAddress == address(0)) {
+            emit MemecoinNotFound(tokenName);
+            return;
+        }
+
+        // Execute trade through Uniswap V2
+        if (result) {
+            // buy memecoin with eth
+            IERC20(WETH).approve(address(swapRouter), wethAmountForTrade);
+            swapRouter.exactInputSingle(
+                ISwapRouter.ExactInputSingleParams({
+                    tokenIn: WETH,
+                    tokenOut: memeTokenAddress,
+                    fee: 3000,
+                    recipient: address(this),
+                    deadline: block.timestamp + 15 minutes,
+                    amountIn: wethAmountForTrade,
+                    amountOutMinimum: 0,
+                    sqrtPriceLimitX96: 0
+                })
+            );
+
+            emit TradeSuccess(requestId, wethAmountForTrade, true);
+        } else {
+            // sell memecoin for eth
+            // First approve router to spend our tokens
+            uint256 memeCoinAmountInWei = memeCoinAmount * (10 ** tokenDecimals);
+            IERC20(memeTokenAddress).approve(address(swapRouter), memeCoinAmountInWei);
+
+            swapRouter.exactInputSingle(
+                ISwapRouter.ExactInputSingleParams({
+                    tokenIn: memeTokenAddress, // memecoin token
+                    tokenOut: WETH, // eth
+                    fee: 3000, // 0.3% fee tier
+                    recipient: address(this),
+                    deadline: block.timestamp + 15 minutes,
+                    amountIn: memeCoinAmountInWei,
+                    amountOutMinimum: 0, // Set minimum amount out to 0 (should use proper slippage in production)
+                    sqrtPriceLimitX96: 0
+                })
+            );
+            emit TradeSuccess(requestId, memeCoinAmountInWei, false);
+        }
+    }
+
     receive() external payable {}
 
     function withdraw() external onlyOwner {
