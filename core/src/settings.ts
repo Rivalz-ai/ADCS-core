@@ -62,9 +62,7 @@ export const ADCS_API_URL = process.env.ADCS_API_URL || 'http://localhost:3012'
 export const INTFERENCE_API_URL = process.env.INTFERENCE_API_URL || 'http://localhost:3013'
 
 export const D0G_PRIVATE_KEY = process.env.D0G_PRIVATE_KEY || ''
-export const ZeroG_RPC_URL =
-  process.env.ZeroG_RPC_URL ||
-  'https://rpc.ankr.com/0g_newton/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948'
+export const ZeroG_RPC_URL = process.env.ZeroG_RPC_URL || ''
 
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,
