@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import { JsonRpcProvider } from 'ethers'
-dotenv.config()
+dotenv.config({ path: '/app/.env' })
 
 export const CHAIN = process.env.CHAIN || 'localhost'
 export const DEPLOYMENT_NAME = process.env.DEPLOYMENT_NAME || 'rivalz'
@@ -52,6 +52,7 @@ export const LOG_DIR = process.env.LOG_DIR || './log'
 
 export const REDIS_HOST = process.env.REDIS_HOST || 'localhost'
 export const REDIS_PORT = process.env.REDIS_PORT ? Number(process.env.REDIS_PORT) : 6379
+
 export const REDIS_USERNAME = process.env.REDIS_USERNAME || ''
 export const REDIS_PASSWORD = process.env.REDIS_PASSWORD || ''
 
@@ -143,3 +144,12 @@ export const PROVIDER = createJsonRpcProvider()
 export function getObservedBlockRedisKey(contractAddress: string) {
   return `${contractAddress}-listener-${DEPLOYMENT_NAME}`
 }
+
+console.log(process.env.REDIS_HOST)
+console.log(process.env.REDIS_USERNAME)
+console.log(process.env.REDIS_PORT)
+console.log(process.env.PROVIDER_URL)
+console.log(process.env.API_URL)
+console.log(process.env.ADCS_API_URL)
+console.log(process.env.CHAIN)
+console.log(process.env.LOG_DIR)

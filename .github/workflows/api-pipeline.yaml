@@ -1,0 +1,65 @@
+name: ADCS API Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - testnet
+    paths:
+      - 'api/**'
+      - '.github/workflows/api-pipeline.yaml'
+      # - '!open/**'
+      # - '!core/**'
+      # - '!inference/**'
+
+# Prevent concurrent deployments
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REPO_URL: "asia-southeast1-docker.pkg.dev/rivalz-be/adcs"
+  NAMESPACE: "adcs"
+  KUBECONFIG: "${{ vars.ROME_KUBECONFIG }}"
+  SERVICE_NAME: "adcs-api"
+
+jobs:
+  build-and-push:
+    runs-on: rivalz-be
+    outputs:
+      commit_hash: ${{ steps.build.outputs.commit_hash }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build api service
+        id: build
+        run: |
+          cd api
+          commit_hash=$(git rev-parse --short HEAD)
+          docker build -t ${REPO_URL}/${SERVICE_NAME}:${commit_hash} .
+          echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 -d | docker login -u _json_key --password-stdin asia-southeast1-docker.pkg.dev
+          docker push ${REPO_URL}/${SERVICE_NAME}:${commit_hash}
+          echo "commit_hash=${commit_hash}" >> $GITHUB_OUTPUT
+
+  deploy:
+    needs: build-and-push
+    runs-on: rivalz-be
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set environment variables
+        run: |
+          if [[ "${{ github.ref_name }}" == "testnet" ]]; then
+            echo "NAMESPACE=testnet-adcs" >> $GITHUB_ENV
+          else
+            echo "NAMESPACE=adcs" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy api service
+        run: |
+          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
+          export KUBECONFIG=rome_kubeconfig
+          kubectl set image deployment/${SERVICE_NAME} ${SERVICE_NAME}=${REPO_URL}/${SERVICE_NAME}:${{ needs.build-and-push.outputs.commit_hash }} -n ${NAMESPACE}
+          kubectl rollout status deployment/${SERVICE_NAME} -n ${NAMESPACE}
