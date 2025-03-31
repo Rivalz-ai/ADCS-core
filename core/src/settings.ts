@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import { JsonRpcProvider } from 'ethers'
-dotenv.config({ path: '/app/.env' })
+dotenv.config()
 
 export const CHAIN = process.env.CHAIN || 'localhost'
 export const DEPLOYMENT_NAME = process.env.DEPLOYMENT_NAME || 'rivalz'
