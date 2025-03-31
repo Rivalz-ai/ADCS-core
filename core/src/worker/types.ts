@@ -1,8 +1,9 @@
 import { Logger } from 'pino'
 import type { RedisClientType } from 'redis'
+import { ZeroG } from './og'
 
 export interface IWorkers {
-  [index: string]: (redisClient: RedisClientType, _logger: Logger) => Promise<void>
+  [index: string]: (redisClient: RedisClientType, _logger: Logger, zeroG?: ZeroG) => Promise<void>
 }
 
 export interface IAggregatorConfig {

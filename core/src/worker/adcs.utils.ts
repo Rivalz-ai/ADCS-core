@@ -38,7 +38,8 @@ export function buildTransaction(
   const tx = {
     payload,
     gasLimit,
-    to
+    to,
+    rc
   }
 
   return tx

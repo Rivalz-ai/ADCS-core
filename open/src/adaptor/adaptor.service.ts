@@ -7,7 +7,7 @@ import { randomBytes } from 'crypto'
 
 @Injectable()
 export class AdaptorService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   private validateAndFormatVariables(variables: string): string {
     const trimmedVars = variables
@@ -28,6 +28,7 @@ export class AdaptorService {
     // Create the adaptor data object with validated fields
     const adaptorData = {
       name: data.name,
+      chainType: data.chainType,
       description: data.description,
       categoryId: data.categoryId,
       outputTypeId: data.outputTypeId,
