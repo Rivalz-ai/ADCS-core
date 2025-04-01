@@ -160,13 +160,13 @@ async function sendTx(tx: any, logger: Logger, zeroG: ZeroG) {
     logger
   }
   const txReceipt = await sendTransaction(txParams)
-
+  console.log('txReceipt', txReceipt)
   // send to 0G
   try {
     if (txReceipt) {
       const fileData = tx.rc.toString()
-      await zeroG.uploadKvData(txReceipt.transactionHash, fileData)
-      await add0GKey(txReceipt.transactionHash)
+      const rootHash = await zeroG.uploadFile(txReceipt.hash, fileData)
+      await add0GKey(txReceipt.hash, rootHash ?? '')
     }
   } catch (error) {}
 }

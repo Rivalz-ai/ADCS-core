@@ -1,0 +1,36 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/mock/test.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\ncontract TestAdcs {\n    event DataRequested(\n        uint256 indexed requestId,\n        uint256 callbackGasLimit,\n        address indexed sender,\n        bytes32 jobId,\n        uint256 blockNumber,\n        bytes data\n    );\n\n    constructor() {}\n\n    function requestData(\n        uint256 requestId,\n        uint256 callbackGasLimit,\n        bytes32 jobId,\n        bytes memory data\n    ) external {\n        emit DataRequested(requestId, callbackGasLimit, msg.sender, jobId, block.number, data);\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "evmVersion": "paris",
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

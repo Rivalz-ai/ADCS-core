@@ -39,14 +39,17 @@ export class ZeroG {
       const val1 = Uint8Array.from(Buffer.from(data, 'utf-8'))
 
       batcher.streamDataBuilder.set(key, key1, val1)
-      const [tx, batchErr] = await batcher.exec({
-        fee: 10000000000000n,
-        tags: '0x',
-        finalityRequired: true,
-        taskSize: 1,
-        expectedReplica: 1,
-        skipTx: false
-      })
+      const [tx, batchErr] = await batcher
+        .exec
+        //   {
+        //   fee: 10000000000000n,
+        //   tags: '0x',
+        //   finalityRequired: true,
+        //   taskSize: 1,
+        //   expectedReplica: 1,
+        //   skipTx: false
+        // }
+        ()
       if (batchErr === null) {
         console.log('Batcher executed successfully, tx: ', tx)
       } else {
@@ -100,7 +103,7 @@ export class ZeroG {
           undefined,
           {
             //gasPrice: 10000000000000n
-            gasLimit: 30000000000000n
+            //gasLimit: 30000000000000n
           }
         )
         if (uploadErr !== null) {
@@ -108,8 +111,10 @@ export class ZeroG {
         }
         console.log('Upload successful!')
         console.log('Transaction Hash:', tx)
+        console.log('Root Hash:', tree?.rootHash?.toString())
         // Clean up
         unlinkSync(`${fileName}.txt`)
+        return tree?.rootHash()?.toString() || ''
       } catch (error) {
         console.error('Upload error:', error instanceof Error ? error.message : error)
       }
@@ -131,3 +136,7 @@ export class ZeroG {
     }
   }
 }
+
+//const zeroG = new ZeroG()
+//zeroG.uploadFile('0xc5360e38c99a6a0e6d2f6b4c58f7949f9a3c544e005de9f6a98a969c65f231b8', 'test1')
+//zeroG.downloadFile('0x8429287d31e16ad36b9ed2cad30cae24b6de23c160ebbf9b30ab80eb4b5b0cb8')
