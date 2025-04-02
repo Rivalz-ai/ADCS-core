@@ -13,25 +13,26 @@ enum ChainType {
 }
 
 model Adaptor {
-  id             Int      @id @default(autoincrement())
-  jobId          String   @map("job_id")
+  id             Int       @id @default(autoincrement())
+  jobId          String    @map("job_id")
   name           String
   description    String
-  chainType      ChainType  @default(EVM)
-  variables      String?  @map("variables")
-  categoryId     Int      @map("category_id")
-  outputTypeId   Int      @map("output_type_id")
-  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  createdBy      String?  @map("created_by") //wallet address of the user who created the adaptor
-  status         String   @default("draft") @map("status") // inreview, draft, active, inactive
-  iconUrl        String?  @map("icon_url")
-  requests       Int      @default(0) @map("requests")
-  chainId        Int      @default(1) @map("chain_id")
-  exampleCode    String?  @map("example_code")
-  typeId         Int?     @map("type_id")
-  dataProviderId Int?     @map("data_provider_id")
-  aiPrompt       String?  @map("ai_prompt")
+  chainType      ChainType @default(EVM)
+  variables      String?   @map("variables")
+  categoryId     Int       @map("category_id")
+  outputTypeId   Int       @map("output_type_id")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  createdBy      String?   @map("created_by") //wallet address of the user who created the adaptor
+  status         String    @default("draft") @map("status") // inreview, draft, active, inactive
+  iconUrl        String?   @map("icon_url")
+  requests       Int       @default(0) @map("requests")
+  chainId        Int       @default(1) @map("chain_id")
+  exampleCode    String?   @map("example_code")
+  typeId         Int?      @map("type_id")
+  dataProviderId Int?      @map("data_provider_id")
+  aiPrompt       String?   @map("ai_prompt")
+  adapterId      Int?      @map("adapter_id")
 
   category      Category      @relation(fields: [categoryId], references: [id])
   outputType    OutputType    @relation(fields: [outputTypeId], references: [id])
@@ -172,4 +173,11 @@ model DataProvider {
   Adaptor         Adaptor[]
 
   @@map("data_provider")
+}
+
+model zeroGUploaded {
+  id        Int      @id @default(autoincrement())
+  name      String
+  rootHash  String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 }
