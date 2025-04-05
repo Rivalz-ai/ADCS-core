@@ -15,21 +15,5 @@
     "icon_url": "https://api.rivalz.ai/fragmentz/logo.png",
     "type": "GET",
     "apiKey": "if needed"
-  },
-  {
-    "name": "getPrice",
-    "endpoint": "https://priceapi.rivalz.ai/openApi/price/coinPrice",
-    "description": "Get token price by pairName (coinId - currency)",
-    "input": {
-      "pairName": "bitcoin-usd"
-    },
-    "inputType": "QueryParams",
-    "output": {
-      "coinName": {
-        "currency": "price"
-      },
-      "icon_url": "https://api.rivalz.ai/fragmentz/logo.png",
-      "type": "GET"
-    }
   }
 ]

@@ -12,7 +12,8 @@
             "coinName": {
                 "currency": "price"
             }
-        }
+        },
+        "icon_url": "https://api.rivalz.ai/fragmentz/logo.png"
     },
     {
         "name": "getCoinInfo",
@@ -31,7 +32,8 @@
                 "usd_24h_change": 3.63727894677354,
                 "last_updated_at": 1711356300
             }
-        }
+        },
+        "icon_url": "https://api.rivalz.ai/fragmentz/logo.png"
     },
     {
         "name": "getCoinHistory",
@@ -52,6 +54,7 @@
                     67187.3358936566
                 ]
             ]
-        }
+        },
+        "icon_url": "https://api.rivalz.ai/fragmentz/logo.png"
     }
 ]
