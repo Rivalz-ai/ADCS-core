@@ -1,0 +1,22 @@
+{
+    "name": "QWen model",
+    "description": "Using QWen model to refer data",
+    "icon_url": "https://api.rivalz.ai/fragmentz/logo.png",
+    "apiKey": "",
+    "base_url": "https://nos-dep-2.node.k8s.prd.nos.ci/rivalz/v1",
+    "methods": [
+        {
+            "method_name": "chat",
+            "endpoint": "chat/completions",
+            "description": "Using QWen model to refer data",
+            "input": {
+                "prompt": "string"
+            },
+            "inputType": "BodyParams",
+            "output": {
+                "response": "string"
+            },
+            "type": "POST"
+        }
+    ]
+}

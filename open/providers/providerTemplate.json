@@ -1,0 +1,39 @@
+{
+    "name": "provider name",
+    "description": "description for provider",
+    "icon_url": "https://api.rivalz.ai/fragmentz/logo.png",
+    "apiKey": "if needed",
+    "base_url": "base url",
+    "methods": [
+        {
+            "method_name": "method 1",
+            "endpoint": "",
+            "description": "description for method 1",
+            "input": {
+                "coin_name": "string",
+                "currency": "string"
+            },
+            "inputType": "QueryParams|BodyParams",
+            "output": {
+                "result": "string",
+                "message": "string"
+            },
+            "type": "GET|POST"
+        },
+        {
+            "method_name": "method 2",
+            "endpoint": "",
+            "description": "description for method 2",
+            "input": {
+                "coin_name": "string",
+                "currency": "string"
+            },
+            "inputType": "QueryParams|BodyParams",
+            "output": {
+                "result": "string",
+                "message": "string"
+            },
+            "type": "GET|POST"
+        }
+    ]
+}

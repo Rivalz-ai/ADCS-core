@@ -1,0 +1,24 @@
+{
+    "name": "Ai Inference",
+    "description": "Using chatgpt to analyze data",
+    "icon_url": "https://api.rivalz.ai/fragmentz/logo.png",
+    "apiKey": "",
+    "base_url": "https://devadcsapi.rivalz.ai/open/v1/inference/analyze",
+    "methods": [
+        {
+            "method_name": "analyze",
+            "endpoint": "/gpt4",
+            "description": "input prompt and get the result from gpt4 model",
+            "input": {
+                "prompt": "string",
+                "dataType": "number"
+            },
+            "inputType": "BodyParams",
+            "output": {
+                "result": "string",
+                "message": "string"
+            },
+            "type": "POST"
+        }
+    ]
+}
