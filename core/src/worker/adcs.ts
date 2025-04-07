@@ -164,8 +164,8 @@ async function sendTx(tx: any, logger: Logger, zeroG: ZeroG) {
   // send to 0G
   try {
     if (txReceipt) {
-      const fileData = tx.rc.toString()
-      const rootHash = await zeroG.uploadFile(txReceipt.hash, fileData)
+      const fileData = { rc: tx.rc, response: tx.response, txHash: txReceipt.hash }
+      const rootHash = await zeroG.uploadFile(txReceipt.hash, JSON.stringify(fileData))
       await add0GKey(txReceipt.hash, rootHash ?? '')
     }
   } catch (error) {}
