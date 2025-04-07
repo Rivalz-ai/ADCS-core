@@ -1,64 +1,66 @@
 {
-    "name": "data provider",
-    "description": "get oracles data",
-    "icon_url": "https://api.rivalz.ai/fragmentz/logo.png",
-    "apiKey": "if needed",
-    "base_url": "https://devadcsapi.rivalz.ai/open/v1/oracles",
-    "methods": [
-        {
-            "method_name": "getPrice",
-            "endpoint": "/getPrice",
-            "description": "Get token price by pairName (coinId - currency)",
-            "input": {
-                "pairName": "bitcoin-usd"
-            },
-            "inputType": "QueryParams",
-            "output": {
-                "coinName": {
-                    "currency": "price"
-                }
-            },
-            "type": "GET"
-        },
-        {
-            "method_name": "getCoinInfo",
-            "endpoint": "/getCoinInfo",
-            "description": "Get coin info by coinId",
-            "input": {
-                "ids": "bitcoin"
-            },
-            "inputType": "QueryParams",
-            "output": {
-                "bitcoin": {
-                    "usd": 67187.3358936566,
-                    "usd_market_cap": 1317802988326.25,
-                    "usd_24h_vol": 31260929299.5248,
-                    "usd_24h_change": 3.63727894677354,
-                    "last_updated_at": 1711356300
-                }
-            },
-            "type": "GET"
-        },
-        {
-            "method_name": "getCoinHistory",
-            "endpoint": "/getCoinHistory",
-            "description": "Get coin history by coinId",
-            "input": {
-                "id": "bitcoin",
-                "vs_currency": "usd",
-                "days": 1,
-                "interval": "daily"
-            },
-            "inputType": "QueryParams",
-            "output": {
-                "prices": [
-                    [
-                        1711356300000,
-                        67187.3358936566
-                    ]
-                ]
-            },
-            "type": "GET"
+  "name": "data provider",
+  "description": "get oracles data",
+  "icon_url": "https://api.rivalz.ai/fragmentz/logo.png",
+  "apiKey": "if needed",
+  "base_url": "https://devadcsapi.rivalz.ai/open/v1/oracles",
+  "methods": [
+    {
+      "method_name": "getPrice",
+      "endpoint": "/getPrice",
+      "description": "Get token price by pairName (coinId - currency).  example: bitcoin-usd",
+      "input": {
+        "pairName": "string"
+      },
+      "inputType": "QueryParams",
+      "output": {
+        "coinName": {
+          "currency": "price"
         }
-    ]
+      },
+      "type": "GET"
+    },
+    {
+      "method_name": "getCoinInfo",
+      "endpoint": "/getCoinInfo",
+      "description": "Get coin info by coinId. see more provider docs for supported coinId",
+      "input": {
+        "ids": "string"
+      },
+      "inputType": "QueryParams",
+      "output": {
+        "id": {
+          "usd": "number",
+          "usd_market_cap": "number",
+          "usd_24h_vol": "number",
+          "usd_24h_change": "number",
+          "last_updated_at": "timestamp"
+        }
+      },
+      "type": "GET"
+    },
+    {
+      "method_name": "getCoinHistory",
+      "endpoint": "/getCoinHistory",
+      "description": "Get coin history by coinId. see more provider docs for supported coinId",
+      "input": {
+        "id": "string",
+        "vs_currency": "string",
+        "days": 1,
+        "interval": "daily|monthly"
+      },
+      "inputType": "QueryParams",
+      "output": {
+        "prices": [
+          {
+            "timestamp1": "price1"
+          },
+          {
+            "timestamp2": "price2"
+          }
+        ]
+      },
+      "type": "GET"
+    }
+  ]
 }
