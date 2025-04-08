@@ -8,7 +8,7 @@ image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
-  containerPort: 3000
+  containerPort: 3002
 terminationGracePeriodSeconds: 60
 imagePullSecrets: 
   - name: gar-registry
@@ -17,6 +17,7 @@ secretMounts:
   - name: env
     secretName: open-env-secret
     path: /app/.env
+    subPath: .env
 
 extraEnvs: []
 envFrom: []

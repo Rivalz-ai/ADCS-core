@@ -8,7 +8,7 @@ image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
-  containerPort: 3000
+  containerPort: 3003
 terminationGracePeriodSeconds: 60
 imagePullSecrets: 
   - name: gar-registry
