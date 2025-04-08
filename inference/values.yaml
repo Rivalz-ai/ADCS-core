@@ -18,18 +18,11 @@ secretMounts: []
   #   secretName: inference-env-secret
   #   path: /app/.env
 
-extraEnvs:
-  - name: GOOGLE_API_KEY
-    value: ${{ secrets.GOOGLE_API_KEY }}
-  - name: GOOGLE_CSE_ID
-    value: ${{ secrets.GOOGLE_CSE_ID }}
-  - name: OPENAI_API_KEY
-    value: ${{ secrets.OPENAI_API_KEY }}
-  - name: GROQ_API_KEY
-    value: ${{ secrets.GROQ_API_KEY }}
-  - name: AS1_API_KEY
-    value: ${{ secrets.AS1_API_KEY }}
-envFrom: []
+extraEnvs: []
+
+envFrom:
+  - secretRef:
+      name: adcs-inference-secrets
 
 podAnnotations: {}
 livenessProbe: []
