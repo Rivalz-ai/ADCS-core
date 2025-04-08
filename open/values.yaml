@@ -4,7 +4,7 @@ statefulset: false
 nameOverride: "adcs-open"
 
 image:
-  repository: asia-southeast1-docker.pkg.dev/rivalz-be/adcs
+  repository: asia-southeast1-docker.pkg.dev/rivalz-be/adcs/adcs-open
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
