@@ -65,6 +65,8 @@ export const INTFERENCE_API_URL = process.env.INTFERENCE_API_URL || 'http://loca
 export const D0G_PRIVATE_KEY = process.env.D0G_PRIVATE_KEY || ''
 export const ZeroG_RPC_URL = process.env.ZeroG_RPC_URL || ''
 
+export const LISTENER_V2_PORT = process.env.LISTENER_V2_PORT || '3000'
+
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,
   connection: {
