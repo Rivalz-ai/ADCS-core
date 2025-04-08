@@ -65,6 +65,5 @@ jobs:
           helm upgrade --install ${SERVICE_NAME} rivalz-chart -f inference/values.yaml -n ${NAMESPACE} \
             --kubeconfig rome_kubeconfig \
             --set image.tag=${{ needs.build-and-push.outputs.commit_hash }} \
-            --set ext
             --create-namespace
 
