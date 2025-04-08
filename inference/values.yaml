@@ -22,7 +22,7 @@ extraEnvs: []
 
 envFrom:
   - secretRef:
-      name: adcs-inference-secrets
+      name: inference-secrets
 
 podAnnotations: {}
 livenessProbe: []
