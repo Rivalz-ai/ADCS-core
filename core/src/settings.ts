@@ -65,6 +65,8 @@ export const D0G_PRIVATE_KEY = process.env.D0G_PRIVATE_KEY || ''
 export const ZeroG_RPC_URL = process.env.ZeroG_RPC_URL || ''
 
 export const LISTENER_V2_PORT = process.env.LISTENER_V2_PORT || '3000'
+export const QUICKNODE_API_KEY = process.env.QUICKNODE_API_KEY || ''
+export const WEBHOOK_KEY = process.env.WEBHOOK_KEY || ''
 
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,

@@ -42,7 +42,9 @@ export async function buildListener(logger: Logger) {
       })
       req.on('end', () => {
         const data = JSON.parse(body)
-        adcsStreamListener({ chain: data.chain, events: data.events, iface })
+        if (data && data.events && data.events.length > 0) {
+          adcsStreamListener({ chain: data.chain, events: data.events, iface })
+        }
         res.status(200).send('Webhook received')
       })
     } catch (e) {
@@ -96,7 +98,6 @@ async function processEvent({ iface, logger }: { iface: Interface; logger: Logge
 
   return wrapper
 }
-
 export async function adcsStreamListener({
   chain,
   events,
