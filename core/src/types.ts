@@ -116,6 +116,7 @@ export interface IADCSListenerWorker {
   sender: string
   jobId: string
   data: string
+  chain?: string
 }
 
 export interface IVrfListenerWorker {
@@ -229,6 +230,11 @@ export interface IListenerGroupConfig {
   [key: string]: IListenerConfig[]
 }
 
+export interface IChainRpc {
+  id: string
+  rpcUrl: string
+}
+
 // Reporter
 export interface IReporterConfig {
   id: string
@@ -237,6 +243,8 @@ export interface IReporterConfig {
   oracleAddress: string
   chain: string
   service: string
+  fulfillMinimumGas: number
+  chainRpcs: IChainRpc[]
 }
 
 // Data Feed

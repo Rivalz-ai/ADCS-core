@@ -1,9 +1,8 @@
 import { Job, Worker, Queue } from 'bullmq'
 import { Log } from 'ethers'
 import { Logger } from 'pino'
-import type { RedisClientType } from 'redis'
 import { BULLMQ_CONNECTION, LISTENER_JOB_SETTINGS } from '../settings'
-import { IProcessEventListenerJob, ProcessEventOutputType } from './types'
+import { IProcessEventListenerJobV2, ProcessEventOutputType } from './types'
 
 const FILE_NAME = import.meta.url
 
@@ -74,8 +73,8 @@ function processEventJob({
   const _logger = logger.child({ name: 'processEventJob', file: FILE_NAME })
 
   async function wrapper(job: Job) {
-    const inData: IProcessEventListenerJob = job.data
-    const { event } = inData
+    const inData: IProcessEventListenerJobV2 = job.data
+    const { event, chain } = inData
     _logger.debug(event, 'event')
 
     try {
@@ -83,10 +82,14 @@ function processEventJob({
       if (jobMetadata) {
         const { jobId, jobName, jobData, jobQueueSettings } = jobMetadata
         const queueSettings = jobQueueSettings ? jobQueueSettings : LISTENER_JOB_SETTINGS
-        await workerQueue.add(jobName, jobData, {
-          jobId,
-          ...queueSettings
-        })
+        await workerQueue.add(
+          jobName,
+          { ...jobData, chain },
+          {
+            jobId,
+            ...queueSettings
+          }
+        )
         _logger.debug(`Listener submitted job [${jobId}] for [${jobName}]`)
         console.log(`Listener submitted job [${jobId}] for [${jobName}]`)
       }

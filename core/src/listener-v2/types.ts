@@ -73,3 +73,11 @@ export interface IProcessEventListenerJobV2 {
   contractAddress: string
   event: Log
 }
+
+export interface ProcessEventOutputTypeV2 {
+  jobData: IADCSListenerWorker | IDataFeedListenerWorker | IVrfListenerWorker | null
+  jobId: string
+  jobName: string
+  jobQueueSettings?: IJobQueueSettings
+  jobChain: string
+}

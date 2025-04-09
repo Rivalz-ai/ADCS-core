@@ -27,10 +27,23 @@ export class ReporterService {
     chainName: string,
     contractAddress: string
   ): Promise<Reporter[] | null> {
-    return await this.prisma.reporter.findMany({
+    const reporters = await this.prisma.reporter.findMany({
       where: {
         AND: [{ chain: { name: chainName } }, { contractAddress }]
       }
     })
+
+    const reportersWithRpcs = await Promise.all(
+      reporters.map(async (reporter) => {
+        const rpcs = await this.prisma.chainRpc.findMany({
+          where: { chainId: reporter.chainId }
+        })
+        return {
+          ...reporter,
+          chainRpcs: rpcs
+        }
+      })
+    )
+    return reportersWithRpcs
   }
 }

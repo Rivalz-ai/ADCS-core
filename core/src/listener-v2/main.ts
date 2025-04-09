@@ -25,46 +25,6 @@ async function main() {
   }
   LISTENERS[service](LOGGER)
   LOGGER.info('Listener launched')
-
-  app.post('/events', async (req: Request, res: Response) => {
-    LOGGER.debug('/events')
-    try {
-      let body = ''
-      req.on('data', (chunk) => {
-        body += chunk.toString()
-      })
-      req.on('end', () => {
-        console.log(body)
-        res.status(200).send('Webhook received')
-      })
-    } catch (e) {
-      LOGGER.error(e)
-      res.status(500).send(e)
-    }
-  })
-
-  app.listen(LISTENER_V2_PORT, () => {
-    LOGGER.info(`Listener v2 listening on port ${LISTENER_V2_PORT}`)
-  })
-
-  // Handle graceful shutdown
-  async function handleExit() {
-    LOGGER.info('Exiting. Wait for graceful shutdown.')
-
-    // Close the express server
-    await new Promise<void>((resolve) => {
-      app.listen().close(() => {
-        LOGGER.info('Express server closed')
-        resolve()
-      })
-    })
-
-    process.exit(0)
-  }
-
-  // Listen for termination signals
-  process.on('SIGINT', handleExit)
-  process.on('SIGTERM', handleExit)
 }
 
 function loadArgs(): string {
