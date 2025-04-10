@@ -15,18 +15,17 @@ def analyze_with_asi1(content, format):
     try:
         # Prepare the request payload
         prompt = f"""You are an AI assistant that analyzes content and returns structured decisions.
+                Instructions:
+                1. Analyze the provided content
+                2. Return your response in EXACTLY the format: {format}
+                3. Do not add any additional text, explanation, or markdown formatting
+                4. Your response must be parseable as a valid JSON array
 
-Instructions:
-1. Analyze the provided content
-2. Return your response in EXACTLY the format: {format}
-3. Do not add any additional text, explanation, or markdown formatting
-4. Your response must be parseable as a valid JSON array
+                Content: {content}
 
-Content: {content}
-
-Format: {format}
-Make sure your response is ONLY a valid JSON array like: [value1, value2]"""
-
+                Format: {format}
+                Make sure your response is ONLY a valid JSON array like: [value1, value2]"""
+        
         headers = {
             "Authorization": f"Bearer {ASI1_API_KEY}",
             "Content-Type": "application/json"

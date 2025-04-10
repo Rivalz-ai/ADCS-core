@@ -26,6 +26,5 @@ app.register_blueprint(geminiadvanced_bp, url_prefix='/geminiadvanced')
 app.register_blueprint(qwen_bp, url_prefix='/Qwen')
 app.register_blueprint(asi1_bp, url_prefix="/asi1")
 
-
 if __name__ == '__main__':
     app.run(debug=True,host='localhost',port=3003)
