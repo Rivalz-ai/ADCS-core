@@ -37,7 +37,9 @@
     "flush": "node --no-warnings --experimental-specifier-resolution=node --experimental-json-modules dist/tools/flush-queues.js",
     "test": "node --no-warnings --import=specifier-resolution-node/register --experimental-json-modules --experimental-specifier-resolution=node dist/worker/test.js",
     "lint": "DEBUG=eslint:cli-engine npx eslint 'src/**/*.ts' 'src/*.ts'",
-    "remove-job": "node --no-warnings --import=specifier-resolution-node/register --experimental-specifier-resolution=node --experimental-json-modules dist/cmd/removeRepeatingJob.js"
+    "remove-job": "node --no-warnings --import=specifier-resolution-node/register --experimental-specifier-resolution=node --experimental-json-modules dist/cmd/removeRepeatingJob.js",
+    "start:listener-v2": "node --no-warnings --import=specifier-resolution-node/register --experimental-specifier-resolution=node --experimental-json-modules dist/listener-v2/main",
+    "start:listener-v2:adcs": "yarn start:listener-v2 --service ADCS"
   },
   "dependencies": {
     "@typescript-eslint/parser": "^6.9.1",

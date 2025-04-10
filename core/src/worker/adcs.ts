@@ -1,16 +1,9 @@
 import { Worker } from 'bullmq'
-import { Interface, parseUnits, randomBytes, uuidV4 } from 'ethers'
+import { Interface, parseUnits } from 'ethers'
 import { Logger } from 'pino'
 import type { RedisClientType } from 'redis'
-import {
-  BULLMQ_CONNECTION,
-  CHAIN,
-  PROVIDER_URL,
-  ADCS_FULFILL_GAS_MINIMUM,
-  ADCS_SERVICE_NAME,
-  WORKER_ADCS_QUEUE_NAME
-} from '../settings'
-import { IADCSListenerWorker, IADCSTransactionParameters } from '../types'
+import { BULLMQ_CONNECTION, ADCS_SERVICE_NAME, WORKER_ADCS_QUEUE_NAME } from '../settings'
+import { IADCSListenerWorker, IADCSTransactionParameters, IReporterConfig } from '../types'
 
 import {
   add0GKey,
@@ -26,8 +19,6 @@ import { buildWallet, sendTransaction } from './utils'
 import { decodeRequest } from './decoding'
 import { IFetchAiModelData } from './types'
 import { ZeroG } from './og'
-
-import * as crypto from 'crypto'
 
 const FILE_NAME = import.meta.url
 const DECIMALS = 6
@@ -52,7 +43,6 @@ export async function job(zeroG: ZeroG, _logger: Logger) {
 
   async function wrapper(job) {
     const inData: IADCSListenerWorker = job.data
-    console.log({ inData })
     logger.debug(inData, 'inData')
     // decode data
     const decodedData = await decodeRequest(inData.data)
@@ -125,11 +115,16 @@ export async function job(zeroG: ZeroG, _logger: Logger) {
       }
       const to = inData.callbackAddress
 
-      const tx = buildTransaction(payloadParameters, to, ADCS_FULFILL_GAS_MINIMUM, iface, logger)
+      const reporter = await getReporterByAddress({
+        service: ADCS_SERVICE_NAME,
+        chain: inData.chain || '',
+        oracleAddress: to,
+        logger
+      })
+      const tx = buildTransaction(payloadParameters, to, reporter.fulfillMinimumGas, iface, logger)
       logger.debug(tx, 'tx')
-      console.log({ tx })
       //send transaction
-      await sendTx(tx, logger, zeroG)
+      await sendTx(tx, reporter, zeroG, logger)
 
       return tx
     } catch (e) {
@@ -142,21 +137,19 @@ export async function job(zeroG: ZeroG, _logger: Logger) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function sendTx(tx: any, logger: Logger, zeroG: ZeroG) {
-  const reporter = await getReporterByAddress({
-    service: ADCS_SERVICE_NAME,
-    chain: CHAIN,
-    oracleAddress: tx.to,
-    logger
+async function sendTx(tx: any, reporter: IReporterConfig, zeroG: ZeroG, logger: Logger) {
+  const wallet = buildWallet({
+    privateKey: reporter.privateKey,
+    providerUrl: reporter.chainRpcs[0].rpcUrl
   })
-
-  const wallet = buildWallet({ privateKey: reporter.privateKey, providerUrl: PROVIDER_URL })
-
+  if (!reporter.fulfillMinimumGas) {
+    throw new Error('Fulfill minimum gas is not set')
+  }
   const txParams = {
     wallet,
     to: tx.to,
     payload: tx.payload,
-    gasLimit: ADCS_FULFILL_GAS_MINIMUM,
+    gasLimit: reporter.fulfillMinimumGas,
     logger
   }
   const txReceipt = await sendTransaction(txParams)

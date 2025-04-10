@@ -7,9 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ChainType {
+  EVM
+  NON_EVM
+}
+
 model Adaptor {
   name           String
   description    String
+  chainType      ChainType     @default(EVM)
   variables      String?       @map("variables")
   createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime      @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -75,17 +81,18 @@ model Listener {
 }
 
 model Reporter {
-  id              Int      @id @default(autoincrement())
-  name            String
-  contractAddress String   @map("contract_address")
-  address         String
-  privateKey      String   @map("private_key")
-  chainId         Int      @map("chain_id")
-  serviceId       Int      @map("service_id")
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
-  chain           Chain    @relation(fields: [chainId], references: [id])
-  service         Service  @relation(fields: [serviceId], references: [id])
+  id                Int      @id @default(autoincrement())
+  name              String
+  contractAddress   String   @map("contract_address")
+  address           String
+  privateKey        String   @map("private_key")
+  chainId           Int      @map("chain_id")
+  serviceId         Int      @map("service_id")
+  fulfillMinimumGas Int?     @map("fulfill_minimum_gas")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  chain             Chain    @relation(fields: [chainId], references: [id])
+  service           Service  @relation(fields: [serviceId], references: [id])
 
   @@map("reporter")
 }
@@ -99,6 +106,7 @@ model Chain {
   adaptors    Adaptor[]
   listeners   Listener[]
   reporters   Reporter[]
+  chainRpcs   ChainRpc[]
 
   @@map("chain")
 }
@@ -169,4 +177,14 @@ model zeroGUploaded {
   name      String
   rootHash  String
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+}
+
+model ChainRpc {
+  id        Int      @id @default(autoincrement())
+  chainId   Int      @map("chain_id")
+  rpcUrl    String   @map("rpc_url")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  chain     Chain    @relation(fields: [chainId], references: [id])
+
+  @@map("chain_rpc")
 }
