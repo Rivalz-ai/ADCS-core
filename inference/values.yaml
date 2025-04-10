@@ -19,6 +19,9 @@ secretMounts: []
   #   path: /app/.env
 
 extraEnvs: []
+service:
+  type: ClusterIP
+  port: 3003
 
 envFrom:
   - secretRef:
