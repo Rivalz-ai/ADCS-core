@@ -12,7 +12,8 @@ import {
   WORKER_ADCS_QUEUE_NAME,
   BULLMQ_CONNECTION,
   LISTENER_JOB_SETTINGS,
-  LISTENER_V2_PORT
+  LISTENER_V2_PORT,
+  WEBHOOK_KEY
 } from '../settings'
 import { ADCS_ABI } from '../constants/adcs.coordinator.abi'
 import { Queue } from 'bullmq'
@@ -41,6 +42,11 @@ export async function buildListener(logger: Logger) {
         body += chunk.toString()
       })
       req.on('end', () => {
+        const key = req.headers['rivalz-key']
+        if (key !== WEBHOOK_KEY) {
+          res.status(401).send('Unauthorized')
+          return
+        }
         const data = JSON.parse(body)
         if (data && data.events && data.events.length > 0) {
           adcsStreamListener({ chain: data.chain, events: data.events, iface })
@@ -126,5 +132,6 @@ export async function adcsStreamListener({
       jobId,
       ...LISTENER_JOB_SETTINGS
     })
+    console.log(`Added job ${jobId} to queue ${LISTENER_ADCS_PROCESS_EVENT_QUEUE_NAME}`)
   }
 }
