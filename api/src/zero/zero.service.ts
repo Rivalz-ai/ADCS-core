@@ -5,11 +5,11 @@ import { PrismaService } from '../prisma.service'
 export class ZeroService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async add(key: string) {
+  async add(txHash: string, rootHash: string) {
     return await this.prismaService.zeroGUploaded.create({
       data: {
-        name: key,
-        rootHash: key,
+        name: txHash,
+        rootHash: rootHash,
         createdAt: new Date()
       }
     })

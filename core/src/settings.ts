@@ -6,7 +6,7 @@ export const CHAIN = process.env.CHAIN || 'localhost'
 export const DEPLOYMENT_NAME = process.env.DEPLOYMENT_NAME || 'rivalz'
 
 export const DATA_FEED_FULFILL_GAS_MINIMUM = 400_000
-export const ADCS_FULFILL_GAS_MINIMUM = 5_000_000
+export const ADCS_FULFILL_GAS_MINIMUM = 500_000
 export const VRF_FULLFILL_GAS_PER_WORD = 1_000
 export const VRF_FULFILL_GAS_MINIMUM = 1_000_000
 

@@ -7,12 +7,13 @@
       "content": "decision should buy or sell BTC at this time",
       "dataTypeId": 2
     },
+    "inputType": "BodyParams",
     "output": {
       "result": "true/false",
       "message": "success/error message"
     },
     "icon_url": "https://api.rivalz.ai/fragmentz/logo.png",
-    "method": "GET",
-    "key": "if needed"
+    "type": "GET",
+    "apiKey": "if needed"
   }
 ]

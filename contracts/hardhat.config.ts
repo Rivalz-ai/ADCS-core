@@ -80,8 +80,8 @@ module.exports = {
       gasMultiplier: 1.2,
       verify: {
         etherscan: {
-          apiUrl: 'https://sepolia.arbiscan.io/api',
-          apiKey: process.env.EXPLORER_API_KEY
+          apiUrl: 'https://api-sepolia.arbiscan.io/api',
+          apiKey: process.env.ARBITRUM_API_KEY
         }
       }
     },
@@ -147,7 +147,7 @@ module.exports = {
       verify: {
         etherscan: {
           apiUrl: 'https://api.snowtrace.io/api',
-          apiKey: "abc"
+          apiKey: 'abc'
         }
       }
     },
@@ -206,7 +206,6 @@ module.exports = {
         }
       }
     }
-
   },
 
   paths: {
@@ -221,14 +220,15 @@ module.exports = {
       blast_sepolia: process.env.EXPLORER_API_KEY,
       polygon: 'FKBNQ1Z96FHZEEURN2QYS4S685FGN692JG',
       rivalz2_test: process.env.EXPLORER_API_KEY,
+      arbitrum_test: process.env.ARBITRUM_API_KEY,
       mainnet: process.env.EXPLORER_API_KEY,
       arbitrum: process.env.ARBITRUM_API_KEY,
       base: process.env.BASE_API_KEY,
       avalanche: 'https://api.snowtrace.io/api',
-      berachain:'M15PPEK29J855G5KPF1ZZB4GS1PTPQZ1IP',
-      bsc:'UJWJCKIXM87H412E5GSZPC487D6YK2ZEMP',
-      sonic:'6I4PQHIHD2NYEHKZ5WBF25VYVK2UJZNNQ9',
-      optimism:'KHNQNR2WTC5AVZ1TTPMIACYURK574UQ8QZ'
+      berachain: 'M15PPEK29J855G5KPF1ZZB4GS1PTPQZ1IP',
+      bsc: 'UJWJCKIXM87H412E5GSZPC487D6YK2ZEMP',
+      sonic: '6I4PQHIHD2NYEHKZ5WBF25VYVK2UJZNNQ9',
+      optimism: 'KHNQNR2WTC5AVZ1TTPMIACYURK574UQ8QZ'
     },
     customChains: [
       {
@@ -237,6 +237,14 @@ module.exports = {
         urls: {
           apiURL: 'https://rivalz2.explorer.caldera.xyz/api',
           browserURL: 'https://rivalz2.explorer.caldera.xyz'
+        }
+      },
+      {
+        network: 'arbitrum_test',
+        chainId: 421614,
+        urls: {
+          apiURL: 'https://api-sepolia.arbiscan.io/api',
+          browserURL: 'https://sepolia.arbiscan.io'
         }
       },
       {
@@ -279,23 +287,23 @@ module.exports = {
           browserURL: 'https://optimistic.etherscan.io/'
         }
       },
-     ,
-     {
-      network: 'sonic',
-      chainId: 146,
-      urls: {
-        apiURL: 'https://api.sonicscan.org/api',
-        browserURL: 'https://sonicscan.org'
+      ,
+      {
+        network: 'sonic',
+        chainId: 146,
+        urls: {
+          apiURL: 'https://api.sonicscan.org/api',
+          browserURL: 'https://sonicscan.org'
+        }
+      },
+      {
+        network: 'polygon',
+        chainId: 137,
+        urls: {
+          apiURL: 'https://api.polygonscan.com/api',
+          browserURL: 'https://polygonscan.com'
+        }
       }
-    },
-    {
-      network: 'polygon',
-      chainId: 137,
-      urls: {
-        apiURL: 'https://api.polygonscan.com/api',
-        browserURL: 'https://polygonscan.com'
-      }
-    }
     ]
   },
   namedAccounts: {

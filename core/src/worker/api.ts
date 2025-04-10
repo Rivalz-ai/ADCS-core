@@ -266,9 +266,9 @@ export async function fetchAiModelData({
   }
 }
 
-export async function add0GKey(key: string) {
+export async function add0GKey(txHash: string, rootHash: string) {
   try {
-    const url = `${ADD_0G_KEY_ENDPOINT}/${key}`
+    const url = `${ADD_0G_KEY_ENDPOINT}/${txHash}/${rootHash}`
     await axios.post(url)
   } catch (error) {
     console.log(error)
