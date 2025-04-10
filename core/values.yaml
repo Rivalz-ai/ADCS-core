@@ -18,7 +18,9 @@ secretMounts:
     secretName: core-env-secret
     path: /app/.env
     subPath: .env
-
+service:
+  type: ClusterIP
+  port: 3000
 extraEnvs: []
 envFrom: []
 

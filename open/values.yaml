@@ -18,7 +18,9 @@ secretMounts:
     secretName: open-env-secret
     path: /app/.env
     subPath: .env
-
+service:
+  type: ClusterIP
+  port: 3002
 extraEnvs: []
 envFrom: []
 
@@ -40,7 +42,7 @@ ingress:
   hosts: 
     - 'adcs-v2-api.rivalz.ai'
   servers: 
-    - port: 30000
+    - port: 3002
       name: http
       protocol: HTTP
 
