@@ -66,5 +66,5 @@ jobs:
           helm upgrade --install ${SERVICE_NAME} rivalz-chart -f open/values.yaml -n ${NAMESPACE} \
             --kubeconfig rome_kubeconfig \
             --set image.tag=${{ needs.build-and-push.outputs.commit_hash }} \
-            --set ingress.hosts[0]=${NAMESPACE}-v2-api.rivalz.ai \
+            --set ingress.hosts[0]=${NAMESPACE}-api-v2.rivalz.ai \
             --create-namespace
