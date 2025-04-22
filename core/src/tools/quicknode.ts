@@ -88,6 +88,7 @@ export async function createCoordinatorStream(
     destination: 'webhook',
     fix_block_reorgs: 0,
     keep_distance_from_tip: 0,
+    elastic_batch_enabled: false,
     destination_attributes: {
       url: webhookUrl,
       compression: 'none',
