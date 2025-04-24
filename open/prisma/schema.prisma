@@ -33,10 +33,11 @@ model Adaptor {
   dataProviderId Int?      @map("data_provider_id")
   aiPrompt       String?   @map("ai_prompt")
 
-  category      Category     @relation(fields: [categoryId], references: [id])
-  outputType    OutputType   @relation(fields: [outputTypeId], references: [id])
-  chain         Chain        @relation(fields: [chainId], references: [id])
-  AdaptorType   AdaptorType? @relation(fields: [adaptorTypeId], references: [id])
+  category      Category      @relation(fields: [categoryId], references: [id])
+  outputType    OutputType    @relation(fields: [outputTypeId], references: [id])
+  chain         Chain         @relation(fields: [chainId], references: [id])
+  AdaptorType   AdaptorType?  @relation(fields: [adaptorTypeId], references: [id])
+  DataProvider  DataProvider? @relation(fields: [dataProviderId], references: [id])
   adaptorTypeId Int?
 
   @@map("adaptor")
@@ -82,16 +83,16 @@ model Listener {
 }
 
 model Reporter {
-  id              Int      @id @default(autoincrement())
-  name            String
-  contractAddress String   @map("contract_address")
-  address         String
-  privateKey      String   @map("private_key")
-  chainId         Int      @map("chain_id")
-  serviceId       Int      @map("service_id")
+  id                Int      @id @default(autoincrement())
+  name              String
+  contractAddress   String   @map("contract_address")
+  address           String
+  privateKey        String   @map("private_key")
+  chainId           Int      @map("chain_id")
+  serviceId         Int      @map("service_id")
   fulfillMinimumGas Int?     @map("fulfill_minimum_gas")
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
   chain   Chain   @relation(fields: [chainId], references: [id])
   service Service @relation(fields: [serviceId], references: [id])
@@ -152,24 +153,25 @@ model AdaptorType {
 }
 
 model DataProvider {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   name            String
   inputVariables  Json
   outputVariables Json
   endpoint        String
-  method          String   @default("GET")
-  apiKey          String?  @map("api_key")
+  method          String    @default("GET")
+  apiKey          String?   @map("api_key")
   type            String
-  active          Boolean  @default(true)
-  iconUrl         String?  @map("icon_url")
+  active          Boolean   @default(true)
+  iconUrl         String?   @map("icon_url")
   description     String
-  exampleCall     String?  @map("example_call")
-  exampleBody     String?  @map("example_body")
-  documentation   String?  @map("documentation")
-  aiModel         String?  @map("ai_model")
-  createdBy       String?  @map("created_by")
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  exampleCall     String?   @map("example_call")
+  exampleBody     String?   @map("example_body")
+  documentation   String?   @map("documentation")
+  aiModel         String?   @map("ai_model")
+  createdBy       String?   @map("created_by")
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  Adaptor         Adaptor[]
 
   @@map("data_provider")
 }
@@ -211,7 +213,7 @@ model Node {
   nodeType         String @map("node_type") // is provider or adaptor
   methodName       String @map("method_name")
   providerMethodId Int?   @map("method_id")
-  inputValues      String @map("input_values")// what value is input for the node from IR
+  inputValues      String @map("input_values") // what value is input for the node from IR
   adaptorId        Int?   @map("adaptor_id")
   index            Int    @map("index")
 
