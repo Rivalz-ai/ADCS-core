@@ -38,6 +38,8 @@ model Adaptor {
   chain         Chain        @relation(fields: [chainId], references: [id])
   AdaptorType   AdaptorType? @relation(fields: [adaptorTypeId], references: [id])
   adaptorTypeId Int?
+
+  @@map("adaptor")
 }
 
 model Category {
@@ -87,6 +89,7 @@ model Reporter {
   privateKey      String   @map("private_key")
   chainId         Int      @map("chain_id")
   serviceId       Int      @map("service_id")
+  fulfillMinimumGas Int?     @map("fulfill_minimum_gas")
   createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
 
@@ -227,6 +230,7 @@ model ProviderV2 {
   description    String
   iconUrl        String?          @map("icon_url")
   baseUrl        String           @map("base_url")
+  apiKey         String?          @map("api_key")
   status         String           @default("active") @map("status") // active, inactive, deleted
   createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -280,3 +284,12 @@ model AdaptorV2 {
   @@map("adaptor_v2")
 }
 
+model UserApiKey {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  apiKey    String   @unique @map("api_key")
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("user_api_key")
+}
