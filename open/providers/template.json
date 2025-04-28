@@ -1,0 +1,26 @@
+{
+  "id": "id of the provider",
+  "name": "provider name",
+  "description": "description for provider",
+  "icon_url": "icon url",
+  "methods": [
+    {
+      "method_name": "method 1",
+      "description": "description for method 1",
+      "input_schema": { "key": "value" },
+      "input_type": "QueryParams|BodyParams",
+      "output_schema": { "key": "value", "key2": "value2" },
+      "type": "GET|POST",
+      "playground": "playground url"
+    },
+    {
+      "method_name": "method 2",
+      "description": "description for method 2",
+      "input_schema": { "key": "value" },
+      "input_type": "QueryParams|BodyParams",
+      "output_schema": { "key": "value", "key2": "value2" },
+      "type": "GET|POST",
+      "playground": "playground url"
+    }
+  ]
+}
