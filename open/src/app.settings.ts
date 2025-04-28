@@ -16,6 +16,7 @@ export const API_URL = process.env.API_URL || 'http://localhost:3010/fetcher/v1'
 
 export const INFERENCE_API_URL = process.env.INFERENCE_API_URL || 'http://localhost:5000'
 export const HOST = process.env.HOST || 'http://localhost:3001'
+export const API_KEY_SECRET = process.env.API_KEY_SECRET || 'secret'
 
 export function setAppSetting(app: INestApplication) {
   app.setGlobalPrefix('open', {
