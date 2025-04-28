@@ -6,7 +6,7 @@ export const RPC_URL = process.env.RPC_URL || ''
 
 export const JWT_SECRET = process.env.JWT_SECRET || 'secret'
 export const JWT_EXP = process.env.JWT_EXP || '1h'
-
+export const JWT_API_EXP = process.env.JWT_API_EXP || '1y'
 export const REDIS_HOST = process.env.REDIS_HOST || 'localhost'
 export const REDIS_PORT = process.env.REDIS_PORT || '6379'
 export const REDIS_USER = process.env.REDIS_USER || 'default'
@@ -40,7 +40,7 @@ export function setAppSetting(app: INestApplication) {
     optionsSuccessStatus: 204
   })
 }
-console.log('Database URL:', process.env.DATABASE_URL);
-console.log('API URL:', process.env.API_URL);
-console.log('RPC URL:', process.env.RPC_URL);
-console.log('APP PORT:', process.env.APP_PORT);
+console.log('Database URL:', process.env.DATABASE_URL)
+console.log('API URL:', process.env.API_URL)
+console.log('RPC URL:', process.env.RPC_URL)
+console.log('APP PORT:', process.env.APP_PORT)
