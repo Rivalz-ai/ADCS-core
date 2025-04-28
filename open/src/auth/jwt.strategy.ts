@@ -24,7 +24,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     return {
-      address: sub.address.toLowerCase()
+      address: sub.address.toLowerCase(),
+      userId: sub.userId
     }
   }
 }

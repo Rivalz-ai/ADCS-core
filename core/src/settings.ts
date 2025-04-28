@@ -6,7 +6,6 @@ export const CHAIN = process.env.CHAIN || 'localhost'
 export const DEPLOYMENT_NAME = process.env.DEPLOYMENT_NAME || 'rivalz'
 
 export const DATA_FEED_FULFILL_GAS_MINIMUM = 400_000
-export const ADCS_FULFILL_GAS_MINIMUM = 500_000
 export const VRF_FULLFILL_GAS_PER_WORD = 1_000
 export const VRF_FULFILL_GAS_MINIMUM = 1_000_000
 
@@ -64,6 +63,10 @@ export const INTFERENCE_API_URL = process.env.INTFERENCE_API_URL || 'http://loca
 
 export const D0G_PRIVATE_KEY = process.env.D0G_PRIVATE_KEY || ''
 export const ZeroG_RPC_URL = process.env.ZeroG_RPC_URL || ''
+
+export const LISTENER_V2_PORT = process.env.LISTENER_V2_PORT || '3000'
+export const QUICKNODE_API_KEY = process.env.QUICKNODE_API_KEY || ''
+export const WEBHOOK_KEY = process.env.WEBHOOK_KEY || ''
 
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,

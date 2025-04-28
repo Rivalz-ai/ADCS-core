@@ -1,0 +1,51 @@
+[
+  {
+    "chain": "Arbitrum",
+    "coordinatorAddress": "0x07811b8B6151db734b8D1568918d3A62607879a7",
+    "eventTopic": "0x41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d",
+    "startBlock": "324525000",
+    "webhookUrl": "https://9d24-2405-4803-b187-66b0-fd3d-fe69-45ec-ac83.ngrok-free.app/events"
+  },
+  {
+    "chain": "Base",
+    "coordinatorAddress": "0x91c5d6e9F50ec656e7094df9fC035924AAA428bb",
+    "eventTopic": "0x41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d",
+    "startBlock": "",
+    "webhookUrl": ""
+  },
+  {
+    "chain": "Polygon",
+    "coordinatorAddress": "0x55Ee887dB181B41f69b3313065b1eD6BEE3336A1",
+    "eventTopic": "0x41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d",
+    "startBlock": "0",
+    "webhookUrl": ""
+  },
+  {
+    "chain": "OP",
+    "coordinatorAddress": "0x55Ee887dB181B41f69b3313065b1eD6BEE3336A1",
+    "eventTopic": "0x41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d",
+    "startBlock": "0",
+    "webhookUrl": ""
+  },
+  {
+    "chain": "Bsc",
+    "coordinatorAddress": "0xcb8BaEf34aDBB414fAB51EC6Ac1C0e4D0340e824",
+    "eventTopic": "0x41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d",
+    "startBlock": "0",
+    "webhookUrl": ""
+  },
+  {
+    "chain": "Berachain",
+    "coordinatorAddress": "0x55Ee887dB181B41f69b3313065b1eD6BEE3336A1",
+    "eventTopic": "0x41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d",
+    "startBlock": "0",
+    "webhookUrl": ""
+  },
+  {
+    "chain": "Avalanche",
+    "coordinatorAddress": "0xcb8BaEf34aDBB414fAB51EC6Ac1C0e4D0340e824",
+    "eventTopic": "0x41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d",
+    "startBlock": "0",
+    "webhookUrl": ""
+  }
+]

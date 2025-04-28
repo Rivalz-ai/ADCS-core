@@ -1,0 +1,9 @@
+[
+  {
+    "chain": "OP",
+    "coordinatorAddress": "0x55Ee887dB181B41f69b3313065b1eD6BEE3336A1",
+    "eventTopic": "0x41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d",
+    "startBlock": "134338670",
+    "webhookUrl": "https://testnet-listener.rivalz.ai/events"
+  }
+]
