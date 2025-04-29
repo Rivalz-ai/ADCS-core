@@ -16,14 +16,13 @@ concurrency:
 env:
   REPO_URL: "asia-southeast1-docker.pkg.dev/rivalz-be/adcs"
   NAMESPACE: "adcs"
-  KUBECONFIG: "${{ vars.ROME_KUBECONFIG }}"
   SERVICE_NAME: "adcs-inference"
 
 jobs:
   build-and-push:
     outputs:
       commit_hash: ${{ steps.build.outputs.commit_hash }}
-    runs-on: rivalz-be
+    runs-on: rivalz-dc
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -41,7 +40,7 @@ jobs:
           
   deploy-inference-service:
     needs: build-and-push
-    runs-on: rivalz-be
+    runs-on: rivalz-dc
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -60,10 +59,15 @@ jobs:
 
       - name: Deploy inference service
         run: |
-          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> rome_kubeconfig
-          export KUBECONFIG=rome_kubeconfig
+          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> kubeconfig
           helm upgrade --install ${SERVICE_NAME} rivalz-chart -f inference/values.yaml -n ${NAMESPACE} \
-            --kubeconfig rome_kubeconfig \
+            --kubeconfig kubeconfig \
+            --set image.tag=${{ needs.build-and-push.outputs.commit_hash }} \
+            --create-namespace
+          rm -f kubeconfig
+          echo "${{ vars.DC_KUBECONFIG }}" | base64 -d >> kubeconfig
+          helm upgrade --install ${SERVICE_NAME} rivalz-chart -f inference/values.yaml -n ${NAMESPACE} \
+            --kubeconfig kubeconfig \
             --set image.tag=${{ needs.build-and-push.outputs.commit_hash }} \
             --create-namespace
 
