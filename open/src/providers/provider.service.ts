@@ -161,7 +161,13 @@ export class ProviderService {
       data: endpoints
     })
 
-    return provider
+    return {
+      message: 'Provider submitted successfully',
+      data: {
+        providerId: provider.id,
+        providerCode: provider.code
+      }
+    }
   }
 
   async playground(curl: string) {
