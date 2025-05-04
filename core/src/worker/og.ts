@@ -17,13 +17,17 @@ export class ZeroG {
   provider: JsonRpcProvider
 
   constructor() {
-    const INDEXER_RPC = 'https://indexer-storage-testnet-turbo.0g.ai'
-    this.provider = new JsonRpcProvider(ZeroG_RPC_URL)
-    this.signer = new Wallet(D0G_PRIVATE_KEY, this.provider)
-    this.indexer = new Indexer(INDEXER_RPC)
+    try {
+      const INDEXER_RPC = 'https://indexer-storage-testnet-turbo.0g.ai'
+      this.provider = new JsonRpcProvider(ZeroG_RPC_URL)
+      this.signer = new Wallet(D0G_PRIVATE_KEY, this.provider)
+      this.indexer = new Indexer(INDEXER_RPC)
 
-    const FLOW_CONTRACT_ADDRESS = '0xbD2C3F0E65eDF5582141C35969d66e34629cC768' // Replace with actual address
-    this.flowContract = FixedPriceFlow__factory.connect(FLOW_CONTRACT_ADDRESS, this.signer)
+      const FLOW_CONTRACT_ADDRESS = '0xbD2C3F0E65eDF5582141C35969d66e34629cC768' // Replace with actual address
+      this.flowContract = FixedPriceFlow__factory.connect(FLOW_CONTRACT_ADDRESS, this.signer)
+    } catch (error) {
+      console.error('Error initializing ZeroG:', error)
+    }
   }
 
   async uploadKvData(key: string, data: string) {
