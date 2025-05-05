@@ -59,12 +59,6 @@ jobs:
 
       - name: Deploy inference service
         run: |
-          echo "${{ vars.ROME_KUBECONFIG }}" | base64 -d >> kubeconfig
-          helm upgrade --install ${SERVICE_NAME} rivalz-chart -f inference/values.yaml -n ${NAMESPACE} \
-            --kubeconfig kubeconfig \
-            --set image.tag=${{ needs.build-and-push.outputs.commit_hash }} \
-            --create-namespace
-          rm -f kubeconfig
           echo "${{ vars.DC_KUBECONFIG }}" | base64 -d >> kubeconfig
           helm upgrade --install ${SERVICE_NAME} rivalz-chart -f inference/values.yaml -n ${NAMESPACE} \
             --kubeconfig kubeconfig \
