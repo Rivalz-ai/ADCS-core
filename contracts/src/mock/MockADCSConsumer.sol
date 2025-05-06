@@ -9,6 +9,7 @@ contract MockADCSConsumer is
     ADCSConsumerFulfillBool,
     ADCSConsumerFulfillBytes32,
     ADCSConsumerFulfillBytes,
+    ADCSConsumerFulfillStringAndBool,
     Ownable
 {
     using ADCS for ADCS.Request;
@@ -17,10 +18,17 @@ contract MockADCSConsumer is
     bytes32 public lastBytes32;
     bytes public lastBytes;
 
+    struct MemeCoinTrade {
+        string name;
+        bool isBuy;
+        uint256 updatedAt;
+    }
+    MemeCoinTrade public lastMemeCoinTrade;
     event DataRequestedUint256(uint256 indexed requestId);
     event DataRequestedBool(uint256 indexed requestId);
     event DataRequestedBytes32(uint256 indexed requestId);
     event DataRequestedBytes(uint256 indexed requestId);
+    event DataRequestedMemeCoinTrade(uint256 indexed requestId);
 
     constructor(address _coordinator) ADCSConsumerBase(_coordinator) Ownable(_msgSender()) {}
 
@@ -66,6 +74,17 @@ contract MockADCSConsumer is
         emit DataRequestedBytes(requestId);
     }
 
+    function requestMemeCoinTrade(
+        uint32 _callbackGasLimit,
+        bytes32 _jobId
+    ) external returns (uint256 requestId) {
+        bytes32 typeId = keccak256(abi.encodePacked("stringAndbool"));
+        ADCS.Request memory req = buildRequest(_jobId, typeId);
+        requestId = COORDINATOR.requestData(_callbackGasLimit, req);
+        emit DataRequestedMemeCoinTrade(requestId);
+        return requestId;
+    }
+
     function fulfillDataRequest(uint256, uint256 response) internal virtual override {
         lastUint256 = response;
     }
@@ -80,5 +99,13 @@ contract MockADCSConsumer is
 
     function fulfillDataRequest(uint256, bytes memory response) internal virtual override {
         lastBytes = response;
+    }
+
+    function fulfillDataRequest(uint256, StringAndBool memory response) internal virtual override {
+        lastMemeCoinTrade = MemeCoinTrade({
+            name: response.name,
+            isBuy: response.response,
+            updatedAt: block.timestamp
+        });
     }
 }
