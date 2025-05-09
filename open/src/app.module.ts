@@ -13,6 +13,8 @@ import { AdaptorModule } from './adaptor/adaptor.module'
 import { AuthModule } from './auth/auth.module'
 import { InferenceModule } from './inference/inference.module'
 import { ProviderModule } from './providers/provider.module'
+import { ProviderV2Module } from './provider-v2/provider-v2.module';
+import { AdapterV2Module } from './adapter-v2/adapter-v2.module';
 
 @Module({
   imports: [
@@ -40,7 +42,9 @@ import { ProviderModule } from './providers/provider.module'
     AdaptorModule,
     AuthModule,
     InferenceModule,
-    ProviderModule
+    ProviderModule,
+    ProviderV2Module,
+    AdapterV2Module
   ],
   controllers: [AppController],
   providers: [
