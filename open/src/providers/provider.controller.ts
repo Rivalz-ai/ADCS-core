@@ -32,4 +32,12 @@ export class ProviderController {
   async submitProvider(@Body() submissionDto: SubmissionDto) {
     return await this.providerService.submitProvider(submissionDto)
   }
+
+  @Get('allora/:coinName/:predictionType')
+  async getAllora(
+    @Param('coinName') coinName: string,
+    @Param('predictionType') predictionType: string
+  ) {
+    return await this.providerService.alloraInference(coinName, predictionType)
+  }
 }

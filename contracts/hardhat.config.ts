@@ -205,7 +205,23 @@ module.exports = {
           apiKey: process.env.EXPLORER_API_KEY
         }
       }
+    },
+    monah_test: {
+      url: 'https://testnet-rpc.monad.xyz',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.monah.xyz/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
     }
+  },
+  sourcify: {
+    enabled: true,
+    apiUrl: 'https://sourcify-api-monad.blockvision.org',
+    browserUrl: 'https://testnet.monadexplorer.com'
   },
 
   paths: {
@@ -216,6 +232,7 @@ module.exports = {
     deployments: './deployments'
   },
   etherscan: {
+    enabled: false,
     apiKey: {
       blast_sepolia: process.env.EXPLORER_API_KEY,
       polygon: 'FKBNQ1Z96FHZEEURN2QYS4S685FGN692JG',

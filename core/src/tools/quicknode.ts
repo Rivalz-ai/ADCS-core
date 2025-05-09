@@ -38,6 +38,8 @@ function getQuickNodeChain(chain: string) {
       return QuickNodeChain.BERA_MAINNET
     case 'Avalanche':
       return QuickNodeChain.AVALANCHE_MAINNET
+    case 'Monad-testnet':
+      return QuickNodeChain.MONAD_TESTNET
     default:
       return chain
   }
@@ -73,7 +75,7 @@ export async function createCoordinatorStream(
                 log.topics[0] === '${eventTopic}'
             )
         }
-        return { chain: 'OP', events: result }
+        return { chain: '${chain}', events: result }
     }
   `
   const data = {
