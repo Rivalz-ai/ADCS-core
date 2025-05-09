@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
-import { HOST } from '../app.settings'
+import { ALLORA_API_KEY, ALLORA_API_URL, HOST } from '../app.settings'
 import axios from 'axios'
 import { IProvider } from './provider.types'
 import { plainToInstance } from 'class-transformer'
@@ -207,5 +207,23 @@ export class ProviderService {
     const decryptedApiKey = decryptApiKey(apiKey)
     console.log(decryptedApiKey)
     return decryptedApiKey
+  }
+
+  async alloraInference(coinName: string, predictionType: string) {
+    try {
+      const axiosInstance = axios.create({
+        baseURL: ALLORA_API_URL,
+        headers: {
+          'x-api-key': `${ALLORA_API_KEY}`
+        }
+      })
+      const response = await axiosInstance.get(
+        `v2/allora/consumer/price/ethereum-11155111/${coinName}/${predictionType}`
+      )
+      return response.data.data
+    } catch (error) {
+      console.error('Error fetching Allora data:', error)
+      throw new BadRequestException(`Failed to fetch Allora data: ${error.message}`)
+    }
   }
 }
