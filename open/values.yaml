@@ -1,0 +1,50 @@
+replicaCount: 1
+type: app # There are app, worker, cronjob
+statefulset: false 
+nameOverride: "adcs-open"
+
+image:
+  repository: asia-southeast1-docker.pkg.dev/rivalz-be/adcs/adcs-open
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+  containerPort: 3002
+terminationGracePeriodSeconds: 60
+imagePullSecrets: 
+  - name: gar-registry
+
+secretMounts:
+  - name: env
+    secretName: open-env-secret
+    path: /app/.env
+    subPath: .env
+service:
+  type: ClusterIP
+  port: 3002
+extraEnvs: []
+envFrom: []
+
+podAnnotations: {}
+livenessProbe: []
+readinessProbe: []
+
+resources:
+  limits: {}
+  requests: 
+    cpu: "200m"
+    memory: "400Mi"
+
+ingress:
+  enabled: true
+  kind: gateway ### with 2 values: gateway and ingress
+  gateway: ingressgateway
+  gatewayname: istio-system/rivalz-ai
+  hosts: 
+    - 'adcs-v2-api.rivalz.ai'
+  servers: 
+    - port: 3002
+      name: http
+      protocol: HTTP
+
+  uri_prefix: "/" ### Please mention ending slash
+  # uri_rewrite: "/"
