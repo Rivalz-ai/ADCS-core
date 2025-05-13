@@ -121,6 +121,17 @@ export class ProviderService {
       prUrl: submissionDto.prUrl
     }
 
+    // check if the provider already exists
+    const existingProvider = await this.prisma.providerV2.findUnique({
+      where: {
+        prUrl: submissionDto.prUrl
+      }
+    })
+
+    if (existingProvider) {
+      throw new BadRequestException('Provider already exists')
+    }
+
     const provider = await this.prisma.providerV2.create({
       data: providerData
     })

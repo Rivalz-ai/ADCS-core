@@ -42,15 +42,15 @@ export class AuthController {
     return { accessToken: token }
   }
 
-  @Post('api-key')
+  @Post('api-key/:name')
   @ApiOperation({ summary: 'Generate an API key for a user' })
   @ApiResponse({ status: 200, description: 'Returns an API key for the user' })
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT')
-  async generateApiKey(@Req() req: Request) {
+  async generateApiKey(@Req() req: Request, @Param('name') name: string) {
     return {
       message: 'success',
-      data: await this.authService.generateApiKey(req.user['address'], req.user['userId'])
+      data: await this.authService.generateApiKey(req.user['address'], req.user['userId'], name)
     }
   }
 
