@@ -237,4 +237,18 @@ export class ProviderService {
       throw new BadRequestException(`Failed to fetch Allora data: ${error.message}`)
     }
   }
+
+  async verifySubmission(submissionDto: SubmissionDto) {
+    const jsonConfig = await this.loadJsonConfig(submissionDto.configUrl)
+    const providerData = {
+      name: jsonConfig.name,
+      description: jsonConfig.description,
+      iconUrl: jsonConfig.icon_url,
+      baseUrl: submissionDto.url,
+      documentLink: submissionDto.documentLink,
+      prUrl: submissionDto.prUrl,
+      methods: jsonConfig.methods
+    }
+    return providerData
+  }
 }

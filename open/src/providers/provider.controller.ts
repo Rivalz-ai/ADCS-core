@@ -40,4 +40,9 @@ export class ProviderController {
   ) {
     return await this.providerService.alloraInference(coinName, predictionType)
   }
+
+  @Post('verifySubmission')
+  async verifySubmission(@Body() submissionDto: SubmissionDto) {
+    return await this.providerService.verifySubmission(submissionDto)
+  }
 }
