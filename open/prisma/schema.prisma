@@ -290,6 +290,7 @@ model AdaptorV2 {
 
 model UserApiKey {
   id        Int      @id @default(autoincrement())
+  name      String   @map("name")
   userId    Int      @map("user_id")
   apiKey    String   @unique @map("api_key")
   expiresAt DateTime @map("expires_at") @db.Timestamptz(6)

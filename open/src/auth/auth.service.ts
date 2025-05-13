@@ -55,12 +55,13 @@ export class AuthService {
     return `Please sign this message to authenticate: Nonce: ${nonce} Timestamp: ${timestamp}`
   }
 
-  async generateApiKey(address: string, userId: number): Promise<string> {
+  async generateApiKey(address: string, userId: number, name: string): Promise<string> {
     const apiKey = await this.generateJwtToken(address, userId, JWT_API_EXP)
     await this.prisma.userApiKey.create({
       data: {
         userId,
         apiKey,
+        name,
         expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) // 1 year from now
       }
     })
