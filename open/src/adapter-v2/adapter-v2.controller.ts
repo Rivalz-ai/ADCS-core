@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Post, Body } from '@nestjs/common'
 import { AdapterV2Service } from './adapter-v2.service'
 import { ApiTags } from '@nestjs/swagger'
+import { CreateAdapterDto } from './dto/create.dto'
 
 @Controller({ path: 'adapter', version: '2' })
 @ApiTags('Adaptors')
@@ -15,5 +16,10 @@ export class AdapterV2Controller {
   @Get('graph')
   async getGraphStructure() {
     return await this.adapterV2Service.getGraphStructure()
+  }
+
+  @Post('create')
+  async createAdapter(@Body() adapterDto: CreateAdapterDto) {
+    return await this.adapterV2Service.createAdapter(adapterDto)
   }
 }

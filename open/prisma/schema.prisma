@@ -211,11 +211,12 @@ model Node {
   id               Int    @id @default(autoincrement())
   nodeId           Int    @map("node_id") // is provider or adaptor id
   nodeType         String @map("node_type") // is provider or adaptor
-  methodName       String @map("method_name")
+  methodName       String? @map("method_name")
   providerMethodId Int?   @map("method_id")
   inputValues      String @map("input_values") // what value is input for the node from IR
   adaptorId        Int?   @map("adaptor_id")
   index            Int    @map("index")
+  outputName       String? @map("output_name")
 
   createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime        @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
