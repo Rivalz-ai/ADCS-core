@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { AdapterV2Service } from './adapter-v2.service'
 import { ApiTags } from '@nestjs/swagger'
 import { CreateAdapterDto } from './dto/create.dto'
@@ -18,8 +18,28 @@ export class AdapterV2Controller {
     return await this.adapterV2Service.getGraphStructure()
   }
 
+  @Get('all')
+  async getAllAdapters() {
+    return await this.adapterV2Service.getAllAdapters()
+  }
+
+  @Get('by-code/:code')
+  async getAdapterByCode(@Param('code') code: string) {
+    return await this.adapterV2Service.getAdapter(code)
+  }
+
   @Post('create')
   async createAdapter(@Body() adapterDto: CreateAdapterDto) {
     return await this.adapterV2Service.createAdapter(adapterDto)
+  }
+
+  @Post('verify')
+  async verifyAdapter(@Body() adapterDto: CreateAdapterDto) {
+    return await this.adapterV2Service.verifyAdapter(adapterDto)
+  }
+
+  @Delete('delete/:id')
+  async deleteAdapter(@Param('id') id: string) {
+    return await this.adapterV2Service.deleteAdapter(id)
   }
 }

@@ -1,8 +1,9 @@
-import { Controller, Get, Param, ParseIntPipe, Post, Query, Body } from '@nestjs/common'
+import { Controller, Get, Param, ParseIntPipe, Post, Query, Body, Req } from '@nestjs/common'
 import { ProviderService } from './provider.service'
 import { ApiTags } from '@nestjs/swagger'
 import { SubmissionDto } from './dto/submission.dto'
-
+import { ExecuteMethodDto } from './dto/executeMethod.dto'
+import { Request } from 'express'
 @Controller({ path: 'providers', version: '1' })
 @ApiTags('Providers')
 export class ProviderController {
@@ -21,6 +22,12 @@ export class ProviderController {
   @Get('playground')
   async getPlayground(@Query('curl') curl: string) {
     return await this.providerService.playground(curl)
+  }
+
+  @Get('providerEndpointTest')
+  async providerEndpointTest(@Req() req: Request, @Query('coinName') coinName: string) {
+    const apiKey = req.headers['api-key'] as string
+    return await this.providerService.providerEndpointTest(apiKey, coinName)
   }
 
   @Get(':id')
@@ -44,5 +51,14 @@ export class ProviderController {
   @Post('verifySubmission')
   async verifySubmission(@Body() submissionDto: SubmissionDto) {
     return await this.providerService.verifySubmission(submissionDto)
+  }
+
+  @Post('executeMethod')
+  async executeMethod(@Body() executeMethodDto: ExecuteMethodDto) {
+    return await this.providerService.executeMethod(
+      executeMethodDto.providerId,
+      executeMethodDto.methodName,
+      executeMethodDto.input
+    )
   }
 }
