@@ -5,10 +5,15 @@ import { CreateAdapterDto } from './dto/create.dto'
 import { Prisma } from '@prisma/client'
 import { PrismaService } from '../prisma.service'
 import { generateUniqueId } from '../app.utils'
+import { ProviderV2Service } from '../provider-v2/provider-v2.service'
 
 @Injectable()
 export class AdapterV2Service {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly providerV2Service: ProviderV2Service
+  ) {}
+
   async getAdapterStructure() {
     return adapterStructure
   }
@@ -92,9 +97,9 @@ export class AdapterV2Service {
           throw new HttpException(`Node ${nodeId} not found`, HttpStatus.BAD_REQUEST)
         }
 
-        if (node.input.some((input) => !input.startsWith('IR.'))) {
-          throw new HttpException(`Input ${node.input} must start with IR.`, HttpStatus.BAD_REQUEST)
-        }
+        // if (node.input.some((input) => !input.startsWith('IR.'))) {
+        //   throw new HttpException(`Input ${node.input} must start with IR.`, HttpStatus.BAD_REQUEST)
+        // }
 
         if (sourceType === 'provider') {
           const method = await this.prismaService.providerMethod.findFirst({
@@ -215,10 +220,10 @@ export class AdapterV2Service {
     if (!adapter) {
       throw new HttpException(`Adapter ${id} not found`, HttpStatus.BAD_REQUEST)
     }
-
     // check input schema
     const inputSchema = adapter.inputEntity.object
     const inputKeys = Object.keys(inputSchema)
+
     const missingKeys = inputKeys.filter((key) => !input[key])
     if (missingKeys.length > 0) {
       throw new HttpException(`Missing keys: ${missingKeys.join(', ')}`, HttpStatus.BAD_REQUEST)
@@ -228,35 +233,94 @@ export class AdapterV2Service {
       inputValues: JSON.parse(node.inputValues)
     }))
 
-    for (const node of graphFlow) {
-      const nodeSource =
-        node.nodeType === 'provider'
-          ? await this.prismaService.providerV2.findUnique({ where: { id: node.nodeId } })
-          : await this.prismaService.adaptorV2.findUnique({ where: { id: node.nodeId } })
-      if (!nodeSource) {
-        throw new HttpException(`Node ${node.nodeId} not found`, HttpStatus.BAD_REQUEST)
-      }
-      if (node.nodeType === 'provider') {
-        const method = await this.prismaService.providerMethod.findFirst({
-          where: { providerId: nodeSource.id, methodName: node.methodName },
-          include: { outputEntity: true, inputEntity: true }
-        })
-        if (!method) {
-          throw new HttpException(`Method ${node.methodName} not found`, HttpStatus.BAD_REQUEST)
-        }
+    let lastOutputData = {}
+    let inputData = input
 
-        const methodInput = method.inputEntity.object
-        const methodInputKeys = Object.keys(methodInput)
-        const inputValues = node.inputValues.map((value: any) => {
-          const inputKey = value.split('.')[1]
-          return input[inputKey]
-        })
-        if (inputValues.length !== methodInputKeys.length) {
-          throw new HttpException(`Input values length mismatch`, HttpStatus.BAD_REQUEST)
+    for (const node of graphFlow.sort((a, b) => a.index - b.index)) {
+      console.log('running node', node.nodeId)
+      try {
+        const nodeSource =
+          node.nodeType === 'provider'
+            ? await this.prismaService.providerV2.findUnique({ where: { id: node.nodeId } })
+            : await this.prismaService.adaptorV2.findUnique({ where: { id: node.nodeId } })
+
+        if (!nodeSource) {
+          throw new HttpException(`Node ${node.nodeId} not found`, HttpStatus.BAD_REQUEST)
         }
-        // execute method
-        // const methodOutput = await method.execute(inputValues)
+        if (node.nodeType === 'provider') {
+          const method = await this.prismaService.providerMethod.findFirst({
+            where: { providerId: nodeSource.id, methodName: node.methodName },
+            include: { outputEntity: true, inputEntity: true }
+          })
+          if (!method) {
+            throw new HttpException(`Method ${node.methodName} not found`, HttpStatus.BAD_REQUEST)
+          }
+
+          const methodInput = method.inputEntity.object
+          const methodInputKeys = Object.keys(methodInput)
+          let inputValues = inputData
+          if (node.inputValues.find((value: any) => value.startsWith('IR.'))) {
+            const data = node.inputValues.map((value: any) => {
+              const inputKey = value.split('.')[1]
+              return { [inputKey]: inputData[inputKey] }
+            })
+            inputValues = Object.assign({}, ...data)
+          }
+          if (Object.keys(inputValues).length !== methodInputKeys.length) {
+            throw new HttpException(`Input values length mismatch`, HttpStatus.BAD_REQUEST)
+          }
+
+          const methodInputValues = methodInputKeys.map((key) => {
+            return { [key]: inputValues[key] }
+          })
+          const finalMethodInputValues = Object.assign({}, ...methodInputValues)
+          // execute method
+          const methodOutput = await this.providerV2Service.executeMethod(
+            nodeSource.code,
+            node.methodName,
+            finalMethodInputValues
+          )
+          lastOutputData = methodOutput
+          inputData = methodOutput
+        } else if (node.nodeType === 'adaptor') {
+          const adaptor = await this.prismaService.adaptorV2.findUnique({
+            where: { id: node.nodeId },
+            include: { inputEntity: true }
+          })
+          const adapterInput = adaptor.inputEntity.object
+          const adaptorInputKeys = Object.keys(adapterInput)
+          let inputValues = inputData
+          if (node.inputValues.find((value: any) => value.startsWith('IR.'))) {
+            const data = node.inputValues.map((value: any) => {
+              const inputKey = value.split('.')[1]
+              return { [inputKey]: inputData[inputKey] }
+            })
+            inputValues = Object.assign({}, ...data)
+          }
+          if (Object.keys(inputValues).length !== adaptorInputKeys.length) {
+            throw new HttpException(`Input values length mismatch`, HttpStatus.BAD_REQUEST)
+          }
+          const adaptorInputValues = adaptorInputKeys.map((key) => {
+            return { [key]: inputValues[key] }
+          })
+          const finalInputValues = Object.assign({}, ...adaptorInputValues)
+          // execute adaptor
+          if (adaptor.code === id) {
+            throw new HttpException(`Adaptor ${id} cannot run itself`, HttpStatus.BAD_REQUEST)
+          }
+          lastOutputData = await this.runAdapterById(adaptor.code, finalInputValues)
+          inputData = lastOutputData
+        } else {
+          throw new HttpException(
+            `Node ${node.nodeId} is not a provider or adaptor`,
+            HttpStatus.BAD_REQUEST
+          )
+        }
+      } catch (error) {
+        console.log('error at node', node.nodeId, error)
+        throw error
       }
     }
+    return lastOutputData
   }
 }

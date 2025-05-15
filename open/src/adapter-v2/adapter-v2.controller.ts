@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { AdapterV2Service } from './adapter-v2.service'
 import { ApiTags } from '@nestjs/swagger'
 import { CreateAdapterDto } from './dto/create.dto'
+import { RunDto } from './dto/run.dto'
 
 @Controller({ path: 'adapter', version: '2' })
 @ApiTags('Adaptors')
@@ -41,5 +42,10 @@ export class AdapterV2Controller {
   @Delete('delete/:id')
   async deleteAdapter(@Param('id') id: string) {
     return await this.adapterV2Service.deleteAdapter(id)
+  }
+
+  @Post('run/:id')
+  async runAdapter(@Param('id') id: string, @Body() runDto: RunDto) {
+    return await this.adapterV2Service.runAdapterById(id, runDto.input)
   }
 }
