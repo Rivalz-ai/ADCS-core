@@ -208,14 +208,14 @@ model Entity {
 }
 
 model Node {
-  id               Int    @id @default(autoincrement())
-  nodeId           Int    @map("node_id") // is provider or adaptor id
-  nodeType         String @map("node_type") // is provider or adaptor
+  id               Int     @id @default(autoincrement())
+  nodeId           Int     @map("node_id") // is provider or adaptor id
+  nodeType         String  @map("node_type") // is provider or adaptor
   methodName       String? @map("method_name")
-  providerMethodId Int?   @map("method_id")
-  inputValues      String @map("input_values") // what value is input for the node from IR
-  adaptorId        Int?   @map("adaptor_id")
-  index            Int    @map("index")
+  providerMethodId Int?    @map("method_id")
+  inputValues      String  @map("input_values") // what value is input for the node from IR
+  adaptorId        Int?    @map("adaptor_id")
+  index            Int     @map("index")
   outputName       String? @map("output_name")
 
   createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -235,7 +235,7 @@ model ProviderV2 {
   baseUrl        String           @map("base_url")
   apiKey         String?          @map("api_key")
   documentLink   String?          @map("document_link")
-  prUrl          String          @map("pr_url") @unique
+  prUrl          String           @unique @map("pr_url")
   status         String           @default("active") @map("status") // active, inactive, deleted
   createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -298,4 +298,18 @@ model UserApiKey {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   @@map("user_api_key")
+}
+
+model AIModel {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  baseUrl     String   @map("base_url")
+  apiKey      String   @map("api_key")
+  type        String   @map("type") // openai, anthropic, gemini
+  active      Boolean  @default(true) @map("active")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("ai_model")
 }
