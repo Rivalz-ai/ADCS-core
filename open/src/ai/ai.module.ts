@@ -4,6 +4,7 @@ import { AIController } from './ai.controller'
 import { PrismaService } from '../prisma.service'
 @Module({
   providers: [AIService, PrismaService],
-  controllers: [AIController]
+  controllers: [AIController],
+  exports: [AIService]
 })
 export class AiModule {}

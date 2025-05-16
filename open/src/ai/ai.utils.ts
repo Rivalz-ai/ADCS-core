@@ -60,3 +60,20 @@ export async function gemini(apiKey: string, model: string, message: string) {
   const response = result.response
   return response.text()
 }
+
+export function extractJsonFromText(text: string): any {
+  const jsonMatch = text.match(/\{[\s\S]*\}/)
+  if (jsonMatch) {
+    try {
+      return JSON.parse(jsonMatch[0])
+    } catch (e) {
+      throw new Error('Failed to parse JSON from text')
+    }
+  }
+  throw new Error('No JSON found in text')
+}
+
+// Example usage:
+// const json = extractJsonFromText(response);
+// console.log(json.coinName); // "bitcoin"
+// console.log(json.shouldBuy); // false

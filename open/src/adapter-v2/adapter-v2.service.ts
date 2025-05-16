@@ -6,12 +6,15 @@ import { Prisma } from '@prisma/client'
 import { PrismaService } from '../prisma.service'
 import { generateUniqueId } from '../app.utils'
 import { ProviderV2Service } from '../provider-v2/provider-v2.service'
+import { AIService } from '../ai/ai.service'
+import { extractJsonFromText } from 'src/ai/ai.utils'
 
 @Injectable()
 export class AdapterV2Service {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly providerV2Service: ProviderV2Service
+    private readonly providerV2Service: ProviderV2Service,
+    private readonly aiService: AIService
   ) {}
 
   async getAdapterStructure() {
@@ -321,6 +324,21 @@ export class AdapterV2Service {
         throw error
       }
     }
+
+    // use coreLLM to generate output
+    const coreLLM = adapter.coreLLM
+    if (coreLLM) {
+      // get llm model
+      const llmModel = await this.prismaService.aIModel.findFirst({ where: { name: coreLLM } })
+      if (!llmModel) {
+        throw new HttpException(`LLM model ${coreLLM} not found`, HttpStatus.BAD_REQUEST)
+      }
+      const coreLLMInput = `${adapter.staticContext}\n${JSON.stringify(inputData)}\n
+      the response should be in json format and should be like this: ${JSON.stringify(adapter.outputEntity.object)}`
+      const coreLLMOutput = await this.aiService.executeModel(llmModel.name, coreLLMInput)
+      lastOutputData = extractJsonFromText(coreLLMOutput)
+    }
+
     return lastOutputData
   }
 }
