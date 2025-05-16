@@ -3,6 +3,7 @@ import { AdapterV2Service } from './adapter-v2.service'
 import { ApiTags } from '@nestjs/swagger'
 import { CreateAdapterDto } from './dto/create.dto'
 import { RunDto } from './dto/run.dto'
+import { TestDto } from './dto/test.dto'
 
 @Controller({ path: 'adapter', version: '2' })
 @ApiTags('Adaptors')
@@ -47,5 +48,10 @@ export class AdapterV2Controller {
   @Post('run/:id')
   async runAdapter(@Param('id') id: string, @Body() runDto: RunDto) {
     return await this.adapterV2Service.runAdapterById(id, runDto.input)
+  }
+
+  @Post('test')
+  async testAdapter(@Body() testDto: TestDto) {
+    return await this.adapterV2Service.runTestAdapter(testDto.adaptor, testDto.input)
   }
 }

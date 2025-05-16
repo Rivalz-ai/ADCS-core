@@ -240,7 +240,6 @@ export class AdapterV2Service {
     let inputData = input
 
     for (const node of graphFlow.sort((a, b) => a.index - b.index)) {
-      console.log('running node', node.nodeId)
       try {
         const nodeSource =
           node.nodeType === 'provider'
@@ -335,6 +334,131 @@ export class AdapterV2Service {
       }
       const coreLLMInput = `${adapter.staticContext}\n${JSON.stringify(inputData)}\n
       the response should be in json format and should be like this: ${JSON.stringify(adapter.outputEntity.object)}`
+      const coreLLMOutput = await this.aiService.executeModel(llmModel.name, coreLLMInput)
+      lastOutputData = extractJsonFromText(coreLLMOutput)
+    }
+
+    return lastOutputData
+  }
+
+  async runTestAdapter(adapter: CreateAdapterDto, input: { [key: string]: any }) {
+    if (!adapter) {
+      throw new HttpException(`Adapter not found`, HttpStatus.BAD_REQUEST)
+    }
+    const inputSchema = adapter.input_schema
+
+    const inputKeys = Object.keys(inputSchema)
+
+    const missingKeys = inputKeys.filter((key) => !input[key])
+    if (missingKeys.length > 0) {
+      throw new HttpException(`Missing keys: ${missingKeys.join(', ')}`, HttpStatus.BAD_REQUEST)
+    }
+    const graphFlow = adapter.graph_flow.map((node) => ({
+      ...node,
+      inputValues: node.input
+    }))
+
+    let lastOutputData = {}
+    let inputData = input
+
+    for (const node of graphFlow) {
+      const nodeId = adapter.nodes[node.id]
+      if (!nodeId) {
+        throw new HttpException(`Node ${node.id} not found`, HttpStatus.BAD_REQUEST)
+      }
+      try {
+        const nodeSource = nodeId.startsWith('P')
+          ? await this.prismaService.providerV2.findUnique({ where: { code: nodeId } })
+          : await this.prismaService.adaptorV2.findUnique({ where: { code: nodeId } })
+
+        if (!nodeSource) {
+          throw new HttpException(`Node ${node.id} not found`, HttpStatus.BAD_REQUEST)
+        }
+        if (nodeId.startsWith('P')) {
+          const method = await this.prismaService.providerMethod.findFirst({
+            where: { providerId: nodeSource.id, methodName: node.input_method },
+            include: { outputEntity: true, inputEntity: true }
+          })
+          if (!method) {
+            throw new HttpException(`Method ${node.input_method} not found`, HttpStatus.BAD_REQUEST)
+          }
+
+          const methodInput = method.inputEntity.object
+          const methodInputKeys = Object.keys(methodInput)
+          let inputValues = inputData
+          if (node.inputValues.find((value: any) => value.startsWith('IR.'))) {
+            const data = node.inputValues.map((value: any) => {
+              const inputKey = value.split('.')[1]
+              return { [inputKey]: inputData[inputKey] }
+            })
+            inputValues = Object.assign({}, ...data)
+          }
+          if (Object.keys(inputValues).length !== methodInputKeys.length) {
+            throw new HttpException(`Input values length mismatch`, HttpStatus.BAD_REQUEST)
+          }
+
+          const methodInputValues = methodInputKeys.map((key) => {
+            return { [key]: inputValues[key] }
+          })
+          const finalMethodInputValues = Object.assign({}, ...methodInputValues)
+          // execute method
+          const methodOutput = await this.providerV2Service.executeMethod(
+            nodeSource.code,
+            node.input_method,
+            finalMethodInputValues
+          )
+          lastOutputData = methodOutput
+          inputData = methodOutput
+        } else if (nodeId.startsWith('A')) {
+          const adaptor = await this.prismaService.adaptorV2.findUnique({
+            where: { code: nodeId },
+            include: { inputEntity: true }
+          })
+          const adapterInput = adaptor.inputEntity.object
+          const adaptorInputKeys = Object.keys(adapterInput)
+          let inputValues = inputData
+          if (node.inputValues.find((value: any) => value.startsWith('IR.'))) {
+            const data = node.inputValues.map((value: any) => {
+              const inputKey = value.split('.')[1]
+              return { [inputKey]: inputData[inputKey] }
+            })
+            inputValues = Object.assign({}, ...data)
+          }
+          if (Object.keys(inputValues).length !== adaptorInputKeys.length) {
+            throw new HttpException(`Input values length mismatch`, HttpStatus.BAD_REQUEST)
+          }
+          const adaptorInputValues = adaptorInputKeys.map((key) => {
+            return { [key]: inputValues[key] }
+          })
+          const finalInputValues = Object.assign({}, ...adaptorInputValues)
+          // execute adaptor
+          // if (adaptor.code === nodeId) {
+          //   throw new HttpException(`Adaptor ${nodeId} cannot run itself`, HttpStatus.BAD_REQUEST)
+          // }
+          lastOutputData = await this.runAdapterById(nodeId, finalInputValues)
+          inputData = lastOutputData
+        } else {
+          throw new HttpException(
+            `Node ${nodeId} is not a provider or adaptor`,
+            HttpStatus.BAD_REQUEST
+          )
+        }
+      } catch (error) {
+        console.log('error at node', nodeId, error)
+        throw error
+      }
+    }
+
+    // use coreLLM to generate output
+    const coreLLM = adapter.core_llm
+    if (coreLLM) {
+      // get llm model
+      const llmModel = await this.prismaService.aIModel.findFirst({ where: { name: coreLLM } })
+      if (!llmModel) {
+        throw new HttpException(`LLM model ${coreLLM} not found`, HttpStatus.BAD_REQUEST)
+      }
+      const coreLLMInput = `${adapter.static_context}\n${JSON.stringify(inputData)}\n
+      the response should be in json format and should be like this: ${JSON.stringify(adapter.output_schema)}`
       const coreLLMOutput = await this.aiService.executeModel(llmModel.name, coreLLMInput)
       lastOutputData = extractJsonFromText(coreLLMOutput)
     }
