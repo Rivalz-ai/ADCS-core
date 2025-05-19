@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
-import { ALLORA_API_KEY, ALLORA_API_URL, HOST } from '../app.settings'
+import { ALLORA_API_KEY, ALLORA_API_URL } from '../app.settings'
 import axios from 'axios'
 import { IProvider } from './provider.types'
 import { plainToInstance } from 'class-transformer'

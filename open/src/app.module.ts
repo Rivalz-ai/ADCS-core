@@ -15,6 +15,7 @@ import { InferenceModule } from './inference/inference.module'
 import { ProviderModule } from './providers/provider.module'
 import { ProviderV2Module } from './provider-v2/provider-v2.module';
 import { AdapterV2Module } from './adapter-v2/adapter-v2.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { AdapterV2Module } from './adapter-v2/adapter-v2.module';
     InferenceModule,
     ProviderModule,
     ProviderV2Module,
-    AdapterV2Module
+    AdapterV2Module,
+    AiModule
   ],
   controllers: [AppController],
   providers: [
