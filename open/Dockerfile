@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openssl git \
+    openssl git ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy built files from builder stage
