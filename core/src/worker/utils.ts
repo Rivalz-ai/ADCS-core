@@ -77,9 +77,9 @@ export async function sendTransaction({
   const _logger = logger.child({ name: 'sendTransaction', file: FILE_NAME })
 
   // Get current base fee and calculate max fee
-  const baseFee = await getBaseFeeWithBuffer(wallet.provider)
-  const maxPriorityFeePerGas = ethers.parseUnits('0.01', 'gwei')
-  const maxFeePerGas = baseFee + maxPriorityFeePerGas
+  // const baseFee = await getBaseFeeWithBuffer(wallet.provider)
+  // const maxPriorityFeePerGas = ethers.parseUnits('0.01', 'gwei')
+  // const maxFeePerGas = baseFee + maxPriorityFeePerGas
 
   if (payload) {
     payload = add0x(payload)
@@ -89,16 +89,19 @@ export async function sendTransaction({
     from: await wallet.getAddress(),
     to: to,
     data: payload || '0x00',
-    value: value || '0x00',
-    maxFeePerGas,
-    maxPriorityFeePerGas
+    value: value || '0x00'
+    // maxFeePerGas,
+    // maxPriorityFeePerGas
   }
 
   // Estimate gas limit
   try {
     const estimatedGas = await wallet.provider.estimateGas(tx)
     // Add 20% buffer to estimated gas
-    const gasLimit = BigInt(Math.ceil(Number(estimatedGas) * 1.2))
+    if (!gasLimit) {
+      const newGasLimit = BigInt(Math.ceil(Number(estimatedGas) * 1.2))
+      gasLimit = newGasLimit.toString()
+    }
     tx['gasLimit'] = gasLimit
 
     _logger.debug(
