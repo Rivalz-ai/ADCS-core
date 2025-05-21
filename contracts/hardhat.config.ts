@@ -219,7 +219,7 @@ module.exports = {
     }
   },
   sourcify: {
-    enabled: true,
+    enabled: false,
     apiUrl: 'https://sourcify-api-monad.blockvision.org',
     browserUrl: 'https://testnet.monadexplorer.com'
   },
@@ -232,7 +232,7 @@ module.exports = {
     deployments: './deployments'
   },
   etherscan: {
-    enabled: false,
+    enabled: true,
     apiKey: {
       blast_sepolia: process.env.EXPLORER_API_KEY,
       polygon: 'FKBNQ1Z96FHZEEURN2QYS4S685FGN692JG',
@@ -319,6 +319,14 @@ module.exports = {
         urls: {
           apiURL: 'https://api.polygonscan.com/api',
           browserURL: 'https://polygonscan.com'
+        }
+      },
+      {
+        network: 'bsc',
+        chainId: 56,
+        urls: {
+          apiURL: 'https://api.bscscan.com/api',
+          browserURL: 'https://bscscan.com'
         }
       }
     ]
