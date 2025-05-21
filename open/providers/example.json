@@ -2,16 +2,16 @@
   "id": "1",
   "name": "get price",
   "description": "description for provider",
-  "icon_url": "https://getprice.api.com",
+  "icon_url": "https://icon.io",
   "methods": [
     {
-      "method_name": "method 1",
+      "method_name": "open/v2/providers/providerEndpointTest",
       "description": "description for method 1",
       "input_schema": { "coinName": "string" },
       "input_type": "QueryParams",
       "output_schema": { "coinName": "string", "price": "number" },
       "type": "GET",
-      "playground": "https://getprice.api.com?coinName=BTC"
+      "playground": "https://testnet-adcs-api-v2.rivalz.ai/open/v2/providers/providerEndpointTest?coinName=bitcoin"
     },
     {
       "method_name": "getMarket",
@@ -20,7 +20,7 @@
       "input_type": "QueryParams",
       "output_schema": { "coinName": "string", "mc": "number" },
       "type": "GET",
-      "playground": "https://api.com/getMarket?coinName=BTC"
+      "playground": "https://playground/2"
     }
   ]
 }
