@@ -1,9 +1,8 @@
-import { BadRequestException, Injectable, Post } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { providerStructure } from '../structures/provider'
 import axios from 'axios'
 import { decryptApiKey } from 'src/app.utils'
-import { ExecuteMethodDto } from 'src/providers/dto/executeMethod.dto'
 
 @Injectable()
 export class ProviderV2Service {
@@ -11,6 +10,9 @@ export class ProviderV2Service {
 
   async getAllProviders() {
     const data = await this.prisma.providerV2.findMany({
+      where: {
+        status: 'active'
+      },
       include: {
         ProviderMethod: { include: { inputEntity: true, outputEntity: true } }
       }
@@ -42,9 +44,12 @@ export class ProviderV2Service {
 
   async getProviderById(id: string) {
     const data = await this.prisma.providerV2.findUnique({
-      where: { code: id },
+      where: { code: id, status: 'active' },
       include: { ProviderMethod: { include: { inputEntity: true, outputEntity: true } } }
     })
+    if (!data) {
+      throw new BadRequestException(`Provider ${id} not found`)
+    }
 
     return {
       id: data.code,
