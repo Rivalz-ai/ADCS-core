@@ -40,6 +40,10 @@ function getQuickNodeChain(chain: string) {
       return QuickNodeChain.AVALANCHE_MAINNET
     case 'Monad-testnet':
       return QuickNodeChain.MONAD_TESTNET
+    case 'Sei':
+      return QuickNodeChain.SEI
+    case 'Mantle':
+      return QuickNodeChain.MANTLE_MAINNET
     default:
       return chain
   }

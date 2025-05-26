@@ -216,6 +216,28 @@ module.exports = {
           apiKey: process.env.EXPLORER_API_KEY
         }
       }
+    },
+    mantle: {
+      url: 'https://rpc.mantle.xyz',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.mantlescan.xyz/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
+    },
+    sei: {
+      url: 'https://sei.drpc.org',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://sei.drpc.org/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
     }
   },
   sourcify: {
@@ -235,17 +257,18 @@ module.exports = {
     enabled: true,
     apiKey: {
       blast_sepolia: process.env.EXPLORER_API_KEY,
-      polygon: 'FKBNQ1Z96FHZEEURN2QYS4S685FGN692JG',
+      polygon: process.env.EXPLORER_API_KEY,
       rivalz2_test: process.env.EXPLORER_API_KEY,
       arbitrum_test: process.env.ARBITRUM_API_KEY,
       mainnet: process.env.EXPLORER_API_KEY,
       arbitrum: process.env.ARBITRUM_API_KEY,
       base: process.env.BASE_API_KEY,
       avalanche: 'https://api.snowtrace.io/api',
-      berachain: 'M15PPEK29J855G5KPF1ZZB4GS1PTPQZ1IP',
-      bsc: 'UJWJCKIXM87H412E5GSZPC487D6YK2ZEMP',
-      sonic: '6I4PQHIHD2NYEHKZ5WBF25VYVK2UJZNNQ9',
-      optimism: 'KHNQNR2WTC5AVZ1TTPMIACYURK574UQ8QZ'
+      berachain: process.env.EXPLORER_API_KEY,
+      bsc: process.env.EXPLORER_API_KEY,
+      sonic: process.env.EXPLORER_API_KEY,
+      optimism: process.env.EXPLORER_API_KEY,
+      mantle: process.env.EXPLORER_API_KEY
     },
     customChains: [
       {
@@ -327,6 +350,14 @@ module.exports = {
         urls: {
           apiURL: 'https://api.bscscan.com/api',
           browserURL: 'https://bscscan.com'
+        }
+      },
+      {
+        network: 'mantle',
+        chainId: 5000,
+        urls: {
+          apiURL: 'https://api.mantlescan.xyz/api',
+          browserURL: 'https://mantlescan.xyz'
         }
       }
     ]
