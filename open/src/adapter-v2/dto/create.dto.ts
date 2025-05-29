@@ -87,6 +87,20 @@ export class CreateAdapterDto {
   output_schema: { [key: string]: string }
 
   @ApiProperty({
+    description: 'The output type of the adapter',
+    example: 1,
+    required: false
+  })
+  output_type_id?: number
+
+  @ApiProperty({
+    description: 'The output type of the adapter',
+    example: 1,
+    required: false
+  })
+  category_id?: number
+
+  @ApiProperty({
     description: 'The nodes of the adapter',
     example: { A1: 'P0x...', A2: 'A1' },
     type: Object

@@ -22,6 +22,13 @@ export class SubmissionDto {
   })
   prUrl: string
 
+  @ApiProperty({
+    description: 'The category id of the request to submit',
+    example: 1,
+    required: false
+  })
+  categoryId?: number
+
   @IsString()
   @ApiProperty({
     description: 'The document link of the request to submit',
