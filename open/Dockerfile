@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY . .
 
 # Install production dependencies only
-RUN yarn install
+RUN NODE_OPTIONS=--max_old_space_size=8192 && yarn install
 
 # Generate Prisma client
 RUN npx prisma generate
