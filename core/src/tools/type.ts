@@ -67,5 +67,5 @@ export enum QuickNodeChain {
   ZKSYNC_SEPOLIA = 'zksync-sepolia',
   ZORA_MAINNET = 'zora-mainnet',
   MONAD_TESTNET = 'monad-testnet',
-  SEI = 'sei'
+  SEI = 'sei-pacific'
 }
