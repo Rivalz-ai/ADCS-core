@@ -55,13 +55,57 @@ export class AdapterV2Service {
       where: { code: id },
       include: {
         graphFlow: true,
-        inputEntity: { select: { object: true } },
-        outputEntity: { select: { object: true } }
+        inputEntity: { select: { object: true, name: true } },
+        outputEntity: { select: { object: true, name: true } },
+        category: true,
+        outputType: true
       }
     })
     if (!adapter) {
       throw new HttpException(`Adapter ${id} not found`, HttpStatus.BAD_REQUEST)
     }
+    const nodeProvider = await this.prismaService.providerV2.findMany({
+      where: {
+        id: {
+          in: adapter.graphFlow
+            .filter((node) => node.nodeType === 'provider')
+            .map((node) => node.nodeId)
+        }
+      },
+      include: {
+        ProviderMethod: {
+          include: {
+            inputEntity: true,
+            outputEntity: true
+          }
+        }
+      }
+    })
+    const nodeAdaptor = await this.prismaService.adaptorV2.findMany({
+      where: {
+        id: {
+          in: adapter.graphFlow
+            .filter((node) => node.nodeType === 'adaptor')
+            .map((node) => node.nodeId)
+        }
+      },
+      include: {
+        inputEntity: true,
+        outputEntity: true
+      }
+    })
+    const entities = [
+      ...nodeProvider
+        .map((node) => node.ProviderMethod.map((method) => method.inputEntity.name))
+        .flat(),
+      ...nodeProvider
+        .map((node) => node.ProviderMethod.map((method) => method.outputEntity.name))
+        .flat(),
+      ...nodeAdaptor.map((node) => node.inputEntity.name),
+      ...nodeAdaptor.map((node) => node.outputEntity.name),
+      adapter.inputEntity.name,
+      adapter.outputEntity.name
+    ]
     return {
       id: adapter.code,
       name: adapter?.name,
@@ -75,7 +119,13 @@ export class AdapterV2Service {
         inputValues: JSON.parse(node.inputValues)
       })),
       inputEntity: adapter.inputEntity.object,
-      outputEntity: adapter.outputEntity.object
+      outputEntity: adapter.outputEntity.object,
+      category: adapter.category?.name || '',
+      outputType: adapter.outputType?.name || '',
+      outputTypeId: adapter.outputType?.id || 0,
+      categoryId: adapter.category?.id || 0,
+      entities: entities.filter((entity, index, self) => self.indexOf(entity) === index),
+      requestCount: adapter.requestCount
     }
   }
   async verifyAdapter(adapterDto: CreateAdapterDto) {
@@ -127,7 +177,7 @@ export class AdapterV2Service {
     }
   }
 
-  async createAdapter(adapterDto: CreateAdapterDto) {
+  async createAdapter(walletAddress: string, adapterDto: CreateAdapterDto) {
     await this.verifyAdapter(adapterDto)
     const nodeDefinition = Object.keys(adapterDto.nodes)
     const graphFlow: Prisma.NodeCreateManyInput[] = await Promise.all(
@@ -181,6 +231,17 @@ export class AdapterV2Service {
         create: {
           name: `${adapterDto.name}-output`,
           object: adapterDto.output_schema
+        }
+      },
+      creator: walletAddress,
+      outputType: {
+        connect: {
+          id: adapterDto.output_type_id || 1
+        }
+      },
+      category: {
+        connect: {
+          id: adapterDto.category_id || 1
         }
       }
     }
@@ -337,6 +398,11 @@ export class AdapterV2Service {
       const coreLLMOutput = await this.aiService.executeModel(llmModel.name, coreLLMInput)
       lastOutputData = extractJsonFromText(coreLLMOutput)
     }
+    // update request count
+    await this.prismaService.adaptorV2.update({
+      where: { code: id },
+      data: { requestCount: { increment: 1 } }
+    })
 
     return lastOutputData
   }

@@ -44,24 +44,28 @@ model Adaptor {
 }
 
 model Category {
-  id        Int       @id @default(autoincrement())
-  name      String
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  adaptors  Adaptor[]
+  id         Int          @id @default(autoincrement())
+  name       String
+  type       String       @default("adaptor") @map("type") // adaptor, provider, data_provider
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime     @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  adaptors   Adaptor[]
+  AdaptorV2  AdaptorV2[]
+  ProviderV2 ProviderV2[]
 
   @@map("category")
 }
 
 model OutputType {
-  id                   Int       @id @default(autoincrement())
+  id                   Int         @id @default(autoincrement())
   name                 String
-  coordinatorAddress   String?   @map("coordinator_address")
-  fulfillDataRequestFn String?   @map("fulfill_data_request_fn")
-  format               String?   @map("format")
-  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  coordinatorAddress   String?     @map("coordinator_address")
+  fulfillDataRequestFn String?     @map("fulfill_data_request_fn")
+  format               String?     @map("format")
+  createdAt            DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime    @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   adaptors             Adaptor[]
+  AdaptorV2            AdaptorV2[]
 
   @@map("output_type")
 }
@@ -237,9 +241,13 @@ model ProviderV2 {
   documentLink   String?          @map("document_link")
   prUrl          String           @unique @map("pr_url")
   status         String           @default("active") @map("status") // active, inactive, deleted
+  creator        String?          @map("creator")
+  requestCount   Int              @default(0) @map("request_count")
+  categoryId     Int?             @map("category_id")
   createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
   ProviderMethod ProviderMethod[]
+  category       Category?        @relation(fields: [categoryId], references: [id])
 
   @@map("provider_v2")
 }
@@ -278,13 +286,19 @@ model AdaptorV2 {
   coreLLM         String?  @map("core_llm")
   staticContext   String?  @map("static_context")
   nodesDefinition String?  @map("nodes_definition")
+  creator         String?  @map("creator")
+  requestCount    Int      @default(0) @map("request_count")
+  outputTypeId    Int?     @map("output_type_id")
+  categoryId      Int?     @map("category_id")
+  status          String   @default("active") @map("status") // active, inactive, deleted
   createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  inputEntity  Entity @relation("AdaptorInputEntity", fields: [inputEntityId], references: [id])
-  outputEntity Entity @relation("AdaptorOutputEntity", fields: [outputEntityId], references: [id])
-
-  graphFlow Node[]
+  inputEntity  Entity      @relation("AdaptorInputEntity", fields: [inputEntityId], references: [id])
+  outputEntity Entity      @relation("AdaptorOutputEntity", fields: [outputEntityId], references: [id])
+  outputType   OutputType? @relation(fields: [outputTypeId], references: [id])
+  category     Category?   @relation(fields: [categoryId], references: [id])
+  graphFlow    Node[]
 
   @@map("adaptor_v2")
 }

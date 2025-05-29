@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Req } from '@nestjs/common'
 import { AdapterV2Service } from './adapter-v2.service'
 import { ApiTags } from '@nestjs/swagger'
 import { CreateAdapterDto } from './dto/create.dto'
 import { RunDto } from './dto/run.dto'
 import { TestDto } from './dto/test.dto'
+import { JwtAuthGuard } from 'src/auth/auth.guard'
+import { Request } from 'express'
 
 @Controller({ path: 'adapter', version: '2' })
 @ApiTags('Adaptors')
@@ -31,8 +33,10 @@ export class AdapterV2Controller {
   }
 
   @Post('create')
-  async createAdapter(@Body() adapterDto: CreateAdapterDto) {
-    return await this.adapterV2Service.createAdapter(adapterDto)
+  @UseGuards(JwtAuthGuard)
+  async createAdapter(@Body() adapterDto: CreateAdapterDto, @Req() req: Request) {
+    const user = req.user['walletAddress'] as string
+    return await this.adapterV2Service.createAdapter(user, adapterDto)
   }
 
   @Post('verify')
