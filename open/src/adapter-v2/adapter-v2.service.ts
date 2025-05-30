@@ -30,7 +30,9 @@ export class AdapterV2Service {
       include: {
         graphFlow: true,
         inputEntity: { select: { object: true } },
-        outputEntity: { select: { object: true } }
+        outputEntity: { select: { object: true } },
+        category: true,
+        outputType: true
       }
     })
     return adapters.map((adapter) => ({
@@ -46,7 +48,12 @@ export class AdapterV2Service {
         inputValues: JSON.parse(node.inputValues)
       })),
       inputEntity: adapter.inputEntity.object,
-      outputEntity: adapter.outputEntity.object
+      outputEntity: adapter.outputEntity.object,
+      category: adapter.category?.name || '',
+      outputType: adapter.outputType?.name || '',
+      outputTypeId: adapter.outputType?.id || 0,
+      categoryId: adapter.category?.id || 0,
+      requestCount: adapter.requestCount
     }))
   }
 

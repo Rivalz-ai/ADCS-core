@@ -24,7 +24,8 @@ export class ProviderV2Service {
         status: 'active'
       },
       include: {
-        ProviderMethod: { include: { inputEntity: true, outputEntity: true } }
+        ProviderMethod: { include: { inputEntity: true, outputEntity: true } },
+        category: true
       }
     })
 
@@ -47,7 +48,10 @@ export class ProviderV2Service {
             playground: method.playgroundUrl,
             type: method.methodType
           }
-        })
+        }),
+        category: provider.category?.name || '',
+        categoryId: provider.category?.id || 0,
+        requestCount: provider.requestCount
       }
     })
   }
