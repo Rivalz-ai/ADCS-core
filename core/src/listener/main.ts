@@ -41,7 +41,12 @@ async function main() {
 
   await redisClient.connect()
 
-  LISTENERS[service](listenersConfig[service], redisClient, LOGGER)
+  LISTENERS[service](
+    listenersConfig[service],
+    redisClient,
+    listenersConfig[service][0].rpcUrl,
+    LOGGER
+  )
   LOGGER.info('Listener launched')
 }
 

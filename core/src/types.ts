@@ -217,6 +217,7 @@ export interface IListenerRawConfig {
   eventName: string
   service: string
   chain?: string
+  rpcUrl?: string
 }
 
 export interface IListenerConfig {
@@ -224,6 +225,7 @@ export interface IListenerConfig {
   address: string
   eventName: string
   chain: string
+  rpcUrl: string
 }
 
 export interface IListenerGroupConfig {

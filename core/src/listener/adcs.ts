@@ -1,4 +1,4 @@
-import { Interface } from 'ethers'
+import { Interface, Log } from 'ethers'
 import { Logger } from 'pino'
 import type { RedisClientType } from 'redis'
 import { listenerService } from './listener'
@@ -20,6 +20,7 @@ const FILE_NAME = import.meta.url
 export async function buildListener(
   config: IListenerConfig[],
   redisClient: RedisClientType,
+  rpcUrl: string,
   logger: Logger
 ) {
   const stateName = ADCS_LISTENER_STATE_NAME
@@ -38,6 +39,7 @@ export async function buildListener(
     stateName,
     service,
     chain,
+    rpcUrl,
     eventName,
     latestQueueName,
     historyQueueName,

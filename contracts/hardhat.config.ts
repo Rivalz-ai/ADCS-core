@@ -238,6 +238,11 @@ module.exports = {
           apiKey: process.env.EXPLORER_API_KEY
         }
       }
+    },
+    taiko: {
+      url: 'https://rpc.ankr.com/taiko/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1
     }
   },
   sourcify: {
@@ -269,7 +274,8 @@ module.exports = {
       sonic: process.env.EXPLORER_API_KEY,
       optimism: process.env.EXPLORER_API_KEY,
       mantle: process.env.EXPLORER_API_KEY,
-      sei: process.env.EXPLORER_API_KEY
+      sei: process.env.EXPLORER_API_KEY,
+      taiko: process.env.EXPLORER_API_KEY
     },
     customChains: [
       {
@@ -367,6 +373,14 @@ module.exports = {
         urls: {
           apiURL: 'https://seitrace.com/pacific-1/api',
           browserURL: 'https://seitrace.com/pacific-1'
+        }
+      },
+      {
+        network: 'taiko',
+        chainId: 167000,
+        urls: {
+          apiURL: 'https://api.taikoscan.io/api',
+          browserURL: 'https://taikoscan.xyz'
         }
       }
     ]
