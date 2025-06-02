@@ -234,7 +234,7 @@ module.exports = {
       gasMultiplier: 1.1,
       verify: {
         etherscan: {
-          apiUrl: 'https://sei.drpc.org/api',
+          apiUrl: 'https://seitrace.com/pacific-1/api',
           apiKey: process.env.EXPLORER_API_KEY
         }
       }
@@ -268,7 +268,8 @@ module.exports = {
       bsc: process.env.EXPLORER_API_KEY,
       sonic: process.env.EXPLORER_API_KEY,
       optimism: process.env.EXPLORER_API_KEY,
-      mantle: process.env.EXPLORER_API_KEY
+      mantle: process.env.EXPLORER_API_KEY,
+      sei: process.env.EXPLORER_API_KEY
     },
     customChains: [
       {
@@ -358,6 +359,14 @@ module.exports = {
         urls: {
           apiURL: 'https://api.mantlescan.xyz/api',
           browserURL: 'https://mantlescan.xyz'
+        }
+      },
+      {
+        network: 'sei',
+        chainId: 1329,
+        urls: {
+          apiURL: 'https://seitrace.com/pacific-1/api',
+          browserURL: 'https://seitrace.com/pacific-1'
         }
       }
     ]
