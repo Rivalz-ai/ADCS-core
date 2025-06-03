@@ -33,11 +33,16 @@ export async function getListeners({
     )
     const data = (await axios.get(endpoint))?.data
     console.log(data)
+    const chainRpcs = data.map((item) => item.chain.chainRpcs)
+    if (chainRpcs.length === 0) {
+      throw new RivalzError(RivalzErrorCode.GetListenerRequestFailed)
+    }
     return data.map((item) => ({
       address: item.address,
       eventName: item.eventName,
       service: item.service.name,
-      chain: item.chain.name
+      chain: item.chain.name,
+      rpcUrl: item.chain.chainRpcs[0].rpcUrl
     }))
   } catch (e) {
     logger?.error({ name: 'getListeners', file: FILE_NAME, ...e }, 'error')

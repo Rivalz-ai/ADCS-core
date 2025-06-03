@@ -1,0 +1,9 @@
+{
+  "ADCSCoordinatorAddress": "0x55Ee887dB181B41f69b3313065b1eD6BEE3336A1",
+  "registerOracle": [],
+  "deregisterOracle": [],
+  "setConfig": {
+    "maxGasLimit": 2000000,
+    "gasAfterPaymentCalculation": 90692
+  }
+}

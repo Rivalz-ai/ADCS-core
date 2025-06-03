@@ -7,12 +7,7 @@ import { postprocessListeners } from './utils'
 import { IListenerConfig, IListenerRawConfig } from '../types'
 import { IContracts, ILatestListenerJob, IHistoryListenerJob, ListenerInitType } from './types'
 import { RivalzError, RivalzErrorCode } from '../errors'
-import {
-  PROVIDER_URL,
-  LISTENER_DELAY,
-  LISTENER_JOB_SETTINGS,
-  getObservedBlockRedisKey
-} from '../settings'
+import { LISTENER_DELAY, LISTENER_JOB_SETTINGS, getObservedBlockRedisKey } from '../settings'
 
 const FILE_NAME = import.meta.url
 
@@ -52,6 +47,7 @@ export class State {
   abi: InterfaceAbi
 
   constructor({
+    rpcUrl,
     redisClient,
     latestListenerQueue,
     historyListenerQueue,
@@ -63,6 +59,7 @@ export class State {
     listenerInitType,
     logger
   }: {
+    rpcUrl: string
     redisClient: RedisClientType
     latestListenerQueue: Queue
     historyListenerQueue: Queue
@@ -85,7 +82,7 @@ export class State {
     this.listenerInitType = listenerInitType
     this.logger = logger
 
-    this.provider = new JsonRpcProvider(PROVIDER_URL)
+    this.provider = new JsonRpcProvider(rpcUrl)
     this.contracts = {}
   }
 
