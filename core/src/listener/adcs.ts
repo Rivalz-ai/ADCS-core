@@ -59,7 +59,7 @@ async function processEvent({ iface, logger }: { iface: Interface; logger: Logge
     _logger.debug(eventData, 'eventData')
     const requestId = eventData.requestId.toString()
     const jobData: IADCSListenerWorker = {
-      callbackAddress: log.address,
+      callbackAddress: log.address.toLowerCase(),
       blockNum: Number(eventData.blockNumber),
       requestId,
       callbackGasLimit: Number(eventData.callbackGasLimit),

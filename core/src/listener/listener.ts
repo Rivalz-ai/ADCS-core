@@ -225,11 +225,12 @@ function latestJob({
       logger.warn('latestBlock < observedBlock. Updating observed block to revert the condition.')
       observedBlock = Math.max(0, latestBlock - 1)
     }
-    const logPrefix = generateListenerLogPrefix(contractAddress, observedBlock, latestBlock)
     //test
-    // latestBlock = 5089879
-    // observedBlock = 5089778
+    //latestBlock = 1186595
+    //observedBlock = 1186591
     // end test
+    const logPrefix = generateListenerLogPrefix(contractAddress, observedBlock, latestBlock)
+
     try {
       if (latestBlock > observedBlock) {
         await redisClient.set(observedBlockRedisKey, latestBlock)
@@ -244,6 +245,7 @@ function latestJob({
             contractAddress,
             event
           }
+          console.log('outData', outData)
           const jobId = getUniqueEventIdentifier(event, index)
           await processEventQueue.add('latest', outData, {
             jobId,
@@ -351,7 +353,7 @@ function processEventJob({
   const _logger = logger.child({ name: 'processEventJob', file: FILE_NAME })
 
   async function wrapper(job: Job) {
-    const inData: IProcessEventListenerJob = job.data
+    const inData: IProcessEventListenerJobV2 = job.data
     const { event } = inData
     _logger.debug(event, 'event')
 
@@ -360,10 +362,14 @@ function processEventJob({
       if (jobMetadata) {
         const { jobId, jobName, jobData, jobQueueSettings } = jobMetadata
         const queueSettings = jobQueueSettings ? jobQueueSettings : LISTENER_JOB_SETTINGS
-        await workerQueue.add(jobName, jobData, {
-          jobId,
-          ...queueSettings
-        })
+        await workerQueue.add(
+          jobName,
+          { ...jobData, chain: inData.chain },
+          {
+            jobId,
+            ...queueSettings
+          }
+        )
         _logger.debug(`Listener submitted job [${jobId}] for [${jobName}]`)
         console.log(`Listener submitted job [${jobId}] for [${jobName}]`)
       }
