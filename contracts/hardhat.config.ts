@@ -97,7 +97,7 @@ module.exports = {
       }
     },
     mainnet: {
-      url: 'https://rpc.ankr.com/eth/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      url: 'https://rpc.ankr.com/eth',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -108,7 +108,7 @@ module.exports = {
       }
     },
     base: {
-      url: 'https://rpc.ankr.com/base/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      url: 'https://rpc.ankr.com/base',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -130,7 +130,7 @@ module.exports = {
       }
     },
     polygon: {
-      url: 'https://rpc.ankr.com/polygon/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      url: 'https://rpc.ankr.com/polygon',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -174,7 +174,7 @@ module.exports = {
       }
     },
     optimism: {
-      url: 'https://rpc.ankr.com/optimism/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      url: 'https://rpc.ankr.com/optimism',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -240,7 +240,7 @@ module.exports = {
       }
     },
     taiko: {
-      url: 'https://rpc.ankr.com/taiko/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      url: 'https://rpc.mainnet.taiko.xyz',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1
     }
