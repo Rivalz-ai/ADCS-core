@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { URL } from 'node:url'
 import { Logger } from 'pino'
-import { API_URL, ADCS_API_URL } from '../settings'
+import { API_URL, ADCS_API_URL, OPEN_API_URL } from '../settings'
 import {
   IAdapter,
   IAggregate,
@@ -21,6 +21,7 @@ export const PRICE_ENDPOINT = buildUrl(API_URL, 'price')
 export const OUTPUT_TYPE_ENDPOINT = buildUrl(ADCS_API_URL, 'adaptors/by-job-id')
 export const MEME_ENDPOINT = buildUrl(ADCS_API_URL, 'inference')
 export const ADD_0G_KEY_ENDPOINT = buildUrl(ADCS_API_URL, 'zero')
+export const GET_ADAPTER_BY_JOB_ID_V2 = buildUrl(OPEN_API_URL, 'v2/adapter/by-code')
 
 /**
 /**
@@ -272,5 +273,46 @@ export async function add0GKey(txHash: string, rootHash: string) {
     await axios.post(url)
   } catch (error) {
     console.log(error)
+  }
+}
+
+export async function fetchAdapterByCodeV2(code: string, logger: Logger) {
+  try {
+    const url = buildUrl(GET_ADAPTER_BY_JOB_ID_V2, `/${code}`)
+    const item = (await axios.get(url))?.data
+    if (!item) {
+      throw new RivalzError(RivalzErrorCode.FailedToGetAdaptor, 'No adapter found')
+    }
+    return {
+      id: item.id
+    }
+  } catch (e) {
+    logger.error(e)
+    throw new RivalzError(RivalzErrorCode.FailedToGetAdaptor)
+  }
+}
+
+export async function executeAdapterById(code: string, input: { [key: string]: any }) {
+  try {
+    const url = buildUrl(GET_ADAPTER_BY_JOB_ID_V2, `/${code}`)
+    const adapter = (await axios.get(url))?.data
+    if (!adapter) {
+      throw new RivalzError(RivalzErrorCode.FailedToGetAdaptor, 'No adapter found')
+    }
+    const inputObject = adapter.inputEntity
+    const compare = Object.keys(inputObject).every((key) => input[key] !== undefined)
+    if (!compare) {
+      throw new RivalzError(RivalzErrorCode.FailedToGetAdaptor, 'Input is not valid')
+    }
+    const response = await axios.post(buildUrl(OPEN_API_URL, `v2/adapter/run/${code}`), {
+      input
+    })
+    return {
+      formattedResponse: response.data.result,
+      fulfillDataRequestFn: adapter.fulfillDataRequestFn
+    }
+  } catch (e) {
+    console.error(e)
+    throw new RivalzError(RivalzErrorCode.FailedToGetAdaptor, 'Failed to execute adapter')
   }
 }

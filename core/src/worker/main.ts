@@ -4,11 +4,13 @@ import { createClient } from 'redis'
 import { IWorkers } from './types'
 import { buildLogger } from '../logger'
 import { REDIS_HOST, REDIS_PASSWORD, REDIS_PORT, REDIS_USERNAME } from '../settings'
-import { buildWorker as adcsWorker } from './adcs'
+import { buildWorker as adcsWorkerV1 } from './adcs'
+import { buildWorker as adcsWorkerV2 } from './adcs-v2'
 import { ZeroG } from './og'
 
 const WORKERS: IWorkers = {
-  ADCS: adcsWorker
+  ADCS: adcsWorkerV1,
+  ADCS_V2: adcsWorkerV2
 }
 
 const LOGGER = buildLogger('worker')

@@ -68,6 +68,8 @@ export const LISTENER_V2_PORT = process.env.LISTENER_V2_PORT || '3000'
 export const QUICKNODE_API_KEY = process.env.QUICKNODE_API_KEY || ''
 export const WEBHOOK_KEY = process.env.WEBHOOK_KEY || ''
 
+export const OPEN_API_URL = process.env.OPEN_API_URL || 'http://localhost:3014'
+
 export const BULLMQ_CONNECTION = {
   concurrency: CONCURRENCY,
   connection: {
