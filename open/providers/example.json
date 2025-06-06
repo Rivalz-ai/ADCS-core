@@ -11,16 +11,16 @@
       "input_type": "QueryParams",
       "output_schema": { "coinName": "string", "price": "number" },
       "type": "GET",
-      "playground": "https://testnet-adcs-api-v2.rivalz.ai/open/v2/providers/providerEndpointTest?coinName=bitcoin"
+      "playground": "providers/providerEndpointTest?coinName=bitcoin"
     },
     {
-      "method_name": "getMarket",
+      "method_name": "open/v2/providers/providerEndpointTest2",
       "description": "description for method 2",
-      "input_schema": { "coinName": "string" },
+      "input_schema": { "coinName": "string", "price":"string" },
       "input_type": "QueryParams",
       "output_schema": { "coinName": "string", "mc": "number" },
       "type": "GET",
-      "playground": "https://playground/2"
+      "playground": "providers/providerEndpointTest?coinName=bitcoin&price=1000"
     }
   ]
 }
