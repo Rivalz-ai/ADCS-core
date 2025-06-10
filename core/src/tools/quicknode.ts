@@ -24,7 +24,7 @@ function getQuickNodeChain(chain: string) {
       return QuickNodeChain.BNB_MAINNET
     case 'Bitcoin':
       return QuickNodeChain.BITCOIN_MAINNET
-    case 'Cel':
+    case 'Celo':
       return QuickNodeChain.CELO_MAINNET
     case 'OP':
       return QuickNodeChain.OPTIMISM_MAINNET

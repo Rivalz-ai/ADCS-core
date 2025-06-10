@@ -238,6 +238,17 @@ module.exports = {
           apiKey: process.env.EXPLORER_API_KEY
         }
       }
+    },
+    celo: {
+      url: 'https://rpc.ankr.com/celo',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.celoscan.io/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
     }
   },
   sourcify: {
@@ -269,7 +280,8 @@ module.exports = {
       sonic: process.env.EXPLORER_API_KEY,
       optimism: process.env.EXPLORER_API_KEY,
       mantle: process.env.EXPLORER_API_KEY,
-      sei: process.env.EXPLORER_API_KEY
+      sei: process.env.EXPLORER_API_KEY,
+      celo: process.env.EXPLORER_API_KEY
     },
     customChains: [
       {
@@ -367,6 +379,14 @@ module.exports = {
         urls: {
           apiURL: 'https://seitrace.com/pacific-1/api',
           browserURL: 'https://seitrace.com/pacific-1'
+        }
+      },
+      {
+        network: 'celo',
+        chainId: 42220,
+        urls: {
+          apiURL: 'https://api.celoscan.io/api',
+          browserURL: 'https://celoscan.io'
         }
       }
     ]

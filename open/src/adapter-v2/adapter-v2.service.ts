@@ -129,6 +129,7 @@ export class AdapterV2Service {
       outputEntity: adapter.outputEntity.object,
       category: adapter.category?.name || '',
       outputType: adapter.outputType?.name || '',
+      fulfillDataRequestFn: adapter.outputType?.fulfillDataRequestFn,
       outputTypeId: adapter.outputType?.id || 0,
       categoryId: adapter.category?.id || 0,
       entities: entities.filter((entity, index, self) => self.indexOf(entity) === index),
