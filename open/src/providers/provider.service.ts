@@ -209,7 +209,7 @@ export class ProviderService {
   }
 
   async testEncryptApiKey(apiKey: string) {
-    const encryptedApiKey = encryptApiKey(apiKey)
+    const encryptedApiKey = encryptApiKey(JSON.stringify(apiKey))
     console.log(encryptedApiKey)
     return encryptedApiKey
   }
@@ -217,7 +217,7 @@ export class ProviderService {
   async testDecryptApiKey(apiKey: string) {
     const decryptedApiKey = decryptApiKey(apiKey)
     console.log(decryptedApiKey)
-    return decryptedApiKey
+    return JSON.parse(decryptedApiKey)
   }
 
   async alloraInference(coinName: string, predictionType: string) {
