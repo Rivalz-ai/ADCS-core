@@ -44,6 +44,8 @@ function getQuickNodeChain(chain: string) {
       return QuickNodeChain.SEI
     case 'Mantle':
       return QuickNodeChain.MANTLE_MAINNET
+    case 'Linea':
+      return QuickNodeChain.LINEA_MAINNET
     default:
       return chain
   }

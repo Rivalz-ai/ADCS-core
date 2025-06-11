@@ -249,6 +249,17 @@ module.exports = {
           apiKey: process.env.EXPLORER_API_KEY
         }
       }
+    },
+    linea: {
+      url: 'https://rpc.linea.build',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.lineascan.build/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
     }
   },
   sourcify: {
@@ -281,7 +292,8 @@ module.exports = {
       optimism: process.env.EXPLORER_API_KEY,
       mantle: process.env.EXPLORER_API_KEY,
       sei: process.env.EXPLORER_API_KEY,
-      celo: process.env.EXPLORER_API_KEY
+      celo: process.env.EXPLORER_API_KEY,
+      linea: process.env.EXPLORER_API_KEY
     },
     customChains: [
       {
@@ -387,6 +399,14 @@ module.exports = {
         urls: {
           apiURL: 'https://api.celoscan.io/api',
           browserURL: 'https://celoscan.io'
+        }
+      },
+      {
+        network: 'linea',
+        chainId: 59144,
+        urls: {
+          apiURL: 'https://api.lineascan.build/api',
+          browserURL: 'https://lineascan.build'
         }
       }
     ]
