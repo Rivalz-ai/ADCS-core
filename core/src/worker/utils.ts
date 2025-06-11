@@ -53,10 +53,15 @@ export function buildWallet({
   privateKey: string
   providerUrl: string
 }) {
-  const provider = new JsonRpcProvider(providerUrl)
-  const basicWallet = new ethers.Wallet(privateKey, provider)
-  const wallet = new NonceManager(basicWallet)
-  return wallet
+  try {
+    const provider = new JsonRpcProvider(providerUrl)
+    const basicWallet = new ethers.Wallet(privateKey, provider)
+    const wallet = new NonceManager(basicWallet)
+    return wallet
+  } catch (error) {
+    console.log('Error building wallet', error)
+    throw error
+  }
 }
 
 export async function sendTransaction({
