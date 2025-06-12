@@ -54,6 +54,7 @@ export async function getReporterByAddress({
       ADCS_API_URL,
       `reporters/by-chain-and-contract?chain=${chain}&contractAddress=${oracleAddress}`
     )
+    console.log('endpoint', endpoint)
     const reporter = (await axios.get(endpoint))?.data
 
     if (reporter.length != 1) {

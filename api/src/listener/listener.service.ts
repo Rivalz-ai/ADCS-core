@@ -43,7 +43,7 @@ export class ListenerService {
         chain: { name: chainName },
         service: { name: serviceName }
       },
-      include: { chain: true, service: true }
+      include: { service: true, chain: { include: { chainRpcs: true } } }
     })
   }
 }

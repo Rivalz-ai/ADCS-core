@@ -21,10 +21,12 @@ module.exports = async ({
   const migrationDirPath = `./migration/${network.name}/adcs`
   const migrationFilesNames = await loadMigration(migrationDirPath)
   console.log(migrationFilesNames)
+  const balance = await ethers.provider.getBalance(deployer)
+  console.log({ deployer, balance })
 
   for (const migration of migrationFilesNames) {
     const config = await loadJson(path.join(migrationDirPath, migration))
-    console.log({config})
+    console.log({ config })
     let ADCSCoordinator = undefined
 
     // Deploy ADCSCoordinator ////////////////////////////////////////
@@ -44,7 +46,7 @@ module.exports = async ({
         log: true
       })
 
-      console.log('deployed',ADCSDeployment.address)
+      console.log('deployed', ADCSDeployment.address)
 
       ADCSCoordinator = await ethers.getContractAt('ADCSCoordinator', ADCSDeployment.address)
     }

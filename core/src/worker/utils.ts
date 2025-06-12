@@ -53,10 +53,15 @@ export function buildWallet({
   privateKey: string
   providerUrl: string
 }) {
-  const provider = new JsonRpcProvider(providerUrl)
-  const basicWallet = new ethers.Wallet(privateKey, provider)
-  const wallet = new NonceManager(basicWallet)
-  return wallet
+  try {
+    const provider = new JsonRpcProvider(providerUrl)
+    const basicWallet = new ethers.Wallet(privateKey, provider)
+    const wallet = new NonceManager(basicWallet)
+    return wallet
+  } catch (error) {
+    console.log('Error building wallet', error)
+    throw error
+  }
 }
 
 export async function sendTransaction({
@@ -96,9 +101,11 @@ export async function sendTransaction({
 
   // Estimate gas limit
   try {
-    const estimatedGas = await wallet.provider.estimateGas(tx)
     // Add 20% buffer to estimated gas
+    let estimatedGas = 0
     if (!gasLimit) {
+      estimatedGas = await wallet.provider.estimateGas(tx)
+
       const newGasLimit = BigInt(Math.ceil(Number(estimatedGas) * 1.2))
       gasLimit = newGasLimit.toString()
     }

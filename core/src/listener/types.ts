@@ -9,7 +9,12 @@ import {
 } from '../types'
 
 export interface IListeners {
-  [index: string]: (config: IListenerConfig[], redisClient: RedisClientType, logger: Logger) => void
+  [index: string]: (
+    config: IListenerConfig[],
+    redisClient: RedisClientType,
+    rpcUrl: string,
+    logger: Logger
+  ) => void
 }
 
 /**

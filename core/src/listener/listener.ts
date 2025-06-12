@@ -12,6 +12,7 @@ import {
   ListenerInitType,
   ProcessEventOutputType
 } from './types'
+import { IProcessEventListenerJobV2 } from '../listener-v2/types'
 //import { watchman } from './watchman'
 
 const FILE_NAME = import.meta.url
@@ -49,6 +50,7 @@ export async function listenerService({
   stateName,
   service,
   chain,
+  rpcUrl,
   eventName,
   latestQueueName,
   historyQueueName,
@@ -64,6 +66,7 @@ export async function listenerService({
   stateName: string
   service: string
   chain: string
+  rpcUrl: string
   eventName: string
   latestQueueName: string
   historyQueueName: string
@@ -80,6 +83,7 @@ export async function listenerService({
   const workerQueue = new Queue(workerQueueName, BULLMQ_CONNECTION)
 
   const state = new State({
+    rpcUrl: rpcUrl,
     redisClient,
     latestListenerQueue,
     historyListenerQueue,
@@ -96,6 +100,7 @@ export async function listenerService({
   const latestWorker = new Worker(
     latestQueueName,
     latestJob({
+      chain,
       state,
       historyListenerQueue,
       processEventQueue,
@@ -110,7 +115,7 @@ export async function listenerService({
 
   const historyWorker = new Worker(
     historyQueueName,
-    historyJob({ state, processEventQueue, logger }),
+    historyJob({ chain, state, processEventQueue, logger }),
     BULLMQ_CONNECTION
   )
   historyWorker.on('error', (e) => {
@@ -168,12 +173,14 @@ export async function listenerService({
  * @param {Logger} pino logger
  */
 function latestJob({
+  chain,
   state,
   processEventQueue,
   historyListenerQueue,
   redisClient,
   logger
 }: {
+  chain: string
   state: State
   processEventQueue: Queue
   historyListenerQueue: Queue
@@ -218,11 +225,12 @@ function latestJob({
       logger.warn('latestBlock < observedBlock. Updating observed block to revert the condition.')
       observedBlock = Math.max(0, latestBlock - 1)
     }
-    const logPrefix = generateListenerLogPrefix(contractAddress, observedBlock, latestBlock)
     //test
-    // latestBlock = 5089879
-    // observedBlock = 5089778
+    //latestBlock = 1186595
+    //observedBlock = 1186591
     // end test
+    const logPrefix = generateListenerLogPrefix(contractAddress, observedBlock, latestBlock)
+
     try {
       if (latestBlock > observedBlock) {
         await redisClient.set(observedBlockRedisKey, latestBlock)
@@ -232,10 +240,12 @@ function latestJob({
         // block again.
         const events = await state.queryEvent(contractAddress, observedBlock + 1, latestBlock)
         for (const [index, event] of events.entries()) {
-          const outData: IProcessEventListenerJob = {
+          const outData: IProcessEventListenerJobV2 = {
+            chain,
             contractAddress,
             event
           }
+          console.log('outData', outData)
           const jobId = getUniqueEventIdentifier(event, index)
           await processEventQueue.add('latest', outData, {
             jobId,
@@ -282,10 +292,12 @@ function latestJob({
  * @param {Logger} pino logger
  */
 function historyJob({
+  chain,
   state,
   processEventQueue,
   logger
 }: {
+  chain: string
   state: State
   processEventQueue: Queue
   logger: Logger
@@ -306,7 +318,8 @@ function historyJob({
     logger.info(`${logPrefix} hist`)
 
     for (const [index, event] of events.entries()) {
-      const outData: IProcessEventListenerJob = {
+      const outData: IProcessEventListenerJobV2 = {
+        chain,
         contractAddress,
         event
       }
@@ -340,7 +353,7 @@ function processEventJob({
   const _logger = logger.child({ name: 'processEventJob', file: FILE_NAME })
 
   async function wrapper(job: Job) {
-    const inData: IProcessEventListenerJob = job.data
+    const inData: IProcessEventListenerJobV2 = job.data
     const { event } = inData
     _logger.debug(event, 'event')
 
@@ -349,10 +362,14 @@ function processEventJob({
       if (jobMetadata) {
         const { jobId, jobName, jobData, jobQueueSettings } = jobMetadata
         const queueSettings = jobQueueSettings ? jobQueueSettings : LISTENER_JOB_SETTINGS
-        await workerQueue.add(jobName, jobData, {
-          jobId,
-          ...queueSettings
-        })
+        await workerQueue.add(
+          jobName,
+          { ...jobData, chain: inData.chain },
+          {
+            jobId,
+            ...queueSettings
+          }
+        )
         _logger.debug(`Listener submitted job [${jobId}] for [${jobName}]`)
         console.log(`Listener submitted job [${jobId}] for [${jobName}]`)
       }

@@ -97,7 +97,7 @@ module.exports = {
       }
     },
     mainnet: {
-      url: 'https://rpc.ankr.com/eth/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      url: 'https://rpc.ankr.com/eth',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -108,7 +108,7 @@ module.exports = {
       }
     },
     base: {
-      url: 'https://rpc.ankr.com/base/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      url: 'https://rpc.ankr.com/base',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -130,7 +130,7 @@ module.exports = {
       }
     },
     polygon: {
-      url: 'https://rpc.ankr.com/polygon/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      url: 'https://rpc.ankr.com/polygon',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -174,7 +174,7 @@ module.exports = {
       }
     },
     optimism: {
-      url: 'https://rpc.ankr.com/optimism/dc3359a3d6c4f6866d0e59e41b886d8806cba7197232edf7412c79644595b948',
+      url: 'https://rpc.ankr.com/optimism',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -291,6 +291,7 @@ module.exports = {
       sonic: process.env.EXPLORER_API_KEY,
       optimism: process.env.EXPLORER_API_KEY,
       mantle: process.env.EXPLORER_API_KEY,
+      taiko: process.env.EXPLORER_API_KEY,
       sei: process.env.EXPLORER_API_KEY,
       celo: process.env.EXPLORER_API_KEY,
       linea: process.env.EXPLORER_API_KEY
@@ -391,6 +392,14 @@ module.exports = {
         urls: {
           apiURL: 'https://seitrace.com/pacific-1/api',
           browserURL: 'https://seitrace.com/pacific-1'
+        }
+      },
+      {
+        network: 'taiko',
+        chainId: 167000,
+        urls: {
+          apiURL: 'https://api.taikoscan.io/api',
+          browserURL: 'https://taikoscan.xyz'
         }
       },
       {
