@@ -197,6 +197,10 @@ export class AdapterV2Service {
           sourceType === 'provider'
             ? await this.prismaService.providerV2.findUnique({ where: { code: nodeId } })
             : await this.prismaService.adaptorV2.findUnique({ where: { code: nodeId } })
+
+        if (!nodeSource) {
+          throw new HttpException(`Node ${nodeId} not found`, HttpStatus.BAD_REQUEST)
+        }
         const nodeSourceId = nodeSource.id
         let methodId = undefined
         if (sourceType === 'provider') {
@@ -206,6 +210,9 @@ export class AdapterV2Service {
               outputEntity: true
             }
           })
+          if (!method) {
+            throw new HttpException(`Method ${node.input_method} not found`, HttpStatus.BAD_REQUEST)
+          }
           methodId = method.id
         }
         return {
@@ -249,7 +256,7 @@ export class AdapterV2Service {
       },
       category: {
         connect: {
-          id: adapterDto.category_id || 1
+          id: adapterDto.category_id || 5
         }
       }
     }
@@ -404,7 +411,7 @@ export class AdapterV2Service {
       const coreLLMInput = `${adapter.staticContext}\n${JSON.stringify(inputData)}\n
       the response should be in json format and should be like this: ${JSON.stringify(adapter.outputEntity.object)}`
       const coreLLMOutput = await this.aiService.executeModel(llmModel.name, coreLLMInput)
-      lastOutputData = extractJsonFromText(coreLLMOutput)
+      lastOutputData = extractJsonFromText(coreLLMOutput.response)
     }
     // update request count
     await this.prismaService.adaptorV2.update({
@@ -534,9 +541,42 @@ export class AdapterV2Service {
       const coreLLMInput = `${adapter.static_context}\n${JSON.stringify(inputData)}\n
       the response should be in json format and should be like this: ${JSON.stringify(adapter.output_schema)}`
       const coreLLMOutput = await this.aiService.executeModel(llmModel.name, coreLLMInput)
-      lastOutputData = extractJsonFromText(coreLLMOutput)
+      lastOutputData = extractJsonFromText(coreLLMOutput.response)
     }
 
     return lastOutputData
+  }
+
+  async adapterByCreator(walletAddress: string) {
+    const adapters = await this.prismaService.adaptorV2.findMany({
+      where: { creator: walletAddress },
+      include: {
+        graphFlow: true,
+        inputEntity: { select: { object: true } },
+        outputEntity: { select: { object: true } },
+        category: true,
+        outputType: true
+      }
+    })
+    return adapters.map((adapter) => ({
+      id: adapter.code,
+      name: adapter.name,
+      description: adapter.description,
+      iconUrl: adapter.iconUrl,
+      coreLLM: adapter.coreLLM,
+      staticContext: adapter.staticContext,
+      nodesDefinition: JSON.parse(adapter.nodesDefinition),
+      graphFlow: adapter.graphFlow.map((node) => ({
+        ...node,
+        inputValues: JSON.parse(node.inputValues)
+      })),
+      inputEntity: adapter.inputEntity.object,
+      outputEntity: adapter.outputEntity.object,
+      category: adapter.category?.name || '',
+      outputType: adapter.outputType?.name || '',
+      outputTypeId: adapter.outputType?.id || 0,
+      categoryId: adapter.category?.id || 0,
+      requestCount: adapter.requestCount
+    }))
   }
 }

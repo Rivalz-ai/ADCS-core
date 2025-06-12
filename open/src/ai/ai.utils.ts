@@ -2,6 +2,7 @@ import { OpenAI } from 'openai'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { Anthropic } from '@anthropic-ai/sdk'
 import { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
+import axios from 'axios'
 
 export async function openai(apiKey: string, model: string, message: string) {
   const openai = new OpenAI({
@@ -17,7 +18,7 @@ export async function openai(apiKey: string, model: string, message: string) {
     model: model,
     messages: messages
   })
-  return response.choices[0].message.content
+  return { response: response.choices[0].message.content }
 }
 
 export async function anthropic(apiKey: string, model: string, message: string) {
@@ -34,7 +35,7 @@ export async function anthropic(apiKey: string, model: string, message: string) 
 
   const content = response.content[0]
   if (content.type === 'text') {
-    return content.text
+    return { response: content.text }
   }
   throw new Error('Unexpected response type from Anthropic')
 }
@@ -58,7 +59,53 @@ export async function gemini(apiKey: string, model: string, message: string) {
 
   const result = await chat.sendMessage(message)
   const response = result.response
-  return response.text()
+  return { response: response.text() }
+}
+
+export async function qwen(model: string, baseUrl: string, message: string) {
+  const response = await axios.post(`${baseUrl}/rivalz/v1/chat/completions`, {
+    model: model,
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful AI assistant.'
+      },
+      { role: 'user', content: message }
+    ]
+  })
+  return { response: response.data.choices[0].message.content }
+}
+
+export async function asi1(apiKey: string, model: string, baseUrl: string, message: string) {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/v1/chat/completions`,
+      {
+        model: model,
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful AI assistant.'
+          },
+          { role: 'user', content: message }
+        ],
+        temperature: 0.3,
+        stream: false,
+        max_tokens: 1024
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`
+        }
+      }
+    )
+    console.log('response', response.data)
+    return { response: response.data.choices[0].message.content }
+  } catch (error) {
+    console.error('Error in as1:', error)
+    throw error
+  }
 }
 
 export function extractJsonFromText(text: string): any {
