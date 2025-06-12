@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { decryptApiKey, encryptApiKey } from '../app.utils'
-import { openai, anthropic, gemini } from './ai.utils'
+import { openai, anthropic, gemini, qwen, asi1 } from './ai.utils'
 
 @Injectable()
 export class AIService {
@@ -37,6 +37,10 @@ export class AIService {
         return await anthropic(key, model.name, message)
       case 'gemini':
         return await gemini(key, model.name, message)
+      case 'qwen':
+        return await qwen(model.name, model.baseUrl, message)
+      case 'asi1':
+        return await asi1(key, model.name, model.baseUrl, message)
     }
   }
 

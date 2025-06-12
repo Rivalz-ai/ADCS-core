@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, Delete, UseGuards, Req } from '@nestjs/common'
 import { AdapterV2Service } from './adapter-v2.service'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { CreateAdapterDto } from './dto/create.dto'
 import { RunDto } from './dto/run.dto'
 import { TestDto } from './dto/test.dto'
@@ -32,7 +32,16 @@ export class AdapterV2Controller {
     return await this.adapterV2Service.getAdapter(code)
   }
 
+  @Get('by-creator')
+  @ApiBearerAuth('JWT')
+  @UseGuards(JwtAuthGuard)
+  async getAdapterByCreator(@Req() req: Request) {
+    const user = req.user['walletAddress'] as string
+    return await this.adapterV2Service.adapterByCreator(user)
+  }
+
   @Post('create')
+  @ApiBearerAuth('JWT')
   @UseGuards(JwtAuthGuard)
   async createAdapter(@Body() adapterDto: CreateAdapterDto, @Req() req: Request) {
     const user = req.user['walletAddress'] as string
@@ -45,6 +54,8 @@ export class AdapterV2Controller {
   }
 
   @Delete('delete/:id')
+  @ApiBearerAuth('JWT')
+  @UseGuards(JwtAuthGuard)
   async deleteAdapter(@Param('id') id: string) {
     return await this.adapterV2Service.deleteAdapter(id)
   }

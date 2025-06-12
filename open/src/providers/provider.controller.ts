@@ -1,6 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Post, Query, Body, Req } from '@nestjs/common'
 import { ProviderService } from './provider.service'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBody, ApiTags } from '@nestjs/swagger'
 import { SubmissionDto } from './dto/submission.dto'
 
 @Controller({ path: 'providers', version: '1' })
@@ -45,4 +45,14 @@ export class ProviderController {
   async verifySubmission(@Body() submissionDto: SubmissionDto) {
     return await this.providerService.verifySubmission(submissionDto)
   }
+
+  // @Post('testEncryptApiKey/:key')
+  // async testEncryptApiKey(@Param('key') key: string) {
+  //   return await this.providerService.testEncryptApiKey(key)
+  // }
+
+  // @Post('testDecryptApiKey/:key')
+  // async testDecryptApiKey(@Param('key') key: string) {
+  //   return await this.providerService.testDecryptApiKey(key)
+  // }
 }

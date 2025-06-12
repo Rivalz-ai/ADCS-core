@@ -239,10 +239,27 @@ module.exports = {
         }
       }
     },
-    taiko: {
-      url: 'https://rpc.mainnet.taiko.xyz',
+    celo: {
+      url: 'https://rpc.ankr.com/celo',
       accounts: [process.env.TESTNET_DEPLOYER],
-      gasMultiplier: 1.1
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.celoscan.io/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
+    },
+    linea: {
+      url: 'https://rpc.linea.build',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1,
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api.lineascan.build/api',
+          apiKey: process.env.EXPLORER_API_KEY
+        }
+      }
     }
   },
   sourcify: {
@@ -274,8 +291,10 @@ module.exports = {
       sonic: process.env.EXPLORER_API_KEY,
       optimism: process.env.EXPLORER_API_KEY,
       mantle: process.env.EXPLORER_API_KEY,
+      taiko: process.env.EXPLORER_API_KEY,
       sei: process.env.EXPLORER_API_KEY,
-      taiko: process.env.EXPLORER_API_KEY
+      celo: process.env.EXPLORER_API_KEY,
+      linea: process.env.EXPLORER_API_KEY
     },
     customChains: [
       {
@@ -381,6 +400,22 @@ module.exports = {
         urls: {
           apiURL: 'https://api.taikoscan.io/api',
           browserURL: 'https://taikoscan.xyz'
+        }
+      },
+      {
+        network: 'celo',
+        chainId: 42220,
+        urls: {
+          apiURL: 'https://api.celoscan.io/api',
+          browserURL: 'https://celoscan.io'
+        }
+      },
+      {
+        network: 'linea',
+        chainId: 59144,
+        urls: {
+          apiURL: 'https://api.lineascan.build/api',
+          browserURL: 'https://lineascan.build'
         }
       }
     ]

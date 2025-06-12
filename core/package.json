@@ -33,6 +33,7 @@
     "start:listener:adcs": "yarn start:listener --service ADCS",
     "start:worker": "node --no-warnings --import=specifier-resolution-node/register --experimental-json-modules --experimental-specifier-resolution=node dist/worker/main.js",
     "start:worker:adcs": "yarn start:worker --worker ADCS",
+    "start:worker-v2:adcs": "yarn start:worker --worker ADCS_V2",
     "start:worker:vrf": "yarn start:worker --worker VRF",
     "flush": "node --no-warnings --experimental-specifier-resolution=node --experimental-json-modules dist/tools/flush-queues.js",
     "test": "node --no-warnings --import=specifier-resolution-node/register --experimental-json-modules --experimental-specifier-resolution=node dist/worker/test.js",

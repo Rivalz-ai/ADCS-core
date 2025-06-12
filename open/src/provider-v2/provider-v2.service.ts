@@ -127,13 +127,13 @@ export class ProviderV2Service {
       endpointUrl = `${endpointUrl}/${method.endpoint}`
     }
     const methodType = method.methodType
-    const apiKey = decryptApiKey(provider.apiKey)
+    const apiKey = JSON.parse(decryptApiKey(provider.apiKey))
     const headers = {
       'Content-Type': 'application/json',
       ...JSON.parse(apiKey)
     }
     const inputType = method.inputType
-    if (inputType !== 'QueryParams' && inputType !== 'BodyParams') {
+    if (inputType !== 'QueryParams' && inputType !== 'BodyParams' && inputType !== 'PathParams') {
       throw new BadRequestException(`Input type ${inputType} not supported`)
     }
     try {
@@ -148,10 +148,16 @@ export class ProviderV2Service {
             .map((value, index) => `${methodInputKeys[index]}=${value}`)
             .join('&')
 
-          const response = await axios.get(`${endpointUrl}?${queryParams}`, { headers })
+          const response = await axios.get(`${endpointUrl}`, { headers, params: { ...input } })
           return response.data
         } else if (inputType === 'BodyParams') {
-          const response = await axios.get(endpointUrl, { data: inputValues, headers })
+          const response = await axios.get(endpointUrl, { data: { ...input }, headers })
+          return response.data
+        } else if (inputType === 'PathParams') {
+          for (const key in input) {
+            endpointUrl = endpointUrl.replace(`${key}`, input[key])
+          }
+          const response = await axios.get(endpointUrl, { headers })
           return response.data
         }
       } else if (methodType === 'POST') {
@@ -163,6 +169,12 @@ export class ProviderV2Service {
           return response.data
         } else if (inputType === 'BodyParams') {
           const response = await axios.post(endpointUrl, inputValues, { headers })
+          return response.data
+        } else if (inputType === 'PathParams') {
+          for (const key in input) {
+            endpointUrl = endpointUrl.replace(`${key}`, input[key])
+          }
+          const response = await axios.post(endpointUrl, { headers })
           return response.data
         }
       }
