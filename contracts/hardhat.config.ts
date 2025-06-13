@@ -108,15 +108,9 @@ module.exports = {
       }
     },
     base: {
-      url: 'https://rpc.ankr.com/base',
+      url: 'https://base.drpc.org',
       accounts: [process.env.TESTNET_DEPLOYER],
-      gasMultiplier: 1.1,
-      verify: {
-        etherscan: {
-          apiUrl: 'https://api.basescan.org/api',
-          apiKey: process.env.EXPLORER_API_KEY
-        }
-      }
+      gasMultiplier: 1.1
     },
     bsc: {
       url: 'https://bsc-mainnet.public.blastapi.io',

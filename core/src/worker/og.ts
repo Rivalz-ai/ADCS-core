@@ -93,7 +93,6 @@ export class ZeroG {
       }
       try {
         const feeInfo = await this.provider.getFeeData()
-        console.log({ feeInfo })
         const feeMutiplier = 5
         const gasPrice =
           BigInt(Number(feeInfo.gasPrice) * feeMutiplier) > BigInt(feeInfo.maxFeePerGas || 0)
@@ -113,17 +112,12 @@ export class ZeroG {
         if (uploadErr !== null) {
           throw new Error(`Upload error: ${uploadErr}`)
         }
-        console.log('Upload successful!')
-        console.log('Transaction Hash:', tx)
-        console.log('Root Hash:', tree?.rootHash?.toString())
         // Clean up
         unlinkSync(`${fileName}.txt`)
         return tree?.rootHash()?.toString() || ''
-      } catch (error) {
-        console.error('Upload error:', error instanceof Error ? error.message : error)
-      }
+      } catch (error) {}
     } catch (error) {
-      console.error('Upload failed:', error.message)
+      console.error('Upload to 0G failed')
     }
   }
 

@@ -305,11 +305,13 @@ export async function executeAdapterById(code: string, input: { [key: string]: a
       throw new RivalzError(RivalzErrorCode.FailedToGetAdaptor, 'Input is not valid')
     }
     const response = await axios.post(buildUrl(OPEN_API_URL, `v2/adapter/run/${code}`), {
-      input
+      input: input
     })
     return {
-      formattedResponse: response.data.result,
-      fulfillDataRequestFn: adapter.fulfillDataRequestFn
+      response: response.data,
+      fulfillDataRequestFn: adapter.fulfillDataRequestFn,
+      outputType: adapter.outputType,
+      outputEntity: adapter.outputEntity
     }
   } catch (e) {
     console.error(e)
