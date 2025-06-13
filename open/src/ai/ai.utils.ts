@@ -62,18 +62,20 @@ export async function gemini(apiKey: string, model: string, message: string) {
   return { response: response.text() }
 }
 
-export async function qwen(model: string, baseUrl: string, message: string) {
-  const response = await axios.post(`${baseUrl}/rivalz/v1/chat/completions`, {
-    model: model,
+export async function qwen(apiKey: string, model: string, baseUrl: string, message: string) {
+  const openai = new OpenAI({
+    // If the environment variable is not configured, replace the following line with your API key: apiKey: "sk-xxx",
+    apiKey: apiKey,
+    baseURL: baseUrl
+  })
+  const completion = await openai.chat.completions.create({
+    model: model, // Model list: https://www.alibabacloud.com/help/en/model-studio/getting-started/models
     messages: [
-      {
-        role: 'system',
-        content: 'You are a helpful AI assistant.'
-      },
+      { role: 'system', content: 'You are a helpful assistant.' },
       { role: 'user', content: message }
     ]
   })
-  return { response: response.data.choices[0].message.content }
+  return { response: completion.choices[0].message.content }
 }
 
 export async function asi1(apiKey: string, model: string, baseUrl: string, message: string) {

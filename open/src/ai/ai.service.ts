@@ -38,7 +38,7 @@ export class AIService {
       case 'gemini':
         return await gemini(key, model.name, message)
       case 'qwen':
-        return await qwen(model.name, model.baseUrl, message)
+        return await qwen(key, model.name, model.baseUrl, message)
       case 'asi1':
         return await asi1(key, model.name, model.baseUrl, message)
     }
