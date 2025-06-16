@@ -1,19 +1,11 @@
 import { Worker } from 'bullmq'
-import { Interface, parseUnits } from 'ethers'
+import { Interface, parseUnits, AbiCoder } from 'ethers'
 import { Logger } from 'pino'
 import type { RedisClientType } from 'redis'
 import { BULLMQ_CONNECTION, ADCS_SERVICE_NAME, WORKER_ADCS_QUEUE_NAME } from '../settings'
 import { IADCSListenerWorker, IADCSTransactionParameters, IReporterConfig } from '../types'
 
-import {
-  add0GKey,
-  executeAdapterById,
-  fetchAdapterByCodeV2,
-  fetchAdapterByJobId,
-  fetchAiModelData,
-  fetchMemeCoinData,
-  fetchPriceByPairName
-} from './api'
+import { add0GKey, executeAdapterById } from './api'
 import { buildTransaction } from './adcs.utils'
 import { ADCS_ABI as ADCSAbis } from '../constants/adcs.coordinator.abi'
 import { getReporterByAddress } from '../apis'
@@ -22,7 +14,6 @@ import { decodeRequest } from './decoding'
 import { ZeroG } from './og'
 
 const FILE_NAME = import.meta.url
-const DECIMALS = 6
 
 export async function buildWorker(redisClient: RedisClientType, _logger: Logger, zeroG: ZeroG) {
   const logger = _logger.child({ name: 'worker', file: FILE_NAME })
@@ -52,15 +43,31 @@ export async function job(zeroG: ZeroG, _logger: Logger) {
         acc[item.name] = item.value
         return acc
       }, {})
-      console.log('input', input)
-      const { formattedResponse, fulfillDataRequestFn } = await executeAdapterById(
-        inData.jobId,
+      const { response, fulfillDataRequestFn, outputType, outputEntity } = await executeAdapterById(
+        `A${inData.jobId}`,
         input
       )
-      if (!formattedResponse) {
+      if (!response) {
         throw new Error('No response')
       }
 
+      let formattedResponse = response
+      // process output type data
+      if (outputType.toLowerCase() != 'bytes') {
+        if (typeof response === 'object') {
+          formattedResponse = Object.values(response)[0]
+        } else {
+          formattedResponse = response
+        }
+      }
+
+      if (outputType.toLowerCase() === 'bytes') {
+        // encode object to bytes that can be attract in solidity
+        const objectKeys = Object.keys(response)
+        const objectValues = Object.values(response)
+        const encodeData = AbiCoder.defaultAbiCoder().encode(objectKeys, objectValues)
+        formattedResponse = encodeData
+      }
       const payloadParameters: IADCSTransactionParameters = {
         blockNum: inData.blockNum,
         requestId: inData.requestId,
@@ -110,7 +117,7 @@ async function sendTx(tx: any, reporter: IReporterConfig, zeroG: ZeroG, logger: 
     logger
   }
   const txReceipt = await sendTransaction(txParams)
-  console.log('txReceipt', txReceipt)
+  logger.info('submit success')
   // send to 0G
   try {
     if (txReceipt) {

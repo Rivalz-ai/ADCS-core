@@ -108,6 +108,10 @@ model Chain {
   id          Int        @id @default(autoincrement())
   name        String
   description String
+  type        ChainType  @default(EVM)
+  iconUrl     String?    @map("icon_url")
+  docsUrl     String?    @map("docs_url")
+
   createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
   updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
   listeners   Listener[]

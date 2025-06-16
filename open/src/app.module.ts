@@ -16,6 +16,7 @@ import { ProviderModule } from './providers/provider.module'
 import { ProviderV2Module } from './provider-v2/provider-v2.module';
 import { AdapterV2Module } from './adapter-v2/adapter-v2.module';
 import { AiModule } from './ai/ai.module';
+import { NetworkModule } from './network/network.module';
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { AiModule } from './ai/ai.module';
     ProviderModule,
     ProviderV2Module,
     AdapterV2Module,
-    AiModule
+    AiModule,
+    NetworkModule
   ],
   controllers: [AppController],
   providers: [
