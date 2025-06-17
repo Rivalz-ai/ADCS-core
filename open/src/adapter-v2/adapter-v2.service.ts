@@ -133,7 +133,9 @@ export class AdapterV2Service {
       outputTypeId: adapter.outputType?.id || 0,
       categoryId: adapter.category?.id || 0,
       entities: entities.filter((entity, index, self) => self.indexOf(entity) === index),
-      requestCount: adapter.requestCount
+      requestCount: adapter.requestCount,
+      createdAt: adapter.createdAt,
+      updatedAt: adapter.updatedAt
     }
   }
   async verifyAdapter(adapterDto: CreateAdapterDto) {
