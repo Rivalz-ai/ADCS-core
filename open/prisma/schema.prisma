@@ -40,6 +40,7 @@ model Adaptor {
   DataProvider  DataProvider? @relation(fields: [dataProviderId], references: [id])
   adaptorTypeId Int?
 
+
   @@map("adaptor")
 }
 
@@ -250,6 +251,9 @@ model ProviderV2 {
   categoryId     Int?             @map("category_id")
   createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  website        String?          @map("website")
+  github         String?          @map("github_url")
+  tokenId        String?          @map("token_id")
   ProviderMethod ProviderMethod[]
   category       Category?        @relation(fields: [categoryId], references: [id])
 
