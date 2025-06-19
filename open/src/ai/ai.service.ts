@@ -16,7 +16,9 @@ export class AIService {
     return models.map((model) => ({
       id: model.id,
       name: model.name,
-      description: model.description
+      description: model.description,
+      iconUrl: model.iconUrl,
+      type: model.type
     }))
   }
 

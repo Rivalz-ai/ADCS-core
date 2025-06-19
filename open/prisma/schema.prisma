@@ -40,7 +40,6 @@ model Adaptor {
   DataProvider  DataProvider? @relation(fields: [dataProviderId], references: [id])
   adaptorTypeId Int?
 
-
   @@map("adaptor")
 }
 
@@ -106,19 +105,19 @@ model Reporter {
 }
 
 model Chain {
-  id          Int        @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
   description String
-  type        ChainType  @default(EVM)
-  iconUrl     String?    @map("icon_url")
-  docsUrl     String?    @map("docs_url")
+  type        ChainType @default(EVM)
+  iconUrl     String?   @map("icon_url")
+  docsUrl     String?   @map("docs_url")
 
-  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  listeners   Listener[]
-  reporters   Reporter[]
-  adaptors    Adaptor[]
-  ChainRpc    ChainRpc[]
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  listeners Listener[]
+  reporters Reporter[]
+  adaptors  Adaptor[]
+  ChainRpc  ChainRpc[]
 
   @@map("chain")
 }
@@ -326,6 +325,7 @@ model AIModel {
   id          Int      @id @default(autoincrement())
   name        String
   description String
+  iconUrl     String?  @map("icon_url")
   baseUrl     String   @map("base_url")
   apiKey      String   @map("api_key")
   type        String   @map("type") // openai, anthropic, gemini
