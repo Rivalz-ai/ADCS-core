@@ -1,0 +1,9 @@
+[
+  {
+    "chain": "Fraxtal",
+    "coordinatorAddress": "0x7eb5b9b83E1aA1AbafE7243A79910FC9AEdD6Ff2",
+    "eventTopic": "0x41ea4966e667f63a7c3fc4d3110cdef809a7d4dd88b1bc66d3a6b679c7fd633d",
+    "startBlock": "22439022",
+    "webhookUrl": "https://testnet-listener.rivalz.ai/events"
+  }
+]

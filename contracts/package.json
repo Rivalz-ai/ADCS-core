@@ -8,7 +8,8 @@
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat deploy",
     "verify": "npx hardhat verify",
-    "deploy:adcs": "yarn deploy --deploy-scripts deploy/adcs"
+    "deploy:adcs": "yarn deploy --deploy-scripts deploy/adcs",
+    "deploy:consumer": "yarn deploy --deploy-scripts deploy/adcsMock"
   },
   "author": "",
   "license": "ISC",

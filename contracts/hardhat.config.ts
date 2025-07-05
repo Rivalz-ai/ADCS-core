@@ -124,7 +124,7 @@ module.exports = {
       }
     },
     polygon: {
-      url: 'https://rpc.ankr.com/polygon',
+      url: 'https://polygon-rpc.com',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -146,7 +146,7 @@ module.exports = {
       }
     },
     berachain: {
-      url: 'https://berachain-rpc.publicnode.com',
+      url: 'https://rpc.berachain.com',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -168,7 +168,7 @@ module.exports = {
       }
     },
     optimism: {
-      url: 'https://rpc.ankr.com/optimism',
+      url: 'https://optimism-rpc.publicnode.com',
       accounts: [process.env.TESTNET_DEPLOYER],
       gasMultiplier: 1.1,
       verify: {
@@ -254,6 +254,28 @@ module.exports = {
           apiKey: process.env.EXPLORER_API_KEY
         }
       }
+    },
+    injective_testnet: {
+      url: 'https://k8s.testnet.json-rpc.injective.network',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1
+    },
+    irys_testnet: {
+      url: 'https://testnet-rpc.irys.xyz/v1/execution-rpc',
+      accounts: [process.env.TESTNET_DEPLOYER],
+      gasMultiplier: 1.1
+    },
+    soneium: {
+      url: 'https://rpc.soneium.org',
+      accounts: [process.env.TESTNET_DEPLOYER]
+    },
+    fraxtal: {
+      url: 'https://rpc.frax.com',
+      accounts: [process.env.TESTNET_DEPLOYER]
+    },
+    somnia_testnet: {
+      url: 'https://rpc.ankr.com/somnia_testnet/6e3fd81558cf77b928b06b38e9409b4677b637118114e83364486294d5ff4811',
+      accounts: [process.env.TESTNET_DEPLOYER]
     }
   },
   sourcify: {
@@ -288,7 +310,10 @@ module.exports = {
       taiko: process.env.EXPLORER_API_KEY,
       sei: process.env.EXPLORER_API_KEY,
       celo: process.env.EXPLORER_API_KEY,
-      linea: process.env.EXPLORER_API_KEY
+      linea: process.env.EXPLORER_API_KEY,
+      soneium: process.env.EXPLORER_API_KEY,
+      fraxtal: process.env.EXPLORER_API_KEY,
+      somnia_testnet: process.env.EXPLORER_API_KEY
     },
     customChains: [
       {
@@ -410,6 +435,46 @@ module.exports = {
         urls: {
           apiURL: 'https://api.lineascan.build/api',
           browserURL: 'https://lineascan.build'
+        }
+      },
+      {
+        network: 'injective_testnet',
+        chainId: 1439,
+        urls: {
+          apiURL: 'https://testnet.blockscout.injective.network/api',
+          browserURL: 'https://testnet.blockscout.injective.network'
+        }
+      },
+      {
+        network: 'irys_testnet',
+        chainId: 1270,
+        urls: {
+          apiURL: 'https://testnet-rpc.irys.xyz/v1/execution-rpc',
+          browserURL: 'https://testnet-rpc.irys.xyz/v1/execution-rpc'
+        }
+      },
+      {
+        network: 'soneium',
+        chainId: 1868,
+        urls: {
+          apiURL: 'https://soneium.blockscout.com/api',
+          browserURL: 'https://soneium.blockscout.com'
+        }
+      },
+      {
+        network: 'fraxtal',
+        chainId: 252,
+        urls: {
+          apiURL: 'https://api.etherscan.io/v2/api?chainid=252',
+          browserURL: 'https://api.frax.com'
+        }
+      },
+      {
+        network: 'somnia_testnet',
+        chainId: 50312,
+        urls: {
+          apiURL: 'https://shannon-explorer.somnia.network/api',
+          browserURL: 'https://shannon-explorer.somnia.network/'
         }
       }
     ]

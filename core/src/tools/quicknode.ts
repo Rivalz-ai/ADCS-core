@@ -46,6 +46,8 @@ function getQuickNodeChain(chain: string) {
       return QuickNodeChain.MANTLE_MAINNET
     case 'Linea':
       return QuickNodeChain.LINEA_MAINNET
+    case 'Fraxtal':
+      return QuickNodeChain.FRAXTAL_MAINNET
     default:
       return chain
   }

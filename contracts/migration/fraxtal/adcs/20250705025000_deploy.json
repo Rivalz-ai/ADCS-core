@@ -1,0 +1,12 @@
+{
+  "requestResponseCoordinatorAddress": "",
+  "deploy": {
+    "version": "v0.1"
+  },
+  "registerOracle": ["0x122933E746C112B586Ea3D6371E91DCAaCbC7AbE"],
+  "deregisterOracle": [],
+  "setConfig": {
+    "maxGasLimit": 2000000,
+    "gasAfterPaymentCalculation": 90692
+  }
+}
