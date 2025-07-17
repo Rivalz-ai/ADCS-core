@@ -36,11 +36,9 @@ resources:
 
 ingress:
   enabled: true
-  kind: gateway ### with 2 values: gateway and ingress
-  gateway: ingressgateway
-  gatewayname: istio-system/rivalz-ai
-  hosts: 
-    - 'adcs-v2-api.rivalz.ai'
+  kind: ingress ### with 2 values: gateway and ingress
+  ingressClass: nginx
+  hosts: 'adcs-v2-api.rivalz.ai'
   servers: 
     - port: 3002
       name: http

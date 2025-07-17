@@ -45,6 +45,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
           repository: "Rivalz-ai/rivalz-helm-chart.git"
           path: rivalz-chart
@@ -64,5 +66,5 @@ jobs:
           helm upgrade --install ${SERVICE_NAME} rivalz-chart -f open/values.yaml -n ${NAMESPACE} \
             --kubeconfig kubeconfig \
             --set image.tag=${{ needs.build-and-push.outputs.commit_hash }} \
-            --set ingress.hosts[0]=${NAMESPACE}-api-v2.rivalz.ai \
+            --set ingress.hosts=${NAMESPACE}-api-v2.rivalz.ai \
             --create-namespace
